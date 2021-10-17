@@ -6,6 +6,12 @@ The size of the margins is configurable.
 
 ![screenshot](screenshot.png)
 
+[view in KDE Store](https://www.pling.com/p/1619642/)
+
+© 2021 Natalie Clarius \<natalie_clarius@yahoo.de\>
+
+
+
 ## Installation
 
 #### Method 1: via GUI
