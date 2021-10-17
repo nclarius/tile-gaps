@@ -4,7 +4,7 @@
 
 [Desktop Entry]
 Name=Tile Gaps
-Comment=Adds space around windows tiled to a screen half or quarter
+Comment=Adds space around windows snapped to a screen half or quarter
 Icon=preferences-system-windows
 
 Type=Service
