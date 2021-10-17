@@ -1,0 +1,20 @@
+# KWin Script Tile Gaps
+# (C) 2021 Natalie Clarius <natalie_clarius@yahoo.de>
+# GNU General Public License v3.0
+
+[Desktop Entry]
+Name=Tile Gaps
+Comment=Adds space around windows tiled to a screen half or quarter
+Icon=preferences-system-windows
+
+Type=Service
+X-KDE-ServiceTypes=KWin/Script
+X-Plasma-API=javascript
+X-Plasma-MainScript=code/main.js
+X-KDE-Library=kwin/effects/configs/kcm_kwin4_genericscripted
+
+X-KDE-PluginInfo-Author=Natalie Clarius
+X-KDE-PluginInfo-Email=natalie_clarius@yahoo.de
+X-KDE-PluginInfo-Name=tilegaps
+X-KDE-PluginInfo-Version=1.0
+X-KDE-PluginInfo-License=GPL
