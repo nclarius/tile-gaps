@@ -38,7 +38,7 @@ ln -s ~/.local/share/kwin/scripts/tilegaps/metadata.desktop ~/.local/share/kserv
 If that still doesn’t work, you can make the changes in the source code:
 
 1. Download and the code via GitHub (top right green button *Code* > *Download ZIP*) or KDE store (top right purple button *Download*) and unpack.
-2. In ` contents/code/main.js`, change the `true`/`false` values at the beginning of the file to your preferences.
+2. In ` contents/code/main.js`, change the values `12` at the beginning of the file to your preferences.
 3. Recompile the script by starting a terminal window in the `tile-gaps` folder and running the command
 
     ```bash
