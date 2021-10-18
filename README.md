@@ -34,6 +34,8 @@ qdbus org.kde.KWin /KWin reconfigure
 
 *Settings* > *Window Management* > *KWin Scripts* > configuration button in the *Tile Gaps* entry.
 
+You may have to disable and re-enable to script in order for the changes to take effect.
+
 If the configuration button is missing, try the following:
 
 ````bash
