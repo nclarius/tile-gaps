@@ -10,10 +10,10 @@ GNU General Public License v3.0
 
 const config = {
     // desired size of the gap between a window and the top/left/right/bottom screen edge
-    gapScreen: readConfig("gapScreen", 20),
+    gapScreen: readConfig("gapScreen", 12),
 
     // desired size of the gap between two adjacent windows
-    gapWindow: readConfig("gapWindow", 20)
+    gapWindow: readConfig("gapWindow", 12)
 };
 
 
