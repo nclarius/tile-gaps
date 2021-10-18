@@ -62,5 +62,5 @@ If that still doesn’t work, you can make the changes in the source code:
 
 © 2021 Natalie Clarius \<natalie_clarius@yahoo.de\>
 
-If you would like to thank me, you can [buy me a coffee](https://www.buymeacoffee.com/nclarius).
+If you would like to thank me, you can [buy me a coffee](https://www.paypal.com/donate?hosted_button_id=7LUUJD83BWRM4).
 
