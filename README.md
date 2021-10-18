@@ -12,12 +12,12 @@ The size of the margins is configurable.
 
 ## Installation
 
-#### Method 1: via graphical interface
+### Method 1: via graphical interface
 
 1. Install the script via *System Settings* > *Window Management* > *KWin Scripts* > *Get New Scripts …* > search for *Tile Gaps* > *Install*.
 2. Activate the script by selecting the checkbox in the *Tile Gaps* entry.
 
-#### Method 2: via command line
+### Method 2: via command line
 
 ```bash
 git clone https://github.com/nclarius/tile-gaps.git
