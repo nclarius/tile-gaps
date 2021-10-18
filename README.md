@@ -58,7 +58,7 @@ If that still doesn’t work, you can make the changes in the source code:
    ````
    
   
-## Small print
+## Small Print
 
 © 2021 Natalie Clarius \<natalie_clarius@yahoo.de\>
 
