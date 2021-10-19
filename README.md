@@ -9,12 +9,11 @@ The size of the padding is configurable.
 [view in KDE Store](https://www.pling.com/p/1619642/)
 
 
-
 ## Installation
 
 ### Dependencies
 
-- KWin. Tested with 5.23; versions <5.20 may cause compatibility problems.
+- KWin. Tested with v5.23; deprecated versions <5.20 may cause compatibility problems.
 
 ### Method 1: via graphical interface
 
@@ -29,7 +28,6 @@ plasmapkg2 --type kwinscript -i tile-gaps
 kwriteconfig5 --file kwinrc --group Plugins --key tilegapsEnabled true
 qdbus org.kde.KWin /KWin reconfigure
 ```
-
 
 
 ## Configuration
@@ -60,8 +58,7 @@ If that still doesn’t work, you can make the changes in the source code:
    ````bash
    kwin_x11 --replace &
    ````
-   
-  
+     
 ## Small Print
 
 © 2021 Natalie Clarius \<natalie_clarius@yahoo.de\>
