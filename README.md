@@ -14,7 +14,7 @@ The size of the padding is configurable.
 
 ### Dependencies
 
-- KWin. Tested with 5.23; verions <5.20 may not be compatible.
+- KWin. Tested with 5.23; versions <5.20 may cause compatibility problems.
 
 ### Method 1: via graphical interface
 
