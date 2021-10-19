@@ -22,8 +22,9 @@ const config = {
 ///////////////////////
 
 // add to watchlist when client is initially present or added
-for (const client of workspace.clientList()) {
-    onAdded(client);
+const clients = workspace.clientList();
+for (var i = 0; i < clients.length; i++) {
+    onAdded(clients[i]);
 }
 workspace.clientAdded.connect(onAdded);
 
