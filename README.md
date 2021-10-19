@@ -68,5 +68,7 @@ This program comes with absolutely no warranty.
 
 This is free software, and you are welcome to redistribute and/or modify it under certain conditions.
 
+\   
+
 If you would like to thank me, you can [buy me a coffee](https://www.paypal.com/donate?hosted_button_id=7LUUJD83BWRM4).
 
