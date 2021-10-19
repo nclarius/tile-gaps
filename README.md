@@ -12,6 +12,10 @@ The size of the padding is configurable.
 
 ## Installation
 
+### Dependencies
+
+- KWin. Tested with 5.23; verions <5.20 may not be compatible.
+
 ### Method 1: via graphical interface
 
 1. Install the script via *System Settings* > *Window Management* > *KWin Scripts* > *Get New Scripts …* > search for *Tile Gaps* > *Install*.
