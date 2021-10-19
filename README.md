@@ -13,7 +13,7 @@ The size of the padding is configurable.
 
 ### Dependencies
 
-`kwin` version ≥ 5.22
+`kwin` version ≥ 5.22.
 
 ### Method 1: via graphical interface
 
