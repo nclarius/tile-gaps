@@ -62,9 +62,9 @@ If that still doesn’t work, you can make the changes in the source code:
 
 © 2021 Natalie Clarius \<natalie_clarius@yahoo.de\>
 
-This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License, either version 3 of the License, or (at your option) any later versio.  
+This program comes with absolutely no warranty.  
 
-This program is distributed in the hope that it will be useful, but without any warranty; without even the implied warranty of merchantability or fitness for a particular prupose.
+This is free software, and you are welcome to redistribute and/or modify it under certain conditions.
 
 See the GNU General Public License v3.0 for more details.  
 
