@@ -5,6 +5,13 @@ GNU General Public License v3.0
 */
 
 ///////////////////////
+// debug mode
+///////////////////////
+debugMode = true;
+function debug(...args) {if (debugMode) {console.debug(...args);}}
+
+
+///////////////////////
 // configuration
 ///////////////////////
 
@@ -15,6 +22,7 @@ const config = {
     // desired size of the gap between two adjacent windows
     gapWindow: readConfig("gapWindow", 12)
 };
+debug("gap size", config.gapScreen, config.gapWindow);
 
 
 ///////////////////////
@@ -52,9 +60,11 @@ function tileGaps(win) {
     if (win == undefined || win == null || !win.normalWindow || win.fullscreen || win.move || win.resize) {
         return;
     }
+    debug("gap", win.caption, win.x, win.y, win.width, win.height);
 
     // get client area for current window
     const area = workspace.clientArea(win, win.screen, win.desktop);
+    debug("area", win.caption, win.x, win.y, win.width, win.height);
 
     // check if window already has the right geometry in order to prevent infinite reshaping
     if ((  win.x == area.x + config.gapScreen // left edge is left
@@ -67,6 +77,7 @@ function tileGaps(win) {
      && (  win.height == area.height - 2 * config.gapScreen // height is full
         || win.height == 0.5 * area.height - config.gapScreen - 0.5 * config.gapWindow) // height is half
        ) {
+           debug("gapped");
        return;
    }
 
