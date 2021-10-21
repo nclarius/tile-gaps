@@ -2,9 +2,9 @@
 
 Extension for KDE's window manager to add space around windows snapped to a half or quarter of the screen.
 
-The size of the padding is configurable.
+The size of the gap is configurable.
 
-![screenshot](screenshot.gif)
+![screenshot](screenshot.png)
 
 [view in KDE Store](https://www.pling.com/p/1619642/)
 
