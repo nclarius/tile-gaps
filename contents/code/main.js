@@ -22,15 +22,195 @@ const config = {
     // desired size of the gap between two adjacent windows
     gapWindow: readConfig("gapWindow", 12)
 };
-debug("gap size", config.gapScreen, config.gapWindow);
+debug("tile gaps", "sizes", config.gapScreen, config.gapWindow);
 
 
 ///////////////////////
-// setup
+// get area geometry
+///////////////////////
+
+const clients = workspace.clientList();
+
+// set geometry for all screens initially and whenever screen setup changes
+const areas = {};
+const grids = {};
+const tiless = {};
+updateGeometry();
+workspace.numberScreensChanged.connect(updateGeometry);
+workspace.screenResized.connect(updateGeometry);
+function updateGeometry() {
+    // find desktop background for each screen
+    for (var i = 0; i < clients.length; i++) {
+        client = clients[i];
+        if (client.desktopWindow) {
+            screenNr = client.screen;
+            // update area, grid and tiles for screen
+            areas[screenNr] = getArea(client);
+            grids[screenNr] = getGrid(client);
+            tiless[screenNr] = getTiles(client);
+        }
+    }
+}
+
+// get client area
+function getArea(client) {
+    return workspace.clientArea(client, client.screen, client.desktop);
+}
+
+// grid coordinates without and with gaps
+function getGrid(client) {
+    const area = areas[client.screen];
+    return {
+        // x
+        left: {
+            closed: area.x,
+            gapped: area.x + config.gapScreen
+        },
+        midH: {
+            closed: area.x + area.width/4,
+            gapped: area.x + (config.gapScreen - config.gapWindow/2)/2
+        },
+        right: {
+            closed: area.x + area.width/2,
+            gapped: area.x + area.width/2 + config.gapWindow/2
+        },
+        // y
+        top: {
+            closed: area.y,
+            gapped: area.y + config.gapScreen
+        },
+        midV: {
+            closed: area.y + area.height/4,
+            gapped: area.y + (config.gapScreen - config.gapWindow/2)/2
+        },
+        bottom: {
+            closed: area.y + area.height/2,
+            gapped: area.y + area.height/2 + config.gapWindow/2
+        },
+        // width
+        fullWidth: {
+            closed: area.width,
+            gapped: area.width - config.gapScreen*2
+        },
+        halfWidth: {
+            closed: area.width/2,
+            gapped: area.width/2 - config.gapScreen - config.gapWindow/2
+        },
+        // height
+        fullHeight: {
+            closed: area.height,
+            gapped: area.height - config.gapScreen*2
+        },
+        halfHeight: {
+            closed: area.height/2,
+            gapped: area.height/2 - config.gapScreen - config.gapWindow/2
+        }
+    }
+}
+
+// tile coordinates
+function getTiles(screenNr) {
+    const area = areas[client.screen];
+    const grid = grids[client.screen];
+    return {
+        halfLeft: {
+            x: grid.left,
+            y: grid.top,
+            width: grid.halfWidth,
+            height: grid.fullHeight
+        },
+        halfHCenter: {
+            x: grid.midH,
+            y: grid.top,
+            width: grid.halfWidth,
+            height: grid.fullHeight
+        },
+        halfRight: {
+            x: grid.right,
+            y: grid.top,
+            width: grid.halfWidth,
+            height: grid.fullHeight
+        },
+        halfTop: {
+            x: grid.left,
+            y: grid.top,
+            width: grid.fullWidth,
+            height: grid.halfHeight
+        },
+        halfVCenter: {
+            x: grid.left,
+            y: grid.midV,
+            width: grid.fullWidth,
+            height: grid.halfHeight
+        },
+        halfBottom: {
+            x: grid.left,
+            y: grid.bottom,
+            width: grid.fullWidth,
+            height: grid.halfHeight
+        },
+        quarterLeftTop: {
+            x: grid.left,
+            y: grid.top,
+            width: grid.halfWidth,
+            height: grid.halfHeight
+        },
+        quarterCenterTop: {
+            x: grid.midH,
+            y: grid.top,
+            width: grid.halfWidth,
+            height: grid.halfHeight
+        },
+        quarterRightTop: {
+            x: grid.right,
+            y: grid.top,
+            width: grid.halfWidth,
+            height: grid.halfHeight
+        },
+        quarterLeftCenter: {
+            x: grid.left,
+            y: grid.midV,
+            width: grid.halfWidth,
+            height: grid.halfHeight
+        },
+        quarterCenterCenter: {
+            x: grid.midH,
+            y: grid.midV,
+            width: grid.halfWidth,
+            height: grid.halfHeight
+        },
+        quarterRightCenter: {
+            x: grid.right,
+            y: grid.midV,
+            width: grid.halfWidth,
+            height: grid.halfHeight
+        },
+        quarterLeftBottom: {
+            x: grid.left,
+            y: grid.bottom,
+            width: grid.halfWidth,
+            height: grid.halfHeight
+        },
+        quarterCenterBottom: {
+            x: grid.midH,
+            y: grid.bottom,
+            width: grid.halfWidth,
+            height: grid.halfHeight
+        },
+        quarterRightBottom: {
+            x: grid.right,
+            y: grid.bottom,
+            width: grid.halfWidth,
+            height: grid.halfHeight
+        }
+    }
+}
+
+///////////////////////
+// triggers
 ///////////////////////
 
 // add to watchlist when client is initially present or added
-const clients = workspace.clientList();
 for (var i = 0; i < clients.length; i++) {
     onAdded(clients[i]);
 }
@@ -47,10 +227,9 @@ function onAdded(client) {
 }
 
 ///////////////////////
-// tile gaps
+// create tile gaps
 ///////////////////////
 
-// make tile gaps
 function tileGaps(win) {
     // if no window is provided, default to active window
     if (win == null) {
@@ -60,224 +239,34 @@ function tileGaps(win) {
     if (win == undefined || win == null || !win.normalWindow || win.fullscreen || win.move || win.resize) {
         return;
     }
-    debug("gap", win.caption, win.x, win.y, win.width, win.height);
+    debug("gap for", win.caption, win.x, win.y, win.width, win.height);
 
-    // get client area for current window
-    const area = workspace.clientArea(win, win.screen, win.desktop);
-    debug("area", area.x, area.y, area.width, area.height);
-
-    // get tile coordinates without gaps
-    gridF = {
-        // x
-        left: area.x,
-        halfHor: area.x + area.width/4,
-        right: area.x + area.width/2,
-        // y
-        top: area.y,
-        halfVert: area.y + area.height/4,
-        bottom: area.y + area.height/2,
-        // width
-        fullWidth: area.width,
-        halfWidth: area.width/2,
-        // height
-        fullHeight: area.height,
-        halfHeight: area.height/2
-    };
-
-    // get tile coordinates with gaps
-    gridG = {
-        // x
-        left: gridF.left + config.gapScreen,
-        halfHor: gridF.halfHor - (config.gapScreen - config.gapWindow/2)/2,
-        right: gridF.right + config.gapWindow/2,
-        // y
-        top: gridF.top + config.gapScreen,
-        halfVert: gridF.halfVert - (config.gapScreen - config.gapWindow/2)/2,
-        bottom: gridF.bottom + config.gapWindow/2,
-        // width
-        fullWidth: gridF.fullWidth - config.gapScreen*2,
-        halfWidth: gridF.halfWidth - config.gapScreen - config.gapWindow/2,
-        // height
-        fullHeight: gridF.fullHeight - config.gapScreen*2,
-        halfHeight: gridF.halfHeight - config.gapScreen - config.gapWindow/2
-    };
-
-    // check if window already has the right geometry in order to prevent infinite reshaping
-    if ((win.x == gridG.left || win.x == gridG.halfHor || win.x == gridG.right)
-     && (win.y == gridG.top || win.y == gridG.halfVert || win.y == gridG.bottom)
-     && (win.width == gridG.fullWidth || win.width == gridG.halfWidth)
-     && (win.height == gridG.fullHeight || win.height == gridG.halfHeight)) {
-         debug("gapped");
-         return;
-     }
-
-   // for each possible tile, check whether the window is currently approximately tiled there and if yes, adapt
-
-   // left half
-   if (near(win.x, gridF.left)
-    && near(win.y, gridF.top)
-    && near(win.width, gridF.halfWidth)
-    && near(win.height, gridF.fullHeight)) {
-        debug("gap left");
-        win.geometry = {
-            x: gridG.left,
-            y: gridG.top,
-            width: gridG.halfWidth,
-            height: gridG.fullHeight
-        };
-        return;
+    // iterate possible tiles
+    tiles = tiless[win.screen];
+    for (var i = 0; i < Object.keys(tiles).length; i++) {
+        // get coordinates for current possible tile
+        tile = Object.keys(tiles)[i];
+        coords = tiles[tile];
+        const closedGeometry = {x: coords.x.closed, y: coords.y.closed, width: coords.width.closed, height: coords.height.closed};
+        const gappedGeometry = {x: coords.x.gapped, y: coords.y.gapped, width: coords.width.gapped, height: coords.height.gapped};
+        // check whether the window is approximately tiled there
+        if (near(win.geometry, closedGeometry)) {
+            debug(win.geometry, JSON.stringify(closedGeometry));
+            // if the window already has the right geometry, abort in order to prevent infinite reshaping
+            if (win.geometry == gappedGeometry) {
+                debug("gapped", tile, win.caption);
+                return;
+            }
+            // else: apply gapped geometry
+            else {
+                debug("gapping", tile, win.caption);
+                win.geometry = gappedGeometry;
+                return;
+            }
+        }
     }
-
-    // horizontal center half
-    if (near(win.x, gridF.halfHor)
-     && near(win.y, gridF.top)
-     && near(win.width, gridF.halfWidth)
-     && near(win.height, gridF.fullHeight)) {
-         debug("gap center horizontal");
-         win.geometry = {
-             x: gridG.halfHor,
-             y: gridG.top,
-             width: gridG.halfWidth,
-             height: gridG.fullHeight
-         };
-         return;
-     }
-
-    // right half
-    if (near(win.x, gridF.right)
-     && near(win.y, gridF.top)
-     && near(win.width, gridF.halfWidth)
-     && near(win.height, gridF.fullHeight)) {
-         debug("gap right");
-         win.geometry = {
-             x: gridG.right,
-             y: gridG.top,
-             width: gridG.halfWidth,
-             height: gridG.fullHeight
-         };
-         return;
-     }
-
-     // top half
-     if (near(win.x, gridF.left)
-      && near(win.y, gridF.top)
-      && near(win.width, gridF.fullWidth)
-      && near(win.height, gridF.halfHeight)) {
-          debug("gap top");
-          win.geometry = {
-              x: gridG.left,
-              y: gridG.top,
-              width: gridG.fullWidth,
-              height: gridG.halfHeight
-          };
-          return;
-      }
-
-      // vertical center half
-      if (near(win.x, gridF.left)
-       && near(win.y, gridF.halfVert)
-       && near(win.width, gridF.fullWidth)
-       && near(win.height, gridF.halfHeight)) {
-           debug("gap center vertical");
-           win.geometry = {
-               x: gridG.left,
-               y: gridG.halfVert,
-               width: gridG.fullWidth,
-               height: gridG.halfHeight
-           };
-           return;
-       }
-
-       // bottom half
-       if (near(win.x, gridF.left)
-        && near(win.y, gridF.bottom)
-        && near(win.width, gridF.fullWidth)
-        && near(win.height, gridF.halfHeight)) {
-            debug("gap bottom");
-            win.geometry = {
-                x: gridG.left,
-                y: gridG.bottom,
-                width: gridG.fullWidth,
-                height: gridG.halfHeight
-            };
-            return;
-        }
-
-     // top left quarter
-     if (near(win.x, gridF.left)
-      && near(win.y, gridF.top)
-      && near(win.width, gridF.halfWidth)
-      && near(win.height, gridF.halfHeight)) {
-          debug("gap top left");
-          win.geometry = {
-              x: gridG.left,
-              y: gridG.top,
-              width: gridG.halfWidth,
-              height: gridG.halfHeight
-          };
-          return;
-      }
-
-      // top right quarter
-      if (near(win.x, gridF.right)
-       && near(win.y, gridF.top)
-       && near(win.width, gridF.halfWidth)
-       && near(win.height, gridF.halfHeight)) {
-           debug("gap top right");
-           win.geometry = {
-               x: gridG.right,
-               y: gridG.top,
-               width: gridG.halfWidth,
-               height: gridG.halfHeight
-           };
-           return;
-       }
-
-       // center quarter
-       if (near(win.x, gridF.halfHor)
-        && near(win.y, gridF.halfVert)
-        && near(win.width, gridF.halfWidth)
-        && near(win.height, gridF.halfHeight)) {
-            debug("gap center quarter");
-            win.geometry = {
-                x: gridG.halfHor,
-                y: gridG.halfVert,
-                width: gridG.halfWidth,
-                height: area.halfHeight
-            };
-            return;
-        }
-
-       // bottom left quarter
-       if (near(win.x, gridF.left)
-        && near(win.y, gridF.bottom)
-        && near(win.width, gridF.halfWidth)
-        && near(win.height, gridF.halfHeight)) {
-            debug("gap bottom left");
-            win.geometry = {
-                x: gridG.left,
-                y: gridG.bottom,
-                width: gridG.halfWidth,
-                height: gridG.halfHeight
-            };
-            return;
-        }
-
-        // bottom right quarter
-        if (near(win.x, gridF.right)
-         && near(win.y, gridF.bottom)
-         && near(win.width, gridF.halfWidth)
-         && near(win.height, gridF.halfHeight)) {
-             debug("gap bottom right");
-             win.geometry = {
-                 x: gridG.right,
-                 y: gridG.bottom,
-                 width: gridG.halfWidth,
-                 height: gridG.halfHeight
-             };
-             return;
-         }
-}
+    debug("");
+ }
 
 ///////////////////////
 // helper functions
@@ -285,7 +274,16 @@ function tileGaps(win) {
 
 // divergence margin within which to consider windows tiled
 const tolerance = 2 * Math.max(config.gapScreen, config.gapWindow);
-
-function near(actual, expected) {
-    return actual - expected <= tolerance && actual - expected >= - tolerance;
+// actual geometry is near expected geometry iff for all coordinates, the difference between actual and expected is within tolerance
+function near(actualGeometry, expectedGeometry) {
+    for (var i = 0; i < Object.keys(expectedGeometry).length; i++) {
+        coord = Object.keys(expectedGeometry)[i];
+        actual = actualGeometry[coord];
+        expected = expectedGeometry[coord];
+        if (!(actual - expected <= tolerance
+           && actual - expected >= -tolerance)) {
+            return false;
+        };
+    }
+    return true;
 }
