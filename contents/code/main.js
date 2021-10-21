@@ -22,7 +22,8 @@ const config = {
     // desired size of the gap between two adjacent windows
     gapWindow: readConfig("gapWindow", 12)
 };
-debug("tile gaps", "sizes", config.gapScreen, config.gapWindow);
+debug("tile gaps");
+debug("gap screen:", config.gapScreen, "gap window:", config.gapWindow);
 
 
 ///////////////////////
@@ -240,8 +241,10 @@ function tileGaps(win) {
     if (win == undefined || win == null || !win.normalWindow || win.fullscreen || win.move || win.resize) {
         return;
     }
-    debug("make gaps for", win.caption);
+    area = areas[win.screen];
+    debug("gaps for", win.caption);
     debug("window geometry", win.x, win.y, win.width, win.height);
+    debug("area geometry", area.x, area.y, area.width, area.height);
 
     // iterate possible tile positions
     tiles = tiless[win.screen];
