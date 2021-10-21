@@ -52,12 +52,12 @@ function updateGeometry() {
     }
 }
 
-// get client area
+// client area
 function getArea(client) {
     return workspace.clientArea(client, client.screen, client.desktop);
 }
 
-// grid coordinates without and with gaps
+// area anchors without and with gaps
 function getGrid(client) {
     const area = areas[client.screen];
     return {
@@ -108,7 +108,7 @@ function getGrid(client) {
     }
 }
 
-// tile coordinates
+// coordinates for each tile
 function getTiles(screenNr) {
     const area = areas[client.screen];
     const grid = grids[client.screen];
@@ -231,6 +231,7 @@ function onAdded(client) {
 ///////////////////////
 
 function tileGaps(win) {
+    // get window to gap
     // if no window is provided, default to active window
     if (win == null) {
         win = workspace.activeClient;
@@ -239,51 +240,50 @@ function tileGaps(win) {
     if (win == undefined || win == null || !win.normalWindow || win.fullscreen || win.move || win.resize) {
         return;
     }
-    debug("gap for", win.caption, win.x, win.y, win.width, win.height);
+    debug("make gaps for", win.caption);
+    debug("window geometry", win.x, win.y, win.width, win.height);
 
-    // iterate possible tiles
+    // iterate possible tile positions
     tiles = tiless[win.screen];
     for (var i = 0; i < Object.keys(tiles).length; i++) {
-        // get coordinates for current possible tile
+
+        // get tile coordinates
+        // tile name
         tile = Object.keys(tiles)[i];
+        // tile coordinates for closed and gapped layouts
         coords = tiles[tile];
-        const closedGeometry = {x: coords.x.closed, y: coords.y.closed, width: coords.width.closed, height: coords.height.closed};
-        const gappedGeometry = {x: coords.x.gapped, y: coords.y.gapped, width: coords.width.gapped, height: coords.height.gapped};
-        // check whether the window is approximately tiled there
-        if (near(win.geometry, closedGeometry)) {
-            debug(win.geometry, JSON.stringify(closedGeometry));
-            // if the window already has the right geometry, abort in order to prevent infinite reshaping
-            if (win.geometry == gappedGeometry) {
-                debug("gapped", tile, win.caption);
-                return;
-            }
-            // else: apply gapped geometry
-            else {
-                debug("gapping", tile, win.caption);
-                win.geometry = gappedGeometry;
-                return;
-            }
+        // tile coordinates for closed layout
+        const closed = {geometry:
+            Object.keys(coords).reduce(function(obj, coord) {
+            obj[coord] = coords[coord].closed;
+            return obj;
+        }, {})};
+        // tile coordinates for gapped layout
+        const gapped = {geometry:
+            Object.keys(coords).reduce(function(obj, coord) {
+            obj[coord] = coords[coord].gapped;
+            return obj;
+        }, {})};
+
+        // check if the window is approximately tiled there
+        if (near(win.geometry, closed.geometry)) {
+            // window is tiled: apply gapped geometry
+            debug("gapping", tile, ...Object.values(gapped.geometry), "\n");
+            win.geometry = gapped.geometry;
+            return;
         }
     }
-    debug("");
+    debug("not tiled\n");
  }
 
 ///////////////////////
 // helper functions
 ///////////////////////
 
-// divergence margin within which to consider windows tiled
+// window is considered tiled iff the difference between actual and expected geometry for all coordinates is within tolerated divergence margin
 const tolerance = 2 * Math.max(config.gapScreen, config.gapWindow);
-// actual geometry is near expected geometry iff for all coordinates, the difference between actual and expected is within tolerance
-function near(actualGeometry, expectedGeometry) {
-    for (var i = 0; i < Object.keys(expectedGeometry).length; i++) {
-        coord = Object.keys(expectedGeometry)[i];
-        actual = actualGeometry[coord];
-        expected = expectedGeometry[coord];
-        if (!(actual - expected <= tolerance
-           && actual - expected >= -tolerance)) {
-            return false;
-        };
-    }
-    return true;
+function near(actual, expected) {
+    return Object.keys(expected).every(coord =>
+        actual[coord] - expected[coord] >= -tolerance
+     && actual[coord] - expected[coord] <=  tolerance);
 }
