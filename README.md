@@ -13,7 +13,7 @@ The size of the gap is configurable.
 
 ### Dependencies
 
-`kwin` version ≥ 5.22.
+`kwin` version ≥ 5.21.
 
 ### Method 1: via graphical interface
 

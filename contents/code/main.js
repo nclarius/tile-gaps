@@ -32,7 +32,7 @@ debug("gap screen:", config.gapScreen, "gap window:", config.gapWindow);
 
 const clients = workspace.clientList();
 
-// set geometry for all screens initially and whenever screen setup changes
+// get geometry for all screens initially and whenever screen setup changes
 const areas = {};
 const grids = {};
 const tiless = {};
@@ -58,54 +58,24 @@ function getArea(client) {
     return workspace.clientArea(client, client.screen, client.desktop);
 }
 
-// area anchors without and with gaps
+// area anchors
 function getGrid(client) {
     const area = areas[client.screen];
     return {
         // x
-        left: {
-            closed: area.x,
-            gapped: area.x + config.gapScreen
-        },
-        midH: {
-            closed: area.x + area.width/4,
-            gapped: area.x + (config.gapScreen - config.gapWindow/2)/2
-        },
-        right: {
-            closed: area.x + area.width/2,
-            gapped: area.x + area.width/2 + config.gapWindow/2
-        },
+        left: area.x + config.gapScreen,
+        midH: area.x + (config.gapScreen - config.gapWindow/2)/2,
+        right: area.x + area.width/2 + config.gapWindow/2,
         // y
-        top: {
-            closed: area.y,
-            gapped: area.y + config.gapScreen
-        },
-        midV: {
-            closed: area.y + area.height/4,
-            gapped: area.y + (config.gapScreen - config.gapWindow/2)/2
-        },
-        bottom: {
-            closed: area.y + area.height/2,
-            gapped: area.y + area.height/2 + config.gapWindow/2
-        },
+        top: area.y + config.gapScreen,
+        midV: area.y + (config.gapScreen - config.gapWindow/2)/2,
+        bottom: area.y + area.height/2 + config.gapWindow/2,
         // width
-        fullWidth: {
-            closed: area.width,
-            gapped: area.width - config.gapScreen*2
-        },
-        halfWidth: {
-            closed: area.width/2,
-            gapped: area.width/2 - config.gapScreen - config.gapWindow/2
-        },
+        fullWidth: area.width - config.gapScreen - config.gapScreen,
+        halfWidth: area.width/2 - config.gapScreen - config.gapWindow/2,
         // height
-        fullHeight: {
-            closed: area.height,
-            gapped: area.height - config.gapScreen*2
-        },
-        halfHeight: {
-            closed: area.height/2,
-            gapped: area.height/2 - config.gapScreen - config.gapWindow/2
-        }
+        fullHeight: area.height - config.gapScreen - config.gapScreen,
+        halfHeight: area.height/2 - config.gapScreen - config.gapWindow/2
     }
 }
 
@@ -249,30 +219,14 @@ function tileGaps(win) {
     // iterate possible tile positions
     tiles = tiless[win.screen];
     for (var i = 0; i < Object.keys(tiles).length; i++) {
-
-        // get tile coordinates
-        // tile name
-        tile = Object.keys(tiles)[i];
-        // tile coordinates for closed and gapped layouts
-        coords = tiles[tile];
-        // tile coordinates for closed layout
-        const closed = {geometry:
-            Object.keys(coords).reduce(function(obj, coord) {
-            obj[coord] = coords[coord].closed;
-            return obj;
-        }, {})};
-        // tile coordinates for gapped layout
-        const gapped = {geometry:
-            Object.keys(coords).reduce(function(obj, coord) {
-            obj[coord] = coords[coord].gapped;
-            return obj;
-        }, {})};
+        var tile = {name: Object.keys(tiles)[i]};
+        tile.geometry = tiles[tile.name];
 
         // check if the window is approximately tiled there
-        if (near(win.geometry, closed.geometry)) {
+        if (near(win.geometry, tile.geometry)) {
             // window is tiled: apply gapped geometry
-            debug("gapping", tile, ...Object.values(gapped.geometry), "\n");
-            win.geometry = gapped.geometry;
+            debug("gapping", tile.name, ...Object.values(tile.geometry), "\n");
+            win.geometry = tile.geometry;
             return;
         }
     }
