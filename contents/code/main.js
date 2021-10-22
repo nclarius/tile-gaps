@@ -5,10 +5,11 @@ GNU General Public License v3.0
 */
 
 ///////////////////////
-// debug mode
+// initialization
 ///////////////////////
 debugMode = true;
 function debug(...args) {if (debugMode) {console.debug(...args);}}
+debug("tile gaps");
 
 
 ///////////////////////
@@ -22,8 +23,7 @@ const config = {
     // desired size of the gap between two adjacent windows
     gapWindow: readConfig("gapWindow", 12)
 };
-debug("tile gaps");
-debug("gap screen:", config.gapScreen, "gap window:", config.gapWindow);
+debug("gap size screen:", config.gapScreen, "gap size window:", config.gapWindow);
 
 
 ///////////////////////
@@ -31,14 +31,16 @@ debug("gap screen:", config.gapScreen, "gap window:", config.gapWindow);
 ///////////////////////
 
 const clients = workspace.clientList();
-
-// get geometry for all screens initially and whenever screen setup changes
 const areas = {};
 const grids = {};
 const tiless = {};
+
+// get geometry for all screens initially and whenever screen setup changes
 updateGeometry();
 workspace.numberScreensChanged.connect(updateGeometry);
 workspace.screenResized.connect(updateGeometry);
+
+// update geometry of all screens
 function updateGeometry() {
     // find desktop background for each screen
     for (var i = 0; i < clients.length; i++) {
