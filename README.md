@@ -35,7 +35,7 @@ qdbus org.kde.KWin /KWin reconfigure
 
 *System Settings* > *Window Management* > *KWin Scripts* > configuration button in the *Tile Gaps* entry.
 
-You may have to disable and reenable the script in order for the changes to take effect.
+You may have to disable the script, apply, reenable, and reapply in order for the changes to take effect.
 
 If the configuration button is missing, try the following:
 
@@ -46,7 +46,9 @@ ln -sf ~/.local/share/kwin/scripts/tilegaps/metadata.desktop ~/.local/share/kser
 
 ## Usage
 
-For compatibility with [sticky window snapping](https://store.kde.org/p/1112552/), [my fork](https://github.com/nclarius/sticky-window-snapping) adds an option in the configuration to set the tile gap size between windows, and will properly retain the gap when resizing neighboring windows. 
+### Compatibility
+
+- For compatibility with [sticky window snapping](https://store.kde.org/p/1112552/), [my fork](https://github.com/nclarius/sticky-window-snapping) adds an option in the configuration to set the tile gap size between windows, and will properly retain the gap when resizing neighboring windows. 
 
    
 ## Small Print
