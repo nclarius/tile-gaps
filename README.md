@@ -44,21 +44,10 @@ mkdir -p ~/.local/share/kservices5
 ln -sf ~/.local/share/kwin/scripts/tilegaps/metadata.desktop ~/.local/share/kservices5/tilegaps.desktop
 ````
 
-If that still doesn’t work, you can make the changes in the source code:
+## Usage
 
-1. Download and the code via GitHub (top right green button *Code* > *Download ZIP*) or KDE store (top right purple button *Download*) and unpack.
-2. In ` contents/code/main.js`, change the values `12` at the beginning of the file to your preferences.
-3. Reinstall the script by starting a terminal window in the `tile-gaps` folder and running the command
+For compatibility with [sticky window snapping](https://store.kde.org/p/1112552/), please use [my fork](https://github.com/nclarius/sticky-window-snapping).
 
-    ```bash
-    plasmapkg2 --type kwinscript -u .
-    ```
-
-4. Restart the KWin session by starting a terminal window and running the command
-
-   ````bash
-   kwin_x11 --replace &
-   ````
    
 ## Small Print
 
