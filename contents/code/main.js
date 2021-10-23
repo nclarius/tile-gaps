@@ -10,11 +10,12 @@ GNU General Public License v3.0
 ///////////////////////
 
 const config = {
-    // desired size of the gap between a window and the top/left/right/bottom screen edge
-    gapScreen: readConfig("gapScreen", 12),
-
-    // desired size of the gap between two adjacent windows
-    gapWindow: readConfig("gapWindow", 12)
+    gapTop:    readConfig("gapTop",    12),
+    gapLeft:   readConfig("gapLeft",   12),
+    gapMid:    readConfig("gapMid",    12),
+    gapRight:  readConfig("gapRight",  12),
+    gapBottom: readConfig("gapBottom", 12),
+    tolerance: readConfig("tolerance", 24)
 };
 
 
@@ -25,7 +26,7 @@ const config = {
 debugMode = true;
 function debug(...args) {if (debugMode) {console.debug(...args);}}
 debug("intializing tile gaps");
-debug("tile gap settings:", "gap size screen:", config.gapScreen, "gap size window:", config.gapWindow);
+debug("tile gap sizes (t/l/r/b/m/x):", ...Object.values(config));
 
 
 ///////////////////////
@@ -64,19 +65,19 @@ function getGrid(client) {
     var area = getArea(client);
     return {
         // x
-        left: area.x + config.gapScreen,
-        midH: area.x + area.width/4 + (config.gapScreen + config.gapWindow/2)/2,
-        right: area.x + area.width/2 + config.gapWindow/2,
+        left: area.x + config.gapLeft,
+        midH: area.x + area.width/4 + config.gapLeft/4 + config.gapRight/4 + config.gapMid/4,
+        right: area.x + area.width/2 + config.gapMid/2,
         // y
-        top: area.y + config.gapScreen,
-        midV: area.y + area.height/4 + (config.gapScreen + config.gapWindow/2)/2,
-        bottom: area.y + area.height/2 + config.gapWindow/2,
+        top: area.y + config.gapTop,
+        midV: area.y + area.height/4 + config.gapTop/4 + config.gapBottom/4 + config.gapMid/4,
+        bottom: area.y + area.height/2 + config.gapMid/2,
         // width
-        fullWidth: area.width - config.gapScreen - config.gapScreen,
-        halfWidth: area.width/2 - config.gapScreen - config.gapWindow/2,
+        fullWidth: area.width - config.gapLeft - config.gapRight,
+        halfWidth: (area.width - config.gapLeft - config.gapRight - config.gapMid)/2,
         // height
-        fullHeight: area.height - config.gapScreen - config.gapScreen,
-        halfHeight: area.height/2 - config.gapScreen - config.gapWindow/2
+        fullHeight: area.height - config.gapTop - config.gapBottom,
+        halfHeight: (area.height - config.gapTop - config.gapBottom - config.gapMid)/2
     };
 }
 
@@ -178,11 +179,10 @@ function getTiles(client) {
 }
 
 // window is considered tiled iff the difference on all coordinates between actual and expected geometry is within the tolerated divergence margin
-const tolerance = 2 * Math.max(config.gapScreen, config.gapWindow);
 function near(actual, expected) {
     return Object.keys(expected).every(coord =>
-        actual[coord] - expected[coord] >= -tolerance
-     && actual[coord] - expected[coord] <=  tolerance);
+        actual[coord] - expected[coord] >= -config.tolerance
+     && actual[coord] - expected[coord] <=  config.tolerance);
 }
 
 

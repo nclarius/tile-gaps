@@ -3,15 +3,31 @@
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:schemaLocation="http://www.kde.org/standards/kcfg/1.0
                           http://www.kde.org/standards/kcfg/1.0/kcfg.xsd">
-  <kcfgfile name=""/>
-  <group name="">
-    <entry name="gapScreen" type="int">
-      <label>Size of the gap between a window and a screen edge</label>
-      <default>12</default>
-    </entry>
-      <entry name="gapWindow" type="int">
-        <label>Size of the gap between two adjacent windows</label>
-        <default>12</default>
-      </entry>
-  </group>
+    <kcfgfile name=""/>
+    <group name="">
+        <entry name="gapTop" type="int">
+            <label>Size of the gap between a window and the top screen edge</label>
+            <default>12</default>
+        </entry>
+        <entry name="gapLeft" type="int">
+            <label>Size of the gap between a window and the left screen edge</label>
+            <default>12</default>
+        </entry>
+        <entry name="gapMid" type="int">
+            <label>Size of the gap between adjacent windows</label>
+            <default>12</default>
+        </entry>
+        <entry name="gapRight" type="int">
+            <label>Size of the gap between a window and the right screen edge</label>
+            <default>12</default>
+        </entry>
+        <entry name="gapBottom" type="int">
+            <label>Size of the gap between a window and the bottom screen edge</label>
+            <default>12</default>
+        </entry>
+        <entry name="tolerance" type="int">
+            <label>Divergence margin within which to consider windows tiled</label>
+            <default>24</default>
+        </entry>
+    </group>
 </kcfg>
