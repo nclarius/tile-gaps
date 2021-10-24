@@ -10,12 +10,13 @@ GNU General Public License v3.0
 ///////////////////////
 
 const config = {
-    gapTop:    readConfig("gapTop",    12),
-    gapLeft:   readConfig("gapLeft",   12),
-    gapMid:    readConfig("gapMid",    12),
-    gapRight:  readConfig("gapRight",  12),
-    gapBottom: readConfig("gapBottom", 12),
-    tolerance: readConfig("tolerance", 18)
+    gapTop:           readConfig("gapTop",    12),
+    gapLeft:          readConfig("gapLeft",   12),
+    gapMid:           readConfig("gapMid",    12),
+    gapRight:         readConfig("gapRight",  12),
+    gapBottom:        readConfig("gapBottom", 12),
+    includeMaximized: readConfig("includeMaximized", false),
+    tolerance:        readConfig("tolerance", 18)
 };
 
 
@@ -24,9 +25,9 @@ const config = {
 ///////////////////////
 
 debugMode = true;
-function debug(...args) {if (debugMode) {console.debug(...args);}}
+function debug(...args) {if (debugMode) console.debug(...args);}
 debug("intializing tile gaps");
-debug("tile gap sizes (t/l/r/b/m/x):", ...Object.values(config));
+debug("tile gap sizes (t/l/r/b/m/m/x):", ...Object.values(config));
 
 
 ///////////////////////
@@ -48,7 +49,18 @@ function onAdded(client) {
     client.frameGeometryChanged.connect(tileGaps);
     client.clientFinishUserMovedResized.connect(tileGaps);
     client.moveResizedChanged.connect(tileGaps);
+    client.screenChanged.connect(tileGaps);
+    client.desktopChanged.connect(tileGaps);
 }
+
+// trigger tile gap for all windows when screen geometry changes
+workspace.currentDesktopChanged.connect(tileGapsAll);
+workspace.numberScreensChanged.connect(tileGapsAll);
+workspace.screenResized.connect(tileGapsAll);
+workspace.virtualScreenSizeChanged.connect(tileGapsAll);
+workspace.virtualScreenGeometryChanged.connect(tileGapsAll);
+workspace.clientAdded.connect(function(client) {if (client.dock) tileGapsAll();});
+function tileGapsAll() {workspace.clientList().forEach(client => tileGaps(client));}
 
 
 ///////////////////////
@@ -114,7 +126,7 @@ function getGrid(client) {
 // coordinates for each tile
 function getTiles(client) {
     var grid = getGrid(client);
-    return {
+    return Object.assign({}, {
         halfLeft: {
             x: grid.left,
             y: grid.top,
@@ -205,7 +217,12 @@ function getTiles(client) {
             width: grid.halfWidth,
             height: grid.halfHeight
         }
-    };
+    }, (config.includeMaximized ? {full: {
+            x: grid.left,
+            y: grid.top,
+            width: grid.fullWidth,
+            height: grid.fullHeight
+        }} : {}));
 }
 
 // window is considered tiled iff the difference on all coordinates between the actual geometry and the expected is within the tolerated divergence margin
@@ -230,7 +247,7 @@ function tileGaps(win) {
     if (win == undefined || win == null || !win.normalWindow || win.fullscreen || win.move || win.resize) {
         return;
     }
-    debug("gaps for", win.caption);
+    debug("gaps for", win.caption, config.includeMaximized);
     debug("window geometry", ...Object.values(win.geometry));
 
     // iterate possible tile positions

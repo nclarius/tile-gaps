@@ -4,7 +4,7 @@
 
 [Desktop Entry]
 Name=Tile Gaps
-Comment=Adds space around windows snapped to a screen half or quarter
+Comment=Adds space around windows snapped to a screen whole, half or quarter
 Icon=preferences-system-windows
 
 X-KDE-PluginInfo-Author=Natalie Clarius

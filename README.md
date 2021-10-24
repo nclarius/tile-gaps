@@ -1,12 +1,12 @@
 # Tile Gaps
 
-Extension for KDE's window manager to add space around windows snapped to a half or quarter of the screen.
+Extension for KDE's window manager to add space around windows snapped to a whole, half or quarter of the screen.
 
 The size of the gap is configurable.
 
 ![screenshot](screenshot.png)
 
-![config](config.png)
+![config](config_.png)
 
 [view in KDE Store](https://www.pling.com/p/1619642/)
 
