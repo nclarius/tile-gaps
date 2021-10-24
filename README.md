@@ -6,7 +6,7 @@ The size of the gap is configurable.
 
 ![screenshot](screenshot.png)
 
-![config](config_.png)
+![config](config.png)
 
 [view in KDE Store](https://www.pling.com/p/1619642/)
 
