@@ -17,13 +17,13 @@
    <item>
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
-      <string>Gap Sizes</string>
+      <string>Gap sizes</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_1">
       <item row="0" column="3">
        <widget class="QLabel" name="gapTop">
         <property name="text">
-         <string>Top Screen Edge</string>
+         <string>Top screen edge</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>
@@ -33,7 +33,7 @@
       <item row="3" column="0">
        <widget class="QLabel" name="gapLeft">
         <property name="text">
-         <string>Left Screen Edge</string>
+         <string>Left screen edge</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>
@@ -43,7 +43,7 @@
       <item row="3" column="3">
        <widget class="QLabel" name="gapMid">
         <property name="text">
-         <string>Between Windows</string>
+         <string>Between windows</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>
@@ -53,7 +53,7 @@
       <item row="3" column="4">
        <widget class="QLabel" name="gapRight">
         <property name="text">
-         <string>Right Screen Edge</string>
+         <string>Right screen edge</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>
@@ -63,7 +63,7 @@
       <item row="5" column="3">
        <widget class="QLabel" name="gapBottom">
         <property name="text">
-         <string>Bottom Screen Edge</string>
+         <string>Bottom screen edge</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>
@@ -144,7 +144,7 @@
       <item row="0" column="0">
        <widget class="QLabel" name="tolerance">
         <property name="text">
-         <string>Tolerance margin within which windows may differ from the precise tile geometry but still be considered tiled</string>
+         <string>Tolerance margin within which windows may differ from the precise tile geometry and still be considered tiled</string>
         </property>
         <property name="wordWrap">
          <bool>true</bool>
@@ -160,7 +160,7 @@
          <number>999</number>
         </property>
         <property name="value">
-         <number>24</number>
+         <number>18</number>
         </property>
        </widget>
       </item>

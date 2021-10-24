@@ -15,7 +15,7 @@ const config = {
     gapMid:    readConfig("gapMid",    12),
     gapRight:  readConfig("gapRight",  12),
     gapBottom: readConfig("gapBottom", 12),
-    tolerance: readConfig("tolerance", 24)
+    tolerance: readConfig("tolerance", 18)
 };
 
 
@@ -55,29 +55,59 @@ function onAdded(client) {
 // get area geometry
 ///////////////////////
 
-// client area
+// available screen area
 function getArea(client) {
     return workspace.clientArea(client, client.screen, client.desktop);
 }
 
-// anchor coordinates with gaps
+// anchor coordinates with and without gaps
 function getGrid(client) {
     var area = getArea(client);
     return {
         // x
-        left: area.x + config.gapLeft,
-        midH: area.x + area.width/4 + config.gapLeft/4 + config.gapRight/4 + config.gapMid/4,
-        right: area.x + area.width/2 + config.gapMid/2,
+        left: {
+            closed: area.x,
+            gapped: area.x + config.gapLeft
+        },
+        midH: {
+            closed: area.x + area.width/4,
+            gapped: area.x + area.width/4 + config.gapLeft/4 + config.gapRight/4 + config.gapMid/4
+        },
+        right: {
+            closed: area.x + area.width/2,
+            gapped: area.x + area.width/2 + config.gapMid/2
+        },
         // y
-        top: area.y + config.gapTop,
-        midV: area.y + area.height/4 + config.gapTop/4 + config.gapBottom/4 + config.gapMid/4,
-        bottom: area.y + area.height/2 + config.gapMid/2,
+        top: {
+            closed: area.y,
+            gapped: area.y + config.gapTop
+        },
+        midV: {
+            closed: area.y + area.height/4,
+            gapped: area.y + area.height/4 + config.gapTop/4 + config.gapBottom/4 + config.gapMid/4
+        },
+        bottom: {
+            closed: area.y + area.height/2,
+            gapped: area.y + area.height/2 + config.gapMid/2
+        },
         // width
-        fullWidth: area.width - config.gapLeft - config.gapRight,
-        halfWidth: (area.width - config.gapLeft - config.gapRight - config.gapMid)/2,
+        fullWidth: {
+            closed: area.width,
+            gapped: area.width - config.gapLeft - config.gapRight
+        },
+        halfWidth: {
+            closed: area.width/2,
+            gapped: (area.width - config.gapLeft - config.gapRight - config.gapMid)/2
+        },
         // height
-        fullHeight: area.height - config.gapTop - config.gapBottom,
-        halfHeight: (area.height - config.gapTop - config.gapBottom - config.gapMid)/2
+        fullHeight: {
+            closed: area.height,
+            gapped: area.height - config.gapTop - config.gapBottom
+        },
+        halfHeight: {
+            closed: area.height/2,
+            gapped: (area.height - config.gapTop - config.gapBottom - config.gapMid)/2
+        }
     };
 }
 
@@ -178,11 +208,10 @@ function getTiles(client) {
     };
 }
 
-// window is considered tiled iff the difference on all coordinates between actual and expected geometry is within the tolerated divergence margin
+// window is considered tiled iff the difference on all coordinates between the actual geometry and the expected is within the tolerated divergence margin
 function near(actual, expected) {
     return Object.keys(expected).every(coord =>
-        actual[coord] - expected[coord] >= -config.tolerance
-     && actual[coord] - expected[coord] <=  config.tolerance);
+        Math.abs(actual[coord] - expected[coord]) <= config.tolerance);
 }
 
 
@@ -207,14 +236,27 @@ function tileGaps(win) {
     // iterate possible tile positions
     var tiles = getTiles(win);
     for (var i = 0; i < Object.keys(tiles).length; i++) {
-        var tile = {label: Object.keys(tiles)[i]}; // position label
-        tile.geometry = tiles[tile.label]; // geometry (with gaps)
+        // position label
+        var tile = {label: Object.keys(tiles)[i]};
+        coords = tiles[tile.label];
+        // tile coordinates for closed layout
+        tile.closed = {geometry:
+            Object.keys(coords).reduce(function(obj, coord) {
+            obj[coord] = coords[coord].closed;
+            return obj;
+            }, {})};
+        // tile coordinates for gapped layout
+        tile.gapped = {geometry:
+            Object.keys(coords).reduce(function(obj, coord) {
+            obj[coord] = coords[coord].gapped;
+            return obj;
+            }, {})};
 
         // check if the window is approximately tiled there
-        if (near(win.geometry, tile.geometry)) {
+        if (near(win.geometry, tile.closed.geometry)) {
             // window is tiled: apply gapped geometry
-            debug("gapping", tile.label, ...Object.values(tile.geometry), "\n");
-            win.geometry = tile.geometry;
+            debug("gapping", tile.label, ...Object.values(tile.gapped.geometry), "\n");
+            win.geometry = tile.gapped.geometry;
             return;
         }
     }
