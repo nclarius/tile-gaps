@@ -238,14 +238,15 @@ function tileGaps(win) {
     for (var i = 0; i < Object.keys(tiles).length; i++) {
         // position label
         var tile = {label: Object.keys(tiles)[i]};
+        // tile coordinates
         coords = tiles[tile.label];
-        // tile coordinates for closed layout
+        // tile coordinates for layout without gaps (where windows are snapped to initially)
         tile.closed = {geometry:
             Object.keys(coords).reduce(function(obj, coord) {
             obj[coord] = coords[coord].closed;
             return obj;
             }, {})};
-        // tile coordinates for gapped layout
+        // tile coordinates for layout with gaps (where windows should be reshaped to subsequently)
         tile.gapped = {geometry:
             Object.keys(coords).reduce(function(obj, coord) {
             obj[coord] = coords[coord].gapped;
