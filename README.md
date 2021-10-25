@@ -48,12 +48,8 @@ ln -sf ~/.local/share/kwin/scripts/tilegaps/metadata.desktop ~/.local/share/kser
 
 ### Compatibility
 
-- For compatibility with [sticky window snapping](https://store.kde.org/p/1112552/) you can use [my fork](https://github.com/nclarius/sticky-window-snapping), which adds an option in the configuration to set the tile gap size between windows, and will properly retain the gap when resizing adjacent windows. 
+- For compatibility with [sticky window snapping](https://store.kde.org/p/1112552/) you can use [my fork](https://github.com/nclarius/sticky-window-snapping), which adds an option in the configuration to set the tile gap size between windows, and will properly retain the gap when resizing adjacent windows.  
 
-### Kown issues
-- Tile gaps may not be properly applied to windows being restored from a previous session on startup.
-
-   
 ## Small Print
 
 © 2021 Natalie Clarius \<natalie_clarius@yahoo.de\>
