@@ -58,5 +58,5 @@ This work is licensed under the GNU General Public License v3.0.
 This program comes with absolutely no warranty.  
 This is free software, and you are welcome to redistribute and/or modify it under certain conditions.  
 
-If you would like to thank me, you can make me happy by [leaving a review](https://store.kde.org/p/1619642/) or [buying me a coffee](https://www.buymeacoffee.com/nclarius).
+If you would like to thank me, you can make me happy by [leaving a review](https://store.kde.org/p/1619642/) or [buying me a tea](https://www.buymeacoffee.com/nclarius).
 
