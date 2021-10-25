@@ -6,7 +6,7 @@ The size of the gap and the layouts to be gapped are configurable.
 
 ![screenshot](screenshot.png)
 
-![config](config.png)
+![config](config_.png)
 
 [view in KDE Store](https://www.pling.com/p/1619642/)
 
@@ -49,6 +49,10 @@ ln -sf ~/.local/share/kwin/scripts/tilegaps/metadata.desktop ~/.local/share/kser
 ### Compatibility
 
 - For compatibility with [sticky window snapping](https://store.kde.org/p/1112552/) you can use [my fork](https://github.com/nclarius/sticky-window-snapping), which adds an option in the configuration to set the tile gap size between windows, and will properly retain the gap when resizing adjacent windows.  
+
+### Issues
+
+- If gaps are not applied in all cases, try increasing the tolerance in order to implement a more liberal tiling detection. Conversely, if gaps are inserted when they shouldn’t, try decreasing the tolerance so as to enforce a stricter tile measurement. It is recommended to have tolerance set to twice the largest gap size.
 
 ## Small Print
 
