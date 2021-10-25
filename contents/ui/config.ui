@@ -73,7 +73,7 @@
       <item row="1" column="3">
        <widget class="QSpinBox" name="kcfg_gapTop">
         <property name="suffix">
-         <string>px</string>
+         <string> px</string>
         </property>
         <property name="maximum">
          <number>999</number>
@@ -86,7 +86,7 @@
       <item row="4" column="0">
        <widget class="QSpinBox" name="kcfg_gapLeft">
         <property name="suffix">
-         <string>px</string>
+         <string> px</string>
         </property>
         <property name="maximum">
          <number>999</number>
@@ -99,7 +99,7 @@
       <item row="4" column="3">
        <widget class="QSpinBox" name="kcfg_gapMid">
         <property name="suffix">
-         <string>px</string>
+         <string> px</string>
         </property>
         <property name="maximum">
          <number>999</number>
@@ -112,7 +112,7 @@
       <item row="4" column="4">
        <widget class="QSpinBox" name="kcfg_gapRight">
         <property name="suffix">
-         <string>px</string>
+         <string> px</string>
         </property>
         <property name="maximum">
          <number>999</number>
@@ -125,7 +125,7 @@
       <item row="6" column="3">
        <widget class="QSpinBox" name="kcfg_gapBottom">
         <property name="suffix">
-         <string>px</string>
+         <string> px</string>
         </property>
         <property name="maximum">
          <number>999</number>
@@ -217,7 +217,7 @@
          </size>
         </property>
         <property name="suffix">
-         <string>px</string>
+         <string> px</string>
         </property>
         <property name="maximum">
          <number>999</number>
