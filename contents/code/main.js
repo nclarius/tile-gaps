@@ -20,7 +20,7 @@ const config = {
     // whether to apply gaps on maximized windows
     includeMaximized: readConfig("includeMaximized", false),
     // divergence margin within which windows are still considered tiled
-    tolerance:        readConfig("tolerance", 18)
+    tolerance:        readConfig("tolerance", 24)
 };
 
 
