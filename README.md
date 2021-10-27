@@ -4,7 +4,7 @@ Extension for KDE's window manager to add space around windows snapped to a whol
 
 The size of the gap and the layouts to be gapped are configurable.
 
-Please note that this is an extension for default KWin to reshape windows that have been manually moved to a screen corner; it is not a tiling window manager and does not do any automatic tiling.
+Please note that that the purpose of this scrpit is to reshape windows that have been manually moved to a screen corner with the default KWin stacking window management system; Tile Gaps is not a tiling window manager and does not do any automatic tiling.
 
 ![screenshot](screenshot.png)
 
