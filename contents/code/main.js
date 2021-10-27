@@ -11,16 +11,16 @@ GNU General Public License v3.0
 
 const config = {
     // size of gap to screen edges
-    gapTop:           readConfig("gapTop",    12),
-    gapLeft:          readConfig("gapLeft",   12),
-    gapRight:         readConfig("gapRight",  12),
-    gapBottom:        readConfig("gapBottom", 12),
+    gapTop:    readConfig("gapTop",    12),
+    gapLeft:   readConfig("gapLeft",   12),
+    gapRight:  readConfig("gapRight",  12),
+    gapBottom: readConfig("gapBottom", 12),
     // size of gap between windows
-    gapMid:           readConfig("gapMid",    12),
+    gapMid:    readConfig("gapMid",    12),
     // whether to apply gaps on maximized windows
     includeMaximized: readConfig("includeMaximized", false),
     // divergence margin within which windows are still considered tiled
-    tolerance:        readConfig("tolerance", 24)
+    tolerance: readConfig("tolerance", 24)
 };
 
 
@@ -38,7 +38,7 @@ debug("tile gap sizes (t/l/r/b/m/max/tol):", ...Object.values(config));
 // set up triggers
 ///////////////////////
 
-// trigger tile gap when client is initially present, added, moved or resized
+// trigger applying tile gaps when client is initially present, added, moved or resized
 workspace.clientList().forEach(client => onAdded(client));
 workspace.clientAdded.connect(onAdded);
 function onAdded(client) {
@@ -52,7 +52,7 @@ function onAdded(client) {
     client.desktopChanged.connect(tileGaps);
 }
 
-// trigger tile gap for all windows when screen geometry changes
+// trigger reapplying tile gaps for all windows when screen geometry changes
 workspace.currentDesktopChanged.connect(tileGapsAll);
 workspace.numberScreensChanged.connect(tileGapsAll);
 workspace.screenResized.connect(tileGapsAll);
