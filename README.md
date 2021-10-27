@@ -39,7 +39,7 @@ qdbus org.kde.KWin /KWin reconfigure
 
 You may have to disable the script, apply, reenable, and reapply in order for the changes to take effect.
 
-If the configuration button is missing, try the following:
+If the configuration button is missing (this is due to a central limitation with the KWin script installation component), try the following:
 
 ````bash
 mkdir -p ~/.local/share/kservices5
