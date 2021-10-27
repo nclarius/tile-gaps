@@ -4,7 +4,7 @@ Extension for KDE's window manager to add space around windows snapped to a whol
 
 The size of the gap and the layouts to be gapped are configurable.
 
-Please note that the purpose of this script is to reshape windows that have been manually moved to a screen corner with the default KWin stacking window management system; Tile Gaps is not a tiling window manager and does not do any automatic tiling.
+Please note that the purpose of this script is to reshape windows that have been manually moved to a screen corner with the default KWin stacking window management system; Tile Gaps is not a tiling window manager and does not do any automatic tiling, although it may well be compatible with it.
 
 ![screenshot](screenshot.png)
 
@@ -51,6 +51,7 @@ ln -sf ~/.local/share/kwin/scripts/tilegaps/metadata.desktop ~/.local/share/kser
 ### Compatibility
 
 - For compatibility with [sticky window snapping](https://store.kde.org/p/1112552/) you can use [my fork](https://github.com/nclarius/sticky-window-snapping), which adds an option in the configuration to set the tile gap size between windows, and will properly retain the gap when resizing adjacent windows.  
+- I have not tried out combinations of the gaps script with tiling scripts (such as [Bismuth](https://store.kde.org/p/1603469/) or [KWin Tiling](https://store.kde.org/p/1112554/)); if you have experiences, please let me know.
 
 ### Issues
 

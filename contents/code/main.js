@@ -227,7 +227,7 @@ function getTiles(client) {
         }} : {}));
 }
 
-// window is considered tiled iff the difference on all coordinates between the actual geometry and the expected is within the tolerated divergence margin
+// window is considered tiled iff on all coordinates the difference between the actual geometry and the expected is within the tolerated divergence margin
 function near(actual, expected) {
     return Object.keys(expected).every(coord =>
         Math.abs(actual[coord] - expected[coord]) <= config.tolerance);
