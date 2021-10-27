@@ -84,11 +84,11 @@ function getGrid(client) {
         },
         midH: {
             closed: area.x + area.width/4,
-            gapped: area.x + area.width/4 + config.gapLeft/4 + config.gapRight/4 + config.gapMid/4
+            gapped: area.x + (area.width + config.gapLeft - config.gapRight + config.gapMid)/4
         },
         right: {
             closed: area.x + area.width/2,
-            gapped: area.x + area.width/2 + config.gapMid/2
+            gapped: area.x + (area.width + config.gapLeft - config.gapRight + config.gapMid)/2
         },
         // y
         top: {
@@ -97,11 +97,11 @@ function getGrid(client) {
         },
         midV: {
             closed: area.y + area.height/4,
-            gapped: area.y + area.height/4 + config.gapTop/4 + config.gapBottom/4 + config.gapMid/4
+            gapped: area.y + (area.height + config.gapTop - config.gapBottom + config.gapMid)/4
         },
         bottom: {
             closed: area.y + area.height/2,
-            gapped: area.y + area.height/2 + config.gapMid/2
+            gapped: area.y + (area.height + config.gapTop - config.gapBottm + config.gapMid/2
         },
         // width
         fullWidth: {
@@ -125,6 +125,7 @@ function getGrid(client) {
 }
 
 // coordinates for each tile
+// to do: do this more elegantly?
 function getTiles(client) {
     var grid = getGrid(client);
     return Object.assign({}, {
