@@ -101,7 +101,7 @@ function getGrid(client) {
         },
         bottom: {
             closed: area.y + area.height/2,
-            gapped: area.y + (area.height + config.gapTop - config.gapBottm + config.gapMid/2
+            gapped: area.y + (area.height + config.gapTop - config.gapBottom + config.gapMid)/2
         },
         // width
         fullWidth: {
