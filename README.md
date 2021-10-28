@@ -4,7 +4,7 @@ Extension for KDE's window manager to add space around windows snapped to a whol
 
 The size of the gap and the layouts to be gapped are configurable.
 
-Please note that the purpose of this script is to reshape windows that have been manually moved to a screen corner with the default KWin window management system; Tile Gaps does not do any automatic tiling, although it may well be compatible with it.
+Please note this script does not do any automatic tiling. Its purpose is to reshape windows that have been manually moved to a screen corner with the default KWin window management system.
 
 ![screenshot](screenshot.png)
 
