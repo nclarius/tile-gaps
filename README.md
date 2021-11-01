@@ -6,9 +6,9 @@ The size of the gap and the layouts to be gapped are configurable.
 
 Please note that this script does not do any automatic tiling. Its purpose is to reshape windows that have been manually moved to a screen corner with the default KWin window management system.
 
-![screenshot](screenshot.png)
+![screenshot](img/screenshot.png)
 
-![config](config.png)
+![config](img/config.png)
 
 [view in KDE Store](https://www.pling.com/p/1619642/)
 

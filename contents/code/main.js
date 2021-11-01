@@ -28,7 +28,7 @@ const config = {
 // initialization
 ///////////////////////
 
-debugMode = true;
+debugMode = false;
 function debug(...args) {if (debugMode) console.debug(...args);}
 debug("intializing tile gaps");
 debug("tile gap sizes (t/l/r/b/m/max/tol):", ...Object.values(config));
