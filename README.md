@@ -8,7 +8,7 @@ Please note that this script has the purpose of reshaping windows that have been
 
 ![screenshot](img/screenshot.png)
 
-![config](img/config.png)
+![config](img/config_.png)
 
 [view in KDE Store](https://www.pling.com/p/1619642/)
 
