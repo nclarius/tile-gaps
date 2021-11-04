@@ -17,8 +17,9 @@ const config = {
     gapBottom: readConfig("gapBottom", 12),
     // size of gap between windows
     gapMid:    readConfig("gapMid",    12),
-    // whether to apply gaps on maximized windows
+    // whether to apply gaps on maximized and centered windows
     includeMaximized: readConfig("includeMaximized", false),
+    includeCentered:  readConfig("includeCentered",  true),
     // divergence margin within which windows are still considered tiled
     tolerance: readConfig("tolerance", 24)
 };
@@ -28,10 +29,11 @@ const config = {
 // initialization
 ///////////////////////
 
-debugMode = false;
+debugMode = true;
 function debug(...args) {if (debugMode) console.debug(...args);}
 debug("intializing tile gaps");
-debug("tile gap sizes (t/l/r/b/m/max/tol):", ...Object.values(config));
+debug("tile gap sizes (t/l/r/b/m)", config.gapTop, config.gapLeft, config.gapRight, config.gapBottom, config.gapMid);
+debug("tile gap settings:", "maximized:", config.includeMaximized, "centered:", config.includeCentered, "tolerance", config.tolerance);
 
 
 ///////////////////////
@@ -128,7 +130,13 @@ function getGrid(client) {
 // to do: do this more elegantly?
 function getTiles(client) {
     var grid = getGrid(client);
-    return Object.assign({}, {
+    var tiles = {
+        full: {
+            x: grid.left,
+            y: grid.top,
+            width: grid.fullWidth,
+            height: grid.fullHeight
+        },
         halfLeft: {
             x: grid.left,
             y: grid.top,
@@ -219,13 +227,22 @@ function getTiles(client) {
             width: grid.halfWidth,
             height: grid.halfHeight
         }
-    }, (config.includeMaximized ? {full: {
-            // add maximized tile if so configured
-            x: grid.left,
-            y: grid.top,
-            width: grid.fullWidth,
-            height: grid.fullHeight
-        }} : {}));
+    };
+    // filter out maximized tile if disabled
+    if (!config.includeMaximized) tiles = Object.keys(tiles)
+      .filter(label => !(String(label).includes("full")))
+      .reduce((obj, label) => {
+          obj[label] = tiles[label];
+          return obj;
+        }, {});
+    // filter out centered tiles if disabled
+    if (!config.includeCentered) tiles = Object.keys(tiles)
+      .filter(label => !(String(label).includes("Center")))
+      .reduce((obj, label) => {
+          obj[label] = tiles[label];
+          return obj;
+        }, {});
+    return tiles;
 }
 
 // window is considered tiled iff on all coordinates the difference between the actual geometry and the expected is within the tolerated divergence margin
@@ -249,10 +266,10 @@ function tileGaps(win) {
     debug("gaps for", win.caption);
     debug("window geometry", ...Object.values(win.geometry));
 
-    // iterate possible tile positions
+    // iterate possible tile labels
     var tiles = getTiles(win);
     for (var i = 0; i < Object.keys(tiles).length; i++) {
-        // position label
+        // label label
         var tile = {label: Object.keys(tiles)[i]};
         // tile coordinates
         coords = tiles[tile.label];
