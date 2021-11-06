@@ -6,256 +6,426 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>422</width>
-    <height>544</height>
+    <width>414</width>
+    <height>617</height>
    </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>414</width>
+    <height>617</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string>Tile Gaps</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_1">
-   <item>
-    <widget class="QGroupBox" name="groupBox">
-     <property name="title">
-      <string>Gap sizes</string>
-     </property>
-     <layout class="QGridLayout" name="gridLayout_1">
-      <item row="0" column="3">
-       <widget class="QLabel" name="gapTop">
-        <property name="text">
-         <string>Top screen edge</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="0">
-       <widget class="QLabel" name="gapLeft">
-        <property name="text">
-         <string>Left screen edge</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="3">
-       <widget class="QLabel" name="gapMid">
-        <property name="text">
-         <string>Between windows</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="4">
-       <widget class="QLabel" name="gapRight">
-        <property name="text">
-         <string>Right screen edge</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
-        </property>
-       </widget>
-      </item>
-      <item row="5" column="3">
-       <widget class="QLabel" name="gapBottom">
-        <property name="text">
-         <string>Bottom screen edge</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="3">
-       <widget class="QSpinBox" name="kcfg_gapTop">
-        <property name="suffix">
-         <string> px</string>
-        </property>
-        <property name="maximum">
-         <number>999</number>
-        </property>
-        <property name="value">
-         <number>12</number>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="0">
-       <widget class="QSpinBox" name="kcfg_gapLeft">
-        <property name="suffix">
-         <string> px</string>
-        </property>
-        <property name="maximum">
-         <number>999</number>
-        </property>
-        <property name="value">
-         <number>12</number>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="3">
-       <widget class="QSpinBox" name="kcfg_gapMid">
-        <property name="suffix">
-         <string> px</string>
-        </property>
-        <property name="maximum">
-         <number>999</number>
-        </property>
-        <property name="value">
-         <number>12</number>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="4">
-       <widget class="QSpinBox" name="kcfg_gapRight">
-        <property name="suffix">
-         <string> px</string>
-        </property>
-        <property name="maximum">
-         <number>999</number>
-        </property>
-        <property name="value">
-         <number>12</number>
-        </property>
-       </widget>
-      </item>
-      <item row="6" column="3">
-       <widget class="QSpinBox" name="kcfg_gapBottom">
-        <property name="suffix">
-         <string> px</string>
-        </property>
-        <property name="maximum">
-         <number>999</number>
-        </property>
-        <property name="value">
-         <number>12</number>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item>
-    <widget class="QGroupBox" name="groupBox_2">
-     <property name="title">
-      <string>Layouts</string>
-     </property>
-     <layout class="QGridLayout" name="gridLayout_2">
-      <item row="0" column="0" alignment="Qt::AlignTop">
-       <widget class="QLabel" name="includeMaximized">
-        <property name="text">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Gaps on maximized windows&lt;br/&gt;(This will make all windows never fully maximized,&lt;br/&gt;fullscreened windows excluded)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="wordWrap">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1" alignment="Qt::AlignTop">
-       <widget class="QCheckBox" name="kcfg_includeMaximized">
-        <property name="minimumSize">
-         <size>
-          <width>78</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>78</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="checked">
-         <bool>false</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0" alignment="Qt::AlignTop">
-       <widget class="QLabel" name="includeCentered">
-        <property name="text">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;Gaps on centered windows&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="wordWrap">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="1" alignment="Qt::AlignTop">
-       <widget class="QCheckBox" name="kcfg_includeCentered">
-        <property name="minimumSize">
-         <size>
-          <width>78</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>78</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item>
-    <widget class="QGroupBox" name="groupBox_3">
-     <property name="title">
-      <string>Tolerance</string>
-     </property>
-     <layout class="QGridLayout" name="gridLayout_3">
-      <item row="0" column="0" alignment="Qt::AlignTop">
-       <widget class="QLabel" name="tolerance">
-        <property name="minimumSize">
-         <size>
-          <width>310</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>310</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;Tolerance&lt;br/&gt;(Windows differing by this amount from the tile geometry will still be considered tiled)&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="wordWrap">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1" alignment="Qt::AlignTop">
-       <widget class="QSpinBox" name="kcfg_tolerance">
-        <property name="minimumSize">
-         <size>
-          <width>78</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="suffix">
-         <string> px</string>
-        </property>
-        <property name="maximum">
-         <number>999</number>
-        </property>
-        <property name="value">
-         <number>24</number>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
-  </layout>
+  <widget class="QWidget" name="verticalLayoutWidget">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>414</width>
+     <height>616</height>
+    </rect>
+   </property>
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <property name="spacing">
+     <number>6</number>
+    </property>
+    <property name="leftMargin">
+     <number>0</number>
+    </property>
+    <property name="topMargin">
+     <number>0</number>
+    </property>
+    <property name="rightMargin">
+     <number>0</number>
+    </property>
+    <property name="bottomMargin">
+     <number>0</number>
+    </property>
+    <item>
+     <widget class="QGroupBox" name="groupBox_sizes">
+      <property name="title">
+       <string>Gap sizes</string>
+      </property>
+      <property name="flat">
+       <bool>false</bool>
+      </property>
+      <layout class="QGridLayout" name="gridLayout_sizes">
+       <item row="1" column="3">
+        <widget class="QSpinBox" name="kcfg_gapTop">
+         <property name="suffix">
+          <string> px</string>
+         </property>
+         <property name="maximum">
+          <number>999</number>
+         </property>
+         <property name="value">
+          <number>12</number>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="4">
+        <widget class="QLabel" name="gapRight">
+         <property name="text">
+          <string>Right screen edge</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="0">
+        <widget class="QSpinBox" name="kcfg_gapLeft">
+         <property name="suffix">
+          <string> px</string>
+         </property>
+         <property name="maximum">
+          <number>999</number>
+         </property>
+         <property name="value">
+          <number>12</number>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="3">
+        <widget class="QLabel" name="gapMid">
+         <property name="text">
+          <string>Between windows</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="3">
+        <widget class="QLabel" name="gapBottom">
+         <property name="text">
+          <string>Bottom screen edge</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0">
+        <widget class="QLabel" name="gapLeft">
+         <property name="text">
+          <string>Left screen edge</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="3">
+        <widget class="QSpinBox" name="kcfg_gapMid">
+         <property name="suffix">
+          <string> px</string>
+         </property>
+         <property name="maximum">
+          <number>999</number>
+         </property>
+         <property name="value">
+          <number>12</number>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="4">
+        <widget class="QSpinBox" name="kcfg_gapRight">
+         <property name="suffix">
+          <string> px</string>
+         </property>
+         <property name="maximum">
+          <number>999</number>
+         </property>
+         <property name="value">
+          <number>12</number>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="3">
+        <widget class="QLabel" name="gapTop">
+         <property name="text">
+          <string>Top screen edge</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="3">
+        <widget class="QSpinBox" name="kcfg_gapBottom">
+         <property name="suffix">
+          <string> px</string>
+         </property>
+         <property name="maximum">
+          <number>999</number>
+         </property>
+         <property name="value">
+          <number>12</number>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item alignment="Qt::AlignTop">
+     <widget class="QGroupBox" name="groupBox_layouts">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="title">
+       <string>Layouts</string>
+      </property>
+      <property name="flat">
+       <bool>false</bool>
+      </property>
+      <layout class="QHBoxLayout" name="horizontalLayout_4">
+       <item>
+        <layout class="QVBoxLayout" name="verticalLayout_2">
+         <property name="spacing">
+          <number>0</number>
+         </property>
+         <item>
+          <widget class="QCheckBox" name="kcfg_includeCentered">
+           <property name="text">
+            <string>Gaps on centered windows</string>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="verticalSpacer">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>6</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item alignment="Qt::AlignTop">
+          <widget class="QCheckBox" name="kcfg_includeMaximized">
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>Gaps on maximized windows</string>
+           </property>
+           <property name="checked">
+            <bool>false</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout">
+           <item>
+            <spacer name="horizontalSpacer">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeType">
+              <enum>QSizePolicy::Fixed</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>24</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item alignment="Qt::AlignTop">
+            <widget class="QLabel" name="label">
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">font: 8pt &quot;Noto Sans&quot;;</string>
+             </property>
+             <property name="text">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This will make all windows never fully maximized&lt;br/&gt;Fullscreened windows excluded&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+             <property name="textFormat">
+              <enum>Qt::RichText</enum>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+             </property>
+             <property name="wordWrap">
+              <bool>true</bool>
+             </property>
+             <property name="margin">
+              <number>0</number>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item>
+     <widget class="QGroupBox" name="groupBox_tolerance">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="title">
+       <string>Tolerance</string>
+      </property>
+      <property name="flat">
+       <bool>false</bool>
+      </property>
+      <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <property name="bottomMargin">
+        <number>6</number>
+       </property>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_5">
+         <property name="sizeConstraint">
+          <enum>QLayout::SetDefaultConstraint</enum>
+         </property>
+         <item alignment="Qt::AlignTop">
+          <widget class="QSpinBox" name="kcfg_tolerance">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+           </property>
+           <property name="suffix">
+            <string> px</string>
+           </property>
+           <property name="maximum">
+            <number>999</number>
+           </property>
+           <property name="value">
+            <number>24</number>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="tolerance">
+           <property name="minimumSize">
+            <size>
+             <width>310</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>310</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Tolerance&lt;br/&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Windows differing from the tile geometry by up to this amount will still be considered tiled&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+           </property>
+           <property name="wordWrap">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item>
+     <widget class="QGroupBox" name="groupBox_applications">
+      <property name="title">
+       <string>Applications</string>
+      </property>
+      <layout class="QHBoxLayout" name="horizontalLayout_3">
+       <item>
+        <layout class="QVBoxLayout" name="verticalLayout_3">
+         <item>
+          <widget class="QRadioButton" name="kcfg_excludeApps">
+           <property name="text">
+            <string>Gaps on all except the below applications</string>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QRadioButton" name="kcfg_includeApps">
+           <property name="text">
+            <string>Gaps on only the below applications</string>
+           </property>
+           <property name="checked">
+            <bool>false</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="kcfg_appList">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>390</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="placeholderText">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_2">
+           <property name="font">
+            <font>
+             <pointsize>8</pointsize>
+             <weight>50</weight>
+             <bold>false</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter a comma-separated list of window classes; example: &lt;span style=&quot; font-style:italic;&quot;&gt;konsole, dolphin&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+    </item>
+   </layout>
+  </widget>
  </widget>
  <resources/>
  <connections/>

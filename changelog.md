@@ -1,7 +1,13 @@
+# v5.0
+
+- add option to filter by application
+- fix preventing gaps on fullscreened windows not working
+- improved configuration layout
+
 ## v4.5
 
 - add option to enable/disable gaps on centered windows
-- improve config layout
+- improved configuration layout
 
 ## v4.4
 
@@ -54,4 +60,4 @@
 
 # v1.0
 
-- initial realease
+- initial release

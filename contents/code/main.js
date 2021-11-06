@@ -21,7 +21,11 @@ const config = {
     includeMaximized: readConfig("includeMaximized", false),
     includeCentered:  readConfig("includeCentered",  true),
     // divergence margin within which windows are still considered tiled
-    tolerance: readConfig("tolerance", 24)
+    tolerance: readConfig("tolerance", 24),
+    // list of excluded/included applicationsf
+    excludeApps: readConfig("excludeApps", true),
+    includeApps: readConfig("includeApps", false),
+    appList:     readConfig("appList", "").split(", ")
 };
 
 
@@ -32,8 +36,10 @@ const config = {
 debugMode = true;
 function debug(...args) {if (debugMode) console.debug(...args);}
 debug("intializing tile gaps");
-debug("tile gap sizes (t/l/r/b/m)", config.gapTop, config.gapLeft, config.gapRight, config.gapBottom, config.gapMid);
+debug("tile gap sizes (t/l/r/b/m):", config.gapTop, config.gapLeft, config.gapRight, config.gapBottom, config.gapMid);
 debug("tile gap settings:", "maximized:", config.includeMaximized, "centered:", config.includeCentered, "tolerance", config.tolerance);
+debug("tile gap applications:", "exclude:", config.excludeApps, "include:", config.includeApps, "apps:", String(config.appList));
+debug();
 
 
 ///////////////////////
@@ -50,14 +56,20 @@ function onAdded(client) {
     client.frameGeometryChanged.connect(tileGaps);
     client.clientFinishUserMovedResized.connect(tileGaps);
     client.moveResizedChanged.connect(tileGaps);
+    client.fullScreenChanged.connect(tileGaps);
+    client.clientMaximizedStateChanged.connect(tileGaps);
     client.screenChanged.connect(tileGaps);
     client.desktopChanged.connect(tileGaps);
 }
 
 // trigger reapplying tile gaps for all windows when screen geometry changes
 workspace.currentDesktopChanged.connect(tileGapsAll);
+workspace.desktopPresenceChanged.connect(tileGapsAll);
+workspace.numberDesktopsChanged.connect(tileGapsAll);
 workspace.numberScreensChanged.connect(tileGapsAll);
 workspace.screenResized.connect(tileGapsAll);
+workspace.currentActivityChanged.connect(tileGapsAll);
+workspace.activitiesChanged.connect(tileGapsAll);
 workspace.virtualScreenSizeChanged.connect(tileGapsAll);
 workspace.virtualScreenGeometryChanged.connect(tileGapsAll);
 workspace.clientAdded.connect(function(client) {if (client.dock) tileGapsAll();});
@@ -245,7 +257,7 @@ function getTiles(client) {
     return tiles;
 }
 
-// window is considered tiled iff on all coordinates the difference between the actual geometry and the expected is within the tolerated divergence margin
+// window is considered tiled iff on all coordinates the difference between the actual and the expected geometry is within the tolerated divergence margin
 function near(actual, expected) {
     return Object.keys(expected).every(coord =>
         Math.abs(actual[coord] - expected[coord]) <= config.tolerance);
@@ -262,28 +274,32 @@ function tileGaps(win) {
     // if no window is provided, default to active window
     if (win == null) win = workspace.activeClient;
     // don't act on non-normal windows, fullscreen windows or windows that are still undergoing geometry change
-    if (win == undefined || win == null || !win.normalWindow || win.fullscreen || win.move || win.resize) return;
+    if (win == undefined || win == null || !win.normalWindow || win.fullScreen || win.move || win.resize) return;
+    // don't act on excluded or non-included windows
+    if ((config.excludeApps && config.appList.includes(String(win.resourceClass)))
+    || (config.includeApps && !(config.appList.includes(String(win.resourceClass)))))
+         return;
     debug("gaps for", win.caption);
     debug("window geometry", ...Object.values(win.geometry));
 
-    // iterate possible tile labels
+    // iterate possible tiles
     var tiles = getTiles(win);
     for (var i = 0; i < Object.keys(tiles).length; i++) {
-        // label label
+        // tile label
         var tile = {label: Object.keys(tiles)[i]};
         // tile coordinates
         coords = tiles[tile.label];
         // tile coordinates for layout without gaps (where windows are snapped to initially)
         tile.closed = {geometry:
             Object.keys(coords).reduce(function(obj, coord) {
-            obj[coord] = coords[coord].closed;
-            return obj;
+                obj[coord] = coords[coord].closed;
+                return obj;
             }, {})};
         // tile coordinates for layout with gaps (where windows should be reshaped to subsequently)
         tile.gapped = {geometry:
             Object.keys(coords).reduce(function(obj, coord) {
-            obj[coord] = coords[coord].gapped;
-            return obj;
+                obj[coord] = coords[coord].gapped;
+                return obj;
             }, {})};
 
         // check if the window is approximately tiled there

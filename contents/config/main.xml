@@ -37,5 +37,17 @@
             <label>Divergence margin within which to consider windows tiled</label>
             <default>24</default>
         </entry>
+        <entry name="excludeApps" type="bool">
+            <label>Whether to gap all except the specified applications</label>
+            <default>true</default>
+        </entry>
+        <entry name="includeApps" type="bool">
+            <label>Whether to gap no except the specified applications</label>
+            <default>false</default>
+        </entry>
+        <entry name="appList" type="string">
+            <label>List of applications</label>
+            <default></default>
+        </entry>
     </group>
 </kcfg>
