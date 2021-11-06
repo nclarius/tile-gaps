@@ -1,3 +1,7 @@
+## v5.1
+
+- improved configuration layout
+
 # v5.0
 
 - add option to filter by application
