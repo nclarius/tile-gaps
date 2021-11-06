@@ -25,28 +25,32 @@
             <label>Size of the gap between a window and the bottom screen edge</label>
             <default>12</default>
         </entry>
-        <entry name="includeMaximized" type="bool">
-            <label>Whether to gap maximized windows</label>
-            <default>false</default>
-        </entry>
         <entry name="includeCentered" type="bool">
             <label>Whether to gap centered windows</label>
             <default>true</default>
+        </entry>
+        <entry name="includeMaximized" type="bool">
+            <label>Whether to gap maximized windows</label>
+            <default>false</default>
         </entry>
         <entry name="tolerance" type="int">
             <label>Divergence margin within which to consider windows tiled</label>
             <default>24</default>
         </entry>
-        <entry name="excludeApps" type="bool">
+        <entry name="excludeMode" type="bool">
             <label>Whether to gap all except the specified applications</label>
             <default>true</default>
         </entry>
-        <entry name="includeApps" type="bool">
+        <entry name="includeMode" type="bool">
             <label>Whether to gap no except the specified applications</label>
             <default>false</default>
         </entry>
-        <entry name="appList" type="string">
-            <label>List of applications</label>
+        <entry name="excludedApps" type="string">
+            <label>List of applications to be excluded</label>
+            <default></default>
+        </entry>
+        <entry name="includedApps" type="string">
+            <label>List of applications to be included</label>
             <default></default>
         </entry>
     </group>

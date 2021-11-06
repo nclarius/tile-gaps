@@ -17,15 +17,16 @@ const config = {
     gapBottom: readConfig("gapBottom", 12),
     // size of gap between windows
     gapMid:    readConfig("gapMid",    12),
-    // whether to apply gaps on maximized and centered windows
-    includeMaximized: readConfig("includeMaximized", false),
+    // whether to apply gaps on centered and maximized windows
     includeCentered:  readConfig("includeCentered",  true),
+    includeMaximized: readConfig("includeMaximized", false),
     // divergence margin within which windows are still considered tiled
     tolerance: readConfig("tolerance", 24),
-    // list of excluded/included applicationsf
-    excludeApps: readConfig("excludeApps", true),
-    includeApps: readConfig("includeApps", false),
-    appList:     readConfig("appList", "").split(", ")
+    // list of excluded/included applications
+    excludeMode:  readConfig("excludeMode",  true),
+    includeMode:  readConfig("includeMode",  false),
+    excludedApps: readConfig("excludedApps", "").split(", "),
+    includedApps: readConfig("includedApps", "").split(", ")
 };
 
 
@@ -37,8 +38,8 @@ debugMode = true;
 function debug(...args) {if (debugMode) console.debug(...args);}
 debug("intializing tile gaps");
 debug("tile gap sizes (t/l/r/b/m):", config.gapTop, config.gapLeft, config.gapRight, config.gapBottom, config.gapMid);
-debug("tile gap settings:", "maximized:", config.includeMaximized, "centered:", config.includeCentered, "tolerance", config.tolerance);
-debug("tile gap applications:", "exclude:", config.excludeApps, "include:", config.includeApps, "apps:", String(config.appList));
+debug("tile gap layout:", "centered:", config.includeCentered, "maximized:", config.includeMaximized, "tolerance", config.tolerance);
+debug("tile gap applications:", "exclude:", config.excludeMode, String(config.excludedApps), "include:", config.includeMode, String(config.includedApps));
 debug();
 
 
@@ -240,16 +241,16 @@ function getTiles(client) {
             height: grid.halfHeight
         }
     };
-    // filter out maximized tile if disabled
-    if (!config.includeMaximized) tiles = Object.keys(tiles)
-      .filter(label => !(String(label).includes("full")))
+    // filter out centered tiles if disabled
+    if (!config.includeCentered) tiles = Object.keys(tiles)
+      .filter(label => !(String(label).includes("Center")))
       .reduce((obj, label) => {
           obj[label] = tiles[label];
           return obj;
         }, {});
-    // filter out centered tiles if disabled
-    if (!config.includeCentered) tiles = Object.keys(tiles)
-      .filter(label => !(String(label).includes("Center")))
+    // filter out maximized tile if disabled
+    if (!config.includeMaximized) tiles = Object.keys(tiles)
+      .filter(label => !(String(label).includes("full")))
       .reduce((obj, label) => {
           obj[label] = tiles[label];
           return obj;
@@ -276,8 +277,8 @@ function tileGaps(win) {
     // don't act on non-normal windows, fullscreen windows or windows that are still undergoing geometry change
     if (win == undefined || win == null || !win.normalWindow || win.fullScreen || win.move || win.resize) return;
     // don't act on excluded or non-included windows
-    if ((config.excludeApps && config.appList.includes(String(win.resourceClass)))
-    || (config.includeApps && !(config.appList.includes(String(win.resourceClass)))))
+    if ((config.excludeMode && config.excludedApps.includes(String(win.resourceClass)))
+    || (config.includeMode && !(config.includedApps.includes(String(win.resourceClass)))))
          return;
     debug("gaps for", win.caption);
     debug("window geometry", ...Object.values(win.geometry));

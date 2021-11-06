@@ -6,14 +6,14 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>414</width>
-    <height>617</height>
+    <width>416</width>
+    <height>660</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>414</width>
-    <height>617</height>
+    <width>416</width>
+    <height>660</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -23,12 +23,12 @@
    <property name="geometry">
     <rect>
      <x>0</x>
-     <y>0</y>
-     <width>414</width>
-     <height>616</height>
+     <y>-1</y>
+     <width>416</width>
+     <height>650</height>
     </rect>
    </property>
-   <layout class="QVBoxLayout" name="verticalLayout">
+   <layout class="QVBoxLayout" name="verticalLayout_config">
     <property name="spacing">
      <number>6</number>
     </property>
@@ -52,8 +52,18 @@
       <property name="flat">
        <bool>false</bool>
       </property>
-      <layout class="QGridLayout" name="gridLayout_sizes">
-       <item row="1" column="3">
+      <layout class="QGridLayout" name="gridLayout">
+       <item row="0" column="1">
+        <widget class="QLabel" name="label_gapTop">
+         <property name="text">
+          <string>Top screen edge</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
         <widget class="QSpinBox" name="kcfg_gapTop">
          <property name="suffix">
           <string> px</string>
@@ -66,8 +76,28 @@
          </property>
         </widget>
        </item>
-       <item row="3" column="4">
-        <widget class="QLabel" name="gapRight">
+       <item row="2" column="0">
+        <widget class="QLabel" name="label_gapLeft">
+         <property name="text">
+          <string>Left screen edge</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QLabel" name="label_gapMid">
+         <property name="text">
+          <string>Between windows</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="2">
+        <widget class="QLabel" name="label_gapRight">
          <property name="text">
           <string>Right screen edge</string>
          </property>
@@ -76,7 +106,7 @@
          </property>
         </widget>
        </item>
-       <item row="4" column="0">
+       <item row="3" column="0">
         <widget class="QSpinBox" name="kcfg_gapLeft">
          <property name="suffix">
           <string> px</string>
@@ -89,37 +119,7 @@
          </property>
         </widget>
        </item>
-       <item row="3" column="3">
-        <widget class="QLabel" name="gapMid">
-         <property name="text">
-          <string>Between windows</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item row="5" column="3">
-        <widget class="QLabel" name="gapBottom">
-         <property name="text">
-          <string>Bottom screen edge</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="0">
-        <widget class="QLabel" name="gapLeft">
-         <property name="text">
-          <string>Left screen edge</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="3">
+       <item row="3" column="1">
         <widget class="QSpinBox" name="kcfg_gapMid">
          <property name="suffix">
           <string> px</string>
@@ -132,7 +132,7 @@
          </property>
         </widget>
        </item>
-       <item row="4" column="4">
+       <item row="3" column="2">
         <widget class="QSpinBox" name="kcfg_gapRight">
          <property name="suffix">
           <string> px</string>
@@ -145,17 +145,17 @@
          </property>
         </widget>
        </item>
-       <item row="0" column="3">
-        <widget class="QLabel" name="gapTop">
+       <item row="4" column="1">
+        <widget class="QLabel" name="label_gapBottom">
          <property name="text">
-          <string>Top screen edge</string>
+          <string>Bottom screen edge</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
          </property>
         </widget>
        </item>
-       <item row="6" column="3">
+       <item row="5" column="1">
         <widget class="QSpinBox" name="kcfg_gapBottom">
          <property name="suffix">
           <string> px</string>
@@ -171,7 +171,7 @@
       </layout>
      </widget>
     </item>
-    <item alignment="Qt::AlignTop">
+    <item>
      <widget class="QGroupBox" name="groupBox_layouts">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -187,7 +187,7 @@
       </property>
       <layout class="QHBoxLayout" name="horizontalLayout_4">
        <item>
-        <layout class="QVBoxLayout" name="verticalLayout_2">
+        <layout class="QVBoxLayout" name="verticalLayout_layouts">
          <property name="spacing">
           <number>0</number>
          </property>
@@ -202,19 +202,70 @@
           </widget>
          </item>
          <item>
-          <spacer name="verticalSpacer">
+          <layout class="QHBoxLayout" name="horizontalLayout_layout_centeredinfo">
+           <item>
+            <spacer name="horizontalSpacer_layouts_centeredinfo">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeType">
+              <enum>QSizePolicy::Fixed</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>24</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item alignment="Qt::AlignTop">
+            <widget class="QLabel" name="label_centeredinfo">
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">font: 8pt &quot;Noto Sans&quot;;</string>
+             </property>
+             <property name="text">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Windows in the horizontal, vertical or horizontal and vertical center&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+             <property name="textFormat">
+              <enum>Qt::RichText</enum>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+             </property>
+             <property name="wordWrap">
+              <bool>true</bool>
+             </property>
+             <property name="margin">
+              <number>0</number>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <spacer name="verticalSpacer_layouts">
            <property name="orientation">
             <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeType">
+            <enum>QSizePolicy::Fixed</enum>
            </property>
            <property name="sizeHint" stdset="0">
             <size>
              <width>20</width>
-             <height>6</height>
+             <height>3</height>
             </size>
            </property>
           </spacer>
          </item>
-         <item alignment="Qt::AlignTop">
+         <item>
           <widget class="QCheckBox" name="kcfg_includeMaximized">
            <property name="maximumSize">
             <size>
@@ -231,9 +282,9 @@
           </widget>
          </item>
          <item>
-          <layout class="QHBoxLayout" name="horizontalLayout">
+          <layout class="QHBoxLayout" name="horizontalLayout_layout_maximizedinfo">
            <item>
-            <spacer name="horizontalSpacer">
+            <spacer name="horizontalSpacer_layouts_maximizedinfo">
              <property name="orientation">
               <enum>Qt::Horizontal</enum>
              </property>
@@ -249,7 +300,7 @@
             </spacer>
            </item>
            <item alignment="Qt::AlignTop">
-            <widget class="QLabel" name="label">
+            <widget class="QLabel" name="label_maximizedinfo">
              <property name="maximumSize">
               <size>
                <width>16777215</width>
@@ -297,61 +348,70 @@
       <property name="flat">
        <bool>false</bool>
       </property>
-      <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <layout class="QHBoxLayout" name="horizontalLayout">
        <property name="bottomMargin">
         <number>6</number>
        </property>
        <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_5">
-         <property name="sizeConstraint">
-          <enum>QLayout::SetDefaultConstraint</enum>
-         </property>
-         <item alignment="Qt::AlignTop">
-          <widget class="QSpinBox" name="kcfg_tolerance">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-           </property>
-           <property name="suffix">
-            <string> px</string>
-           </property>
-           <property name="maximum">
-            <number>999</number>
-           </property>
-           <property name="value">
-            <number>24</number>
-           </property>
-          </widget>
-         </item>
+        <layout class="QVBoxLayout" name="verticalLayout">
          <item>
-          <widget class="QLabel" name="tolerance">
-           <property name="minimumSize">
-            <size>
-             <width>310</width>
-             <height>0</height>
-            </size>
+          <layout class="QHBoxLayout" name="horizontalLayout_tolerance">
+           <property name="sizeConstraint">
+            <enum>QLayout::SetDefaultConstraint</enum>
            </property>
-           <property name="maximumSize">
-            <size>
-             <width>310</width>
-             <height>16777215</height>
-            </size>
-           </property>
-           <property name="text">
-            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Tolerance&lt;br/&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Windows differing from the tile geometry by up to this amount will still be considered tiled&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-           </property>
-           <property name="wordWrap">
-            <bool>true</bool>
-           </property>
-          </widget>
+           <item alignment="Qt::AlignVCenter">
+            <widget class="QSpinBox" name="kcfg_tolerance">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+             </property>
+             <property name="suffix">
+              <string> px</string>
+             </property>
+             <property name="maximum">
+              <number>999</number>
+             </property>
+             <property name="value">
+              <number>24</number>
+             </property>
+            </widget>
+           </item>
+           <item alignment="Qt::AlignVCenter">
+            <widget class="QLabel" name="label_tolerance">
+             <property name="minimumSize">
+              <size>
+               <width>310</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>310</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="font">
+              <font>
+               <pointsize>8</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string>Windows differing from the tile geometry by up to this amount will still be considered tiled</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+             </property>
+             <property name="wordWrap">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+          </layout>
          </item>
         </layout>
        </item>
@@ -363,13 +423,16 @@
       <property name="title">
        <string>Applications</string>
       </property>
-      <layout class="QHBoxLayout" name="horizontalLayout_3">
+      <layout class="QHBoxLayout" name="horizontalLayout_7">
        <item>
-        <layout class="QVBoxLayout" name="verticalLayout_3">
+        <layout class="QVBoxLayout" name="verticalLayout_applications">
+         <property name="spacing">
+          <number>3</number>
+         </property>
          <item>
-          <widget class="QRadioButton" name="kcfg_excludeApps">
+          <widget class="QRadioButton" name="kcfg_excludeMode">
            <property name="text">
-            <string>Gaps on all except the below applications</string>
+            <string>Gaps on all except the following applications:</string>
            </property>
            <property name="checked">
             <bool>true</bool>
@@ -377,41 +440,67 @@
           </widget>
          </item>
          <item>
-          <widget class="QRadioButton" name="kcfg_includeApps">
+          <layout class="QHBoxLayout" name="horizontalLayout_applications_exclude">
+           <item>
+            <spacer name="horizontalSpacer_applications_exclude">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeType">
+              <enum>QSizePolicy::Fixed</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>24</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="kcfg_excludedApps"/>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <widget class="QRadioButton" name="kcfg_includeMode">
            <property name="text">
-            <string>Gaps on only the below applications</string>
-           </property>
-           <property name="checked">
-            <bool>false</bool>
+            <string>Gaps on only the following applications:</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="kcfg_appList">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>390</width>
-             <height>16777215</height>
-            </size>
-           </property>
-           <property name="placeholderText">
-            <string/>
-           </property>
-          </widget>
+          <layout class="QHBoxLayout" name="horizontalLayout_applications_include">
+           <item>
+            <spacer name="horizontalSpacer_applications_include">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeType">
+              <enum>QSizePolicy::Fixed</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>24</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="kcfg_includedApps">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+            </widget>
+           </item>
+          </layout>
          </item>
          <item>
-          <widget class="QLabel" name="label_2">
+          <widget class="QLabel" name="label_applications">
            <property name="font">
             <font>
              <pointsize>8</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
             </font>
            </property>
            <property name="text">
@@ -428,5 +517,38 @@
   </widget>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>kcfg_excludeMode</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>kcfg_excludedApps</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>kcfg_includeMode</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>kcfg_includedApps</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>
