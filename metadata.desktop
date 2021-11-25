@@ -4,7 +4,9 @@
 
 [Desktop Entry]
 Name=Tile Gaps
+Name[nl]=Tegelruimte
 Comment=Adds space around windows snapped to a whole, half or quarter of the screen
+Comment[nl]=Voegt ruimte rond vensters toe die links, half of voor een kwart zijn uitgelijnd
 Icon=preferences-system-windows
 
 X-KDE-PluginInfo-Author=Natalie Clarius
