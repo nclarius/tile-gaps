@@ -1,3 +1,7 @@
+## v5.2
+
+- add Dutch and German translations of metadata
+
 ## v5.1
 
 - improved configuration layout

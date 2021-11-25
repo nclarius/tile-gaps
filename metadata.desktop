@@ -11,11 +11,11 @@ Comment[de]=Fügt Zwischenraum um an den ganzen, halben, oder viertel Bildschirm
 Comment[nl]=Voegt ruimte rond vensters toe die links, half of voor een kwart zijn uitgelijnd
 Icon=preferences-system-windows
 
+X-KDE-PluginInfo-Name=tilegaps
+X-KDE-PluginInfo-Version=5.2
 X-KDE-PluginInfo-Author=Natalie Clarius
 X-KDE-PluginInfo-Email=natalie_clarius@yahoo.de
-X-KDE-PluginInfo-Name=tilegaps
-X-KDE-PluginInfo-Version=5.1
-X-KDE-PluginInfo-License=GPL
+X-KDE-PluginInfo-License=GPL v3.0
 
 Type=Service
 X-KDE-ServiceTypes=KWin/Script,KCModule
