@@ -1,3 +1,7 @@
+## v5.3
+
+- fix incorrect area obtainment
+
 ## v5.2
 
 - add Dutch and German translations of metadata

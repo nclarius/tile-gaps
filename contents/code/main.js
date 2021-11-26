@@ -85,7 +85,7 @@ function tileGapsAll() {
 
 // available screen area
 function getArea(client) {
-    return workspace.clientArea(client, client.screen, client.desktop);
+    return workspace.clientArea(KWin.WorkArea, client);
 }
 
 // anchor coordinates without and with gaps
