@@ -17,6 +17,13 @@ const config = {
     gapBottom: readConfig("gapBottom", 12),
     // size of gap between windows
     gapMid:    readConfig("gapMid",    12),
+    // offsets from floating panels
+    offsetTop:    0,
+    offsetLeft:   0,
+    offsetRight:  0,
+    offsetBottom: 0,
+    // size of offset between windows
+    offsetMid:    readConfig("offsetMid",    12),
     // whether to apply gaps on centered and maximized windows
     includeCentered:  readConfig("includeCentered",  true),
     includeMaximized: readConfig("includeMaximized", false),
@@ -34,7 +41,7 @@ const config = {
 // initialization
 ///////////////////////
 
-debugMode = true;
+debugMode = false;
 function debug(...args) {if (debugMode) console.debug(...args);}
 debug("intializing tile gaps");
 debug("tile gap sizes (t/l/r/b/m):", config.gapTop, config.gapLeft, config.gapRight, config.gapBottom, config.gapMid);
@@ -85,7 +92,13 @@ function tileGapsAll() {
 
 // available screen area
 function getArea(client) {
-    return workspace.clientArea(KWin.WorkArea, client);
+    var clientArea = workspace.clientArea(KWin.MaximizeArea, client);
+    return {
+        x: clientArea.x + config.offsetLeft,
+        y: clientArea.y + config.offsetTop,
+        width: clientArea.width - config.offsetLeft - config.offsetRight,
+        height: clientArea.height - config.offsetTop - config.offsetBottom
+    };
 }
 
 // anchor coordinates without and with gaps
@@ -282,6 +295,7 @@ function tileGaps(win) {
          return;
     debug("gaps for", win.caption);
     debug("window geometry", ...Object.values(win.geometry));
+    debug("area geometry", ...Object.values(getArea(win)));
 
     // iterate possible tiles
     var tiles = getTiles(win);
