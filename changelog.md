@@ -1,3 +1,7 @@
+## v5.4
+
+- fix incorrect geometry computation with multiple screens
+
 ## v5.3
 
 - fix incorrect area obtainment
