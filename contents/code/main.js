@@ -22,8 +22,6 @@ const config = {
     offsetLeft:   0,
     offsetRight:  0,
     offsetBottom: 0,
-    // size of offset between windows
-    offsetMid:    readConfig("offsetMid",    12),
     // whether to apply gaps on centered and maximized windows
     includeCentered:  readConfig("includeCentered",  true),
     includeMaximized: readConfig("includeMaximized", false),
