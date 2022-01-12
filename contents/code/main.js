@@ -18,10 +18,10 @@ const config = {
     // size of gap between windows
     gapMid:    readConfig("gapMid",    12),
     // offsets from floating panels
-    offsetTop:    0,
-    offsetLeft:   0,
-    offsetRight:  0,
-    offsetBottom: 0,
+    offsetTop:    readConfig("offsetTop",    0),
+    offsetLeft:   readConfig("offsetLeft",   0),
+    offsetRight:  readConfig("offsetRight",  0),
+    offsetBottom: readConfig("offsetBottom", 0),
     // whether to apply gaps on centered and maximized windows
     includeCentered:  readConfig("includeCentered",  true),
     includeMaximized: readConfig("includeMaximized", false),
@@ -40,12 +40,12 @@ const config = {
 ///////////////////////
 
 debugMode = false;
-function debug(...args) {if (debugMode) console.debug(...args);}
-debug("intializing tile gaps");
-debug("tile gap sizes (t/l/r/b/m):", config.gapTop, config.gapLeft, config.gapRight, config.gapBottom, config.gapMid);
-debug("tile gap layout:", "centered:", config.includeCentered, "maximized:", config.includeMaximized, "tolerance", config.tolerance);
-debug("tile gap applications:", "exclude:", config.excludeMode, String(config.excludedApps), "include:", config.includeMode, String(config.includedApps));
-debug();
+function debug(...args) {if (debugMode) console.debug("Tile Gaps:", ...args);}
+debug("intializing");
+debug("gap sizes (t/l/r/b/m):", config.gapTop, config.gapLeft, config.gapRight, config.gapBottom, config.gapMid);
+debug("gap layout:", "centered:", config.includeCentered, "maximized:", config.includeMaximized, "tolerance", config.tolerance);
+debug("applications:", "exclude:", config.excludeMode, String(config.excludedApps), "include:", config.includeMode, String(config.includedApps));
+console.debug("");
 
 
 ///////////////////////
