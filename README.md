@@ -10,8 +10,6 @@ Please note that this script does not do any automatic tiling. Its purpose is to
 
 ![config](img/config.png)
 
-[view in KDE Store](https://www.pling.com/p/1619642/)
-
 
 ## Installation
 
