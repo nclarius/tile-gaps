@@ -39,12 +39,12 @@ const config = {
 ///////////////////////
 
 debugMode = true;
-function debug(...args) {if (debugMode) console.debug(...args);}
-debug("intializing tile gaps");
-debug("tile gap sizes (t/l/r/b/m):", config.gapTop, config.gapLeft, config.gapRight, config.gapBottom, config.gapMid);
-debug("tile gap layout:", "maximized:", config.includeMaximized, "tolerance", config.tolerance);
-debug("tile gap applications:", "exclude:", config.excludeMode, String(config.excludedApps), "include:", config.includeMode, String(config.includedApps));
-debug();
+function debug(...args) {if (debugMode) console.debug("Tile Gaps:", ...args);}
+debug("intializing");
+debug("sizes (t/l/r/b/m):", config.gapTop, config.gapLeft, config.gapRight, config.gapBottom, config.gapMid);
+debug("layout:", "maximized:", config.includeMaximized, "tolerance", config.tolerance);
+debug("applications:", "exclude:", config.excludeMode, String(config.excludedApps), "include:", config.includeMode, String(config.includedApps));
+debug("");
 
 
 ///////////////////////
@@ -143,6 +143,7 @@ function tileGapsScreen(win) {
 }
 
 function tileGapsWindows(win1) {
+    return;
     // // get relevant other windows
     // var clientList = workspace.clientList().filter(win2 =>
     //        !ignore(win2) // not excluded
@@ -205,7 +206,7 @@ function tileGapsWindows(win1) {
 
 // a geometry is close to another iff the difference is within the tolerance margin but not exactly the desired geometry
 function near(actual, expected, match) {
-    return Math.abs(actual - expected) <= config.tolerance && actual - expected != expceted;
+    return Math.abs(actual - expected) <= 2 * match && actual - expected != match;
 }
 
 // filter out irrelevant clients
