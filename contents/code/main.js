@@ -39,7 +39,7 @@ const config = {
 // initialization
 ///////////////////////
 
-debugMode = false;
+debugMode = true;
 function debug(...args) {if (debugMode) console.debug("Tile Gaps:", ...args);}
 debug("intializing");
 debug("gap sizes (t/l/r/b/m):", config.gapTop, config.gapLeft, config.gapRight, config.gapBottom, config.gapMid);
