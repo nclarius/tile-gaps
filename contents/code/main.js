@@ -52,11 +52,13 @@ console.debug("");
 // set up triggers
 ///////////////////////
 
-// trigger applying tile gaps when client is initially present, added, moved or resized
+// trigger applying tile gaps when client is initially present or added
 workspace.clientList().forEach(client => onAdded(client));
 workspace.clientAdded.connect(onAdded);
 function onAdded(client) {
     tileGaps(client);
+
+    // trigger applying tile gaps when client is moved or resized
     client.geometryChanged.connect(tileGaps);
     client.clientGeometryChanged.connect(tileGaps);
     client.frameGeometryChanged.connect(tileGaps);
