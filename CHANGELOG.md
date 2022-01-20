@@ -2,6 +2,7 @@
 
 - gaps between arbitrary neighboring windows independently of fixed tile layouts
 - fix a potential crash trigger
+- improve parsing of window classes in configuration
 
 ## v5.4
 

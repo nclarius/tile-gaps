@@ -29,8 +29,8 @@ const config = {
     // list of excluded/included applications
     excludeMode:  readConfig("excludeMode",  true),
     includeMode:  readConfig("includeMode",  false),
-    excludedApps: readConfig("excludedApps", "").split(", "),
-    includedApps: readConfig("includedApps", "").split(", ")
+    excludedApps: readConfig("excludedApps", "").split(/,\s|,/),
+    includedApps: readConfig("includedApps", "").split(/,\s|,/)
 };
 
 
@@ -51,6 +51,7 @@ debug("");
 // set up triggers
 ///////////////////////
 
+// block reapplying until current iteration is finished
 var block = false;
 
 // trigger applying tile gaps when client is initially present, added, moved or resized
@@ -60,6 +61,10 @@ function onAdded(client) {
     caption = client != undefined ? client.caption : client;
     debug("client added", caption);
     gaps(client);
+    onRegeometrized(client);
+}
+
+function onRegeometrized(client) {
     client.geometryChanged.connect((client) =>
 		{ debug("geometry changed", caption); gaps(client); });
     client.clientGeometryChanged.connect((client) =>
@@ -115,9 +120,9 @@ function gapsAll() {
 // make tile gaps for given client
 function gaps(client) {
     // get client to be gapped
-    if (block || client == null || client == undefined) return;
+    if (block) return;
     // abort if client is irrelevant
-    if (ignore(client)) return;
+    if (ignoreClient(client)) return;
     debug("gaps for", caption, client.geometry);
     // make tile gaps to area grid
     gapsArea(client);
@@ -126,9 +131,9 @@ function gaps(client) {
     debug("");
 }
 
-function gapsArea(win_) {
-    var grid = getGrid(win_);
-    var win = win_.geometry;
+function gapsArea(client) {
+    var grid = getGrid(client);
+    var win = client.geometry;
 
     // for each window edge, if the edge is near a grid anchor, set it to the gapped coordinate
 
@@ -177,21 +182,16 @@ function gapsArea(win_) {
     }
 }
 
-function gapsWindows(win1_) {
+function gapsWindows(client1) {
+    return;
     // get relevant other windows
-    var clientList = workspace.clientList().filter(win2_ =>
-        !ignore(win2_) // not excluded
-        && win2_ != win1_ // not identical
-        && (win2_.desktop == win1_.desktop
-            || win2_.onAllDesktops || win1_.onAllDesktops) // same desktop
-        && win2_.screen == win1_.screen // same screen
-        && !win2_.minimized); // unminimized
-    for (var i = 0; i < clientList.length; i++) {
-        var win2_ = clientList[i];
-        // debug("other window", win2_.caption, ...Object.values(win2.geometry));
+    for (var i = 0; i < workspace.clientList().length; i++) {
+        var client2 = workspace.clientList()[i];
+        if (ignoreOther(client1, client2)) return;
+        // debug("other window", client2.caption, ...Object.values(win2.geometry));
 
-        var win1 = win1_.geometry;
-        var win2 = win2_.geometry;
+        var win1 = client1.geometry;
+        var win2 = client2.geometry;
 
         // left window
         if (nearWindow(diff = (win1.left - win2.right), config.gapMid)
@@ -199,7 +199,7 @@ function gapsWindows(win1_) {
                 && win1.bottom > win2.top)
              || (win2.top <= win1.top
                  && win2.bottom > win1.top))) {
-            debug("gap to left window", win2_.caption);
+            debug("gap to left window", client2.caption);
             halfDiffL = Math.floor(diff/2);
             halfDiffU = Math.ceil(diff/2);
             halfGapL = Math.floor(config.gapMid/2);
@@ -217,7 +217,7 @@ function gapsWindows(win1_) {
                 && win1.bottom > win2.top)
              || (win2.top <= win1.top
                  && win2.bottom > win1.top))) {
-            debug("gap to right window", win2_.caption);
+            debug("gap to right window", client2.caption);
             halfDiffL = Math.floor(diff/2);
             halfDiffU = Math.ceil(diff/2);
             halfGapL = Math.floor(config.gapMid/2);
@@ -235,7 +235,7 @@ function gapsWindows(win1_) {
                 && win1.right > win2.left)
              || (win2.left <= win1.left
                  && win2.right > win1.left))) {
-            debug("gap to top window", win2_.caption);
+            debug("gap to top window", client2.caption);
             halfDiffL = Math.floor(diff/2);
             halfDiffU = Math.ceil(diff/2);
             halfGapL = Math.floor(config.gapMid/2);
@@ -253,7 +253,7 @@ function gapsWindows(win1_) {
                 && win1.right > win2.left)
              || (win2.left <= win1.left
                  && win2.right > win1.left))) {
-            debug("gap to bottom window", win2_.caption);
+            debug("gap to bottom window", client2.caption);
             halfDiffL = Math.floor(diff/2);
             halfDiffU = Math.ceil(diff/2);
             halfGapL = Math.floor(config.gapMid/2);
@@ -378,7 +378,7 @@ function nearWindow(diff, match) {
 }
 
 // filter out irrelevant clients
-function ignore(client) {
+function ignoreClient(client) {
     return client == null || client == undefined // undefined
         || !client.normalWindow  // non-normal window
         || ["krunner", "kruler"].includes(String(client.resourceClass)) // non-normal application
@@ -391,4 +391,13 @@ function ignore(client) {
             && config.excludedApps.includes(String(client.resourceClass))) // excluded appliation
         || (config.includeMode
             && !(config.includedApps.includes(String(client.resourceClass)))) // not included application
+}
+
+function ignoreOther(client1, client2) {
+    return ignoreClient(client2) // excluded
+        || client2 == client1 // identical
+        || !(client2.desktop == client1.desktop
+            || client2.onAllDesktops || client1.onAllDesktops) // same desktop
+        || !(client2.screen == client1.screen) // different screen
+        || client2.minimized; // minimized
 }

@@ -25,7 +25,7 @@
      <x>0</x>
      <y>0</y>
      <width>411</width>
-     <height>601</height>
+     <height>606</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout_config">
@@ -343,7 +343,7 @@
               </font>
              </property>
              <property name="text">
-              <string>Windows differing from the tile geometry by up to this amount will still be considered tiled</string>
+              <string>Window edges up to this far apart will still be considered adjacent</string>
              </property>
              <property name="alignment">
               <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
