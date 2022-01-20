@@ -24,7 +24,7 @@ Please note that this script does not do any automatic tiling. Its purpose is to
 ### Method 2: via command line
 
 ```bash
-git clone https://github.com/nclarius/tile-gaps.git
+git clone https://github.com/nclarius/tilegaps.git
 plasmapkg2 --type kwinscript -i tile-gaps
 kwriteconfig5 --file kwinrc --group Plugins --key tilegapsEnabled true
 qdbus org.kde.KWin /KWin reconfigure
