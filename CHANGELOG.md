@@ -1,3 +1,7 @@
+## v6.1
+
+- improve descriptions in configuration
+
 # v6.0
 
 - gaps between arbitrary neighboring windows independently of fixed tile layouts
