@@ -1,3 +1,8 @@
+# v6.0
+
+- gaps between arbitrary neighboring windows independently of fixed tile layouts
+- fix a potential crash trigger
+
 ## v5.4
 
 - fix incorrect geometry computation with multiple screens

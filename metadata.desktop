@@ -1,18 +1,17 @@
-# KWin Script Tile Gaps
+# KWin Script Window Gaps
 # (C) 2021 Natalie Clarius <natalie_clarius@yahoo.de>
 # GNU General Public License v3.0
 
 [Desktop Entry]
-Name=Tile Gaps
-Name[de]=Kachelfugen
+Name=Window Gaps
+Name[de]=Fenster-Fugen
 Name[nl]=Tegelruimte
-Comment=Adds space around windows snapped to a whole, half or quarter of the screen
-Comment[de]=Fügt Zwischenraum um an den ganzen, halben, oder viertel Bildschirm angeheftete Fenster ein
-Comment[nl]=Voegt ruimte rond vensters toe die links, half of voor een kwart zijn uitgelijnd
+Comment=Adds space around windows touching a screen edge or other window
+Comment[de]=Fügt Zwischenraum um Fenster ein, die einen Bildschirmrand oder ein anderes Fenster berühren
 Icon=preferences-system-windows
 
 X-KDE-PluginInfo-Name=tilegaps
-X-KDE-PluginInfo-Version=5.4
+X-KDE-PluginInfo-Version=6.0
 X-KDE-PluginInfo-Author=Natalie Clarius
 X-KDE-PluginInfo-Email=natalie_clarius@yahoo.de
 X-KDE-PluginInfo-License=GPL v3.0

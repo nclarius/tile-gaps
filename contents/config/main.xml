@@ -25,10 +25,6 @@
             <label>Size of the gap between a window and the bottom screen edge</label>
             <default>12</default>
         </entry>
-        <entry name="includeCentered" type="bool">
-            <label>Whether to gap centered windows</label>
-            <default>true</default>
-        </entry>
         <entry name="includeMaximized" type="bool">
             <label>Whether to gap maximized windows</label>
             <default>false</default>

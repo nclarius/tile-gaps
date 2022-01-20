@@ -1,10 +1,10 @@
-# Tile Gaps
+# Window Gaps
 
-Extension for KDE's window manager to add space around windows snapped to a whole, half or quarter of the screen.
+Extension for KDE's window manager to add space around windows touching a screen edge or other window.
 
 The size of the gap and the layouts and applications to be gapped are configurable.
 
-Please note that this script does not do any automatic tiling. Its purpose is to reshape windows that have been manually moved to a screen corner with the default KWin window management system.
+Please note that this script does not do any automatic tiling. Its purpose is to reshape windows that have been manually positioned with the default KWin window management system.
 
 ![screenshot](.img/screenshot.png)
 
@@ -18,8 +18,8 @@ Please note that this script does not do any automatic tiling. Its purpose is to
 
 ### Method 1: via graphical interface
 
-1. Install the script via *System Settings* > *Window Management* > *KWin Scripts* > *Get New Scripts …* > search for *Tile Gaps* > *Install*.
-2. Activate the script by selecting the checkbox in the *Tile Gaps* entry.
+1. Install the script via *System Settings* > *Window Management* > *KWin Scripts* > *Get New Scripts …* > search for *Window Gaps* > *Install*.
+2. Activate the script by selecting the checkbox in the *Window Gaps* entry.
 
 ### Method 2: via command line
 
@@ -32,7 +32,7 @@ qdbus org.kde.KWin /KWin reconfigure
 
 ## Configuration
 
-*System Settings* > *Window Management* > *KWin Scripts* > configuration button in the *Tile Gaps* entry.
+*System Settings* > *Window Management* > *KWin Scripts* > configuration button in the *Window Gaps* entry.
 
 You may have to disable the script, apply, reenable, and reapply in order for the changes to take effect.
 
