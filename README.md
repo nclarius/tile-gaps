@@ -52,7 +52,7 @@ ln -sf ~/.local/share/kwin/scripts/tilegaps/metadata.desktop ~/.local/share/kser
 
 ### Issues
 
-- If gaps are not applied in all cases, try increasing the tolerance in order to implement a more liberal tiling detection. Conversely, if gaps are inserted when they shouldn’t, try decreasing the tolerance so as to enforce a stricter tile measurement. It is recommended to have tolerance set to twice the largest gap size.
+- If gaps are not applied in all cases, try increasing the tolerance in order to implement a more liberal edge touching detection. Conversely, if gaps are inserted when they shouldn’t, try decreasing the tolerance so as to enforce a stricter adjacency measurement. It is recommended to have tolerance set to twice the largest gap size.
 
 ## Small Print
 
