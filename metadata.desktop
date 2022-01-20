@@ -5,7 +5,6 @@
 [Desktop Entry]
 Name=Window Gaps
 Name[de]=Fenster-Fugen
-Name[nl]=Tegelruimte
 Comment=Adds space around windows touching a screen edge or other window
 Comment[de]=Fügt Zwischenraum um Fenster ein, die einen Bildschirmrand oder ein anderes Fenster berühren
 Icon=preferences-system-windows
