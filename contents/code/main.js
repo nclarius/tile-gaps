@@ -59,67 +59,46 @@ workspace.clientList().forEach(client => onAdded(client));
 workspace.clientAdded.connect(onAdded);
 function onAdded(client) {
     caption = client != undefined ? client.caption : client;
-    debug("client added", caption);
     gaps(client);
-    onRegeometrized(client);
+
+    client.geometryChanged.connect(gaps);
+    client.clientGeometryChanged.connect(gaps);
+    client.frameGeometryChanged.connect(gaps);
+    client.clientFinishUserMovedResized.connect(gaps);
+    client.moveResizedChanged.connect(gaps);
+    client.fullScreenChanged.connect(gaps);
+    client.clientMaximizedStateChanged.connect(gaps);
+    client.clientUnminimized.connect(gaps);
+    client.screenChanged.connect(gaps);
+    client.desktopChanged.connect(gaps);
 }
 
 function onRegeometrized(client) {
-    client.geometryChanged.connect((client) =>
-		{ debug("geometry changed", caption); gaps(client); });
-    client.clientGeometryChanged.connect((client) =>
-		{ debug("client geometry changed", caption); gaps(client); });
-    client.frameGeometryChanged.connect((client) =>
-		{ debug("frame geometry changed", caption); gaps(client); });
-    client.clientFinishUserMovedResized.connect((client) =>
-		{ debug("finish user moved resized", caption); gaps(client); });
-    client.moveResizedChanged.connect((client) =>
-		{ debug("move resized changed", caption); gaps(client); });
-    client.fullScreenChanged.connect((client) =>
-		{ debug("fullscreen changed", caption); gaps(client); });
-    client.clientMaximizedStateChanged.connect((client) =>
-		{ debug("maximized changed", caption); gaps(client); });
-    client.clientUnminimized.connect((client) =>
-		{ debug("unminimized", caption); gaps(client); });
-    client.screenChanged.connect((client) =>
-		{ debug("screen changed", caption); gaps(client); });
-    client.desktopChanged.connect((client) =>
-		{ debug("desktop changed", caption); gaps(client); });
 }
 
 // trigger reapplying tile gaps for all windows when screen geometry changes
-workspace.currentDesktopChanged.connect(() =>
-		{ debug("current desktop changed"); gapsAll(); });
-workspace.desktopPresenceChanged.connect(() =>
-		{ debug("desktop presence changed"); gapsAll(); });
-workspace.numberDesktopsChanged.connect(() =>
-		{ debug("number desktops changed"); gapsAll(); });
-workspace.numberScreensChanged.connect(() =>
-		{ debug("number screens changed"); gapsAll(); });
-workspace.screenResized.connect(() =>
-		{ debug("screen reszed"); gapsAll(); });
-workspace.currentActivityChanged.connect(() =>
-		{ debug("current activity changed"); gapsAll(); });
-workspace.activitiesChanged.connect(() =>
-		{ debug("activities changed"); gapsAll(); });
-workspace.virtualScreenSizeChanged.connect(() =>
-		{ debug("virtual screen size changed"); gapsAll(); });
-workspace.virtualScreenGeometryChanged.connect(() =>
-		{ debug("virtual screen geometry changed"); gapsAll(); });
-workspace.clientAdded.connect((client) => { if (client.dock) {
-        debug("dock added"); gapsAll(); }});
+workspace.currentDesktopChanged.connect(gapsAll);
+workspace.desktopPresenceChanged.connect(gapsAll);
+workspace.numberDesktopsChanged.connect(gapsAll);
+workspace.numberScreensChanged.connect(gapsAll);
+workspace.screenResized.connect(gapsAll);
+workspace.currentActivityChanged.connect(gapsAll);
+workspace.activitiesChanged.connect(gapsAll);
+workspace.virtualScreenSizeChanged.connect(gapsAll);
+workspace.virtualScreenGeometryChanged.connect(gapsAll);
+workspace.clientAdded.connect((client) => { if (client.dock) { gapsAll();}});
 function gapsAll() {
     workspace.clientList().forEach(client => gaps(client));
 }
 
 
 ///////////////////////
-// make gaps
+// apply gaps
 ///////////////////////
 
 // make tile gaps for given client
 function gaps(client) {
-    // get client to be gapped
+    // suppress if a current iteration of gapping is still running
     if (block) return;
     // abort if client is irrelevant
     if (ignoreClient(client)) return;
@@ -183,12 +162,12 @@ function gapsArea(client) {
 }
 
 function gapsWindows(client1) {
-    return;
     // get relevant other windows
     for (var i = 0; i < workspace.clientList().length; i++) {
         var client2 = workspace.clientList()[i];
-        if (ignoreOther(client1, client2)) return;
-        // debug("other window", client2.caption, ...Object.values(win2.geometry));
+        if (client2 == null || client2 == undefined) return;
+        if (ignoreOther(client1, client2)) continue;
+        debug("other window", client2.caption, client2.geometry);
 
         var win1 = client1.geometry;
         var win2 = client2.geometry;
@@ -222,7 +201,7 @@ function gapsWindows(client1) {
             halfDiffU = Math.ceil(diff/2);
             halfGapL = Math.floor(config.gapMid/2);
             halfGapU = Math.ceil(config.gapMid/2);
-            block = true;
+            // block = true;
             win1.width = win1.width + halfDiffU - halfGapL;
             win2.x = win2.x - halfDiffL + halfGapU;
             win2.width = win2.width + halfDiffL - halfGapU;

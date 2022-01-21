@@ -1,3 +1,7 @@
+## v6.2
+
+- fix gaps on untiled windows not working
+
 ## v6.1
 
 - improve descriptions in configuration
