@@ -166,6 +166,7 @@ function applyGaps(client) {
     debug("windows gaps for", client.caption);
     applyGapsWindows(client);
     block = false;
+    // continueGaps();
 }
 
 function applyGapsArea(client) {
