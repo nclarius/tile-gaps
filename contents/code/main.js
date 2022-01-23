@@ -41,6 +41,7 @@ const config = {
 debugMode = true;
 function debug(...args) {if (debugMode) console.debug("Window Gaps:", ...args);}
 debug("intializing");
+function debug_(...args) {if (debugMode) console.debug("\nWindow Gaps:", ...args);}
 debug("sizes (t/l/r/b/m):", config.gapTop, config.gapLeft, config.gapRight, config.gapBottom, config.gapMid);
 debug("layout:", "maximized:", config.includeMaximized, "tolerance", config.tolerance);
 debug("applications:", "exclude:", config.excludeMode, String(config.excludedApps), "include:", config.includeMode, String(config.includedApps));
@@ -53,42 +54,66 @@ debug("");
 
 // block reapplying until current iteration is finished
 var block = false;
+var queue = [];
+
+function caption(client) {
+    return !(client == null || client == undefined) ? client.caption : client;
+}
 
 // trigger applying tile gaps when client is initially present, added, moved or resized
 workspace.clientList().forEach(client => onAdded(client));
 workspace.clientAdded.connect(onAdded);
 function onAdded(client) {
-    caption = client != undefined ? client.caption : client;
-    gaps(client);
+    applyGaps(client);
 
-    client.geometryChanged.connect(gaps);
-    client.clientGeometryChanged.connect(gaps);
-    client.frameGeometryChanged.connect(gaps);
-    client.clientFinishUserMovedResized.connect(gaps);
-    client.moveResizedChanged.connect(gaps);
-    client.fullScreenChanged.connect(gaps);
-    client.clientMaximizedStateChanged.connect(gaps);
-    client.clientUnminimized.connect(gaps);
-    client.screenChanged.connect(gaps);
-    client.desktopChanged.connect(gaps);
+    // client.geometryChanged.connect((client) =>
+		// { debug_("geometry changed", caption(client)); gaps(client); });
+    // client.clientGeometryChanged.connect((client) =>
+	// // 	{ debug_("client geometry changed", caption(client)); applyGaps(client); });
+    client.frameGeometryChanged.connect((client) =>
+		{ debug_("frame geometry changed", caption(client)); applyGaps(client); });
+    // client.clientFinishUserMovedResized.connect((client) =>
+	// 	{ debug_("finish user moved resized", caption(client)); applyGaps(client); });
+    // client.moveResizedChanged.connect((client) =>
+	// 	{ debug_("move resized changed", caption(client)); applyGaps(client); });
+    client.fullScreenChanged.connect((client) =>
+		{ debug_("fullscreen changed", caption(client)); applyGaps(client); });
+    client.clientMaximizedStateChanged.connect((client) =>
+		{ debug_("maximized changed", caption(client)); applyGaps(client); });
+    client.clientUnminimized.connect((client) =>
+		{ debug_("unminimized", caption(client)); applyGaps(client); });
+    client.screenChanged.connect((client) =>
+		{ debug_("screen changed", caption(client)); applyGaps(client); });
+    client.desktopChanged.connect((client) =>
+		{ debug_("desktop changed", caption(client)); applyGaps(client); });
 }
 
 function onRegeometrized(client) {
 }
 
 // trigger reapplying tile gaps for all windows when screen geometry changes
-workspace.currentDesktopChanged.connect(gapsAll);
-workspace.desktopPresenceChanged.connect(gapsAll);
-workspace.numberDesktopsChanged.connect(gapsAll);
-workspace.numberScreensChanged.connect(gapsAll);
-workspace.screenResized.connect(gapsAll);
-workspace.currentActivityChanged.connect(gapsAll);
-workspace.activitiesChanged.connect(gapsAll);
-workspace.virtualScreenSizeChanged.connect(gapsAll);
-workspace.virtualScreenGeometryChanged.connect(gapsAll);
-workspace.clientAdded.connect((client) => { if (client.dock) { gapsAll();}});
-function gapsAll() {
-    workspace.clientList().forEach(client => gaps(client));
+workspace.currentDesktopChanged.connect(() =>
+		{ debug_("current desktop changed"); applyGapsAll(); });
+workspace.desktopPresenceChanged.connect(() =>
+		{ debug_("desktop presence changed"); applyGapsAll(); });
+workspace.numberDesktopsChanged.connect(() =>
+		{ debug_("number desktops changed"); applyGapsAll(); });
+workspace.numberScreensChanged.connect(() =>
+		{ debug_("number screens changed"); applyGapsAll(); });
+workspace.screenResized.connect(() =>
+		{ debug_("screen reszed"); applyGapsAll(); });
+workspace.currentActivityChanged.connect(() =>
+		{ debug_("current activity changed"); applyGapsAll(); });
+workspace.activitiesChanged.connect(() =>
+		{ debug_("activities changed"); applyGapsAll(); });
+workspace.virtualScreenSizeChanged.connect(() =>
+		{ debug_("virtual screen size changed"); applyGapsAll(); });
+workspace.virtualScreenGeometryChanged.connect(() =>
+		{ debug_("virtual screen geometry changed"); applyGapsAll(); });
+workspace.clientAdded.connect((client) => { if (client.dock) {
+        debug_("dock added"); applyGapsAll(); }});
+function applyGapsAll() {
+    workspace.clientList().forEach(client => applyGaps(client));
 }
 
 
@@ -96,21 +121,54 @@ function gapsAll() {
 // apply gaps
 ///////////////////////
 
+// // enque client for gaps
+// function requestGaps(client) {
+//     debug("try enqueue", client.caption);
+//     if (!queue.includes(client)) {
+//         debug("enqueue", client.caption);
+//         queue.push(client);
+//         continueGaps();
+//     }
+//     else {
+//         debug("already in queue", client.caption);
+//     }
+// }
+//
+// function continueGaps() {
+//     debug("try continue gaps");
+//     // debug(queue.map(client => client.caption));
+//     if (!block) {
+//         if (queue.length > 0) {
+//             next = queue.shift();
+//             debug("apply gaps", next.caption);
+//             applyGaps(next);
+//         }
+//         else {
+//             debug("empty");
+//         }
+//     }
+//     else {
+//         debug("blocked");
+//     }
+// }
+
 // make tile gaps for given client
-function gaps(client) {
-    // suppress if a current iteration of gapping is still running
+function applyGaps(client) {
     if (block) return;
     // abort if client is irrelevant
     if (ignoreClient(client)) return;
-    debug("gaps for", caption, client.geometry);
+    block = true;
+    debug("gaps for", client.caption, client.geometry);
     // make tile gaps to area grid
-    gapsArea(client);
+    debug("area gaps for", client.caption);
+    applyGapsArea(client);
     // make tile gaps to other windows
-    gapsWindows(client);
-    debug("");
+    debug("windows gaps for", client.caption);
+    applyGapsWindows(client);
+    block = false;
 }
 
-function gapsArea(client) {
+function applyGapsArea(client) {
     var grid = getGrid(client);
     var win = client.geometry;
 
@@ -133,7 +191,7 @@ function gapsArea(client) {
         var coords = grid.right[pos];
         if (nearArea(win.right, coords)) {
             debug("gap to right tile edge", pos);
-            win.width = coords.gapped - win.x;
+            win.width = coords.gapped - win.x + 1;
             break;
         }
     }
@@ -155,17 +213,17 @@ function gapsArea(client) {
         var coords = grid.bottom[pos];
         if (nearArea(win.bottom, coords)) {
             debug("gap to bottom tile edge", pos);
-            win.height = coords.gapped - win.y;
+            win.height = coords.gapped - win.y + 1;
             break;
         }
     }
 }
 
-function gapsWindows(client1) {
+function applyGapsWindows(client1) {
     // get relevant other windows
     for (var i = 0; i < workspace.clientList().length; i++) {
         var client2 = workspace.clientList()[i];
-        if (client2 == null || client2 == undefined) return;
+        if (client2 == null || client2 == undefined) continue;
         if (ignoreOther(client1, client2)) continue;
         debug("other window", client2.caption, client2.geometry);
 
@@ -183,11 +241,9 @@ function gapsWindows(client1) {
             halfDiffU = Math.ceil(diff/2);
             halfGapL = Math.floor(config.gapMid/2);
             halfGapU = Math.ceil(config.gapMid/2);
-            block = true;
             win1.x = win1.x - halfDiffL + halfGapU;
             win1.width = win1.width + halfDiffL - halfGapU;
             win2.width = win2.width + halfDiffU - halfGapL;
-            block = false;
         }
 
         // right window
@@ -201,11 +257,9 @@ function gapsWindows(client1) {
             halfDiffU = Math.ceil(diff/2);
             halfGapL = Math.floor(config.gapMid/2);
             halfGapU = Math.ceil(config.gapMid/2);
-            // block = true;
             win1.width = win1.width + halfDiffU - halfGapL;
             win2.x = win2.x - halfDiffL + halfGapU;
             win2.width = win2.width + halfDiffL - halfGapU;
-            block = false;
         }
 
         // top window
@@ -219,11 +273,9 @@ function gapsWindows(client1) {
             halfDiffU = Math.ceil(diff/2);
             halfGapL = Math.floor(config.gapMid/2);
             halfGapU = Math.ceil(config.gapMid/2);
-            block = true;
             win1.y = win1.y - halfDiffL + halfGapU;
             win1.height = win1.height + halfDiffL - halfGapU;
             win2.height = win2.height + halfDiffU - halfGapL;
-            block = false;
         }
 
         // bottom window
@@ -237,11 +289,9 @@ function gapsWindows(client1) {
             halfDiffU = Math.ceil(diff/2);
             halfGapL = Math.floor(config.gapMid/2);
             halfGapU = Math.ceil(config.gapMid/2);
-            block = true;
             win1.height = win1.height + halfDiffU - halfGapL;
             win2.y = win2.y - halfDiffL + halfGapU;
             win2.height = win2.height + halfDiffL - halfGapU;
-            block = false;
         }
     }
 }
@@ -359,7 +409,7 @@ function nearWindow(diff, match) {
 // filter out irrelevant clients
 function ignoreClient(client) {
     return client == null || client == undefined // undefined
-        || !client.normalWindow  // non-normal window
+        || !client.normalWindow || client.caption == "Plasma" // non-normal window
         || ["krunner", "kruler"].includes(String(client.resourceClass)) // non-normal application
         || client.move || client.resize // still undergoing geometry change
         || client.fullScreen // fullscreen
