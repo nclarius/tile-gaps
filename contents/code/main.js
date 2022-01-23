@@ -121,39 +121,9 @@ function applyGapsAll() {
 // apply gaps
 ///////////////////////
 
-// // enque client for gaps
-// function requestGaps(client) {
-//     debug("try enqueue", client.caption);
-//     if (!queue.includes(client)) {
-//         debug("enqueue", client.caption);
-//         queue.push(client);
-//         continueGaps();
-//     }
-//     else {
-//         debug("already in queue", client.caption);
-//     }
-// }
-//
-// function continueGaps() {
-//     debug("try continue gaps");
-//     // debug(queue.map(client => client.caption));
-//     if (!block) {
-//         if (queue.length > 0) {
-//             next = queue.shift();
-//             debug("apply gaps", next.caption);
-//             applyGaps(next);
-//         }
-//         else {
-//             debug("empty");
-//         }
-//     }
-//     else {
-//         debug("blocked");
-//     }
-// }
-
 // make tile gaps for given client
 function applyGaps(client) {
+    // abort if there is a current iteration of gapping still running
     if (block) return;
     // abort if client is irrelevant
     if (ignoreClient(client)) return;
@@ -166,7 +136,6 @@ function applyGaps(client) {
     debug("windows gaps for", client.caption);
     applyGapsWindows(client);
     block = false;
-    // continueGaps();
 }
 
 function applyGapsArea(client) {
