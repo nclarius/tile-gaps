@@ -1,3 +1,7 @@
+## v6.3
+
+- fix windows sometimes freezing
+
 ## v6.2
 
 - fix gaps on untiled windows not working
