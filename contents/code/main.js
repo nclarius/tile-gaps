@@ -56,7 +56,7 @@ debug("");
 var block = false;
 
 function caption(client) {
-    return !(client == null || client == undefined) ? client.caption : client;
+    return client.caption || client;
 }
 
 // trigger applying tile gaps when client is initially present or added
@@ -71,16 +71,16 @@ function onAdded(client) {
 
 // trigger applying tile gaps when client is moved or resized
 function onRegeometrized(client) {
+    // client.moveResizedChanged.connect((client) =>
+    // 	{ debug_("move resized changed", caption(client)); applyGaps(client);   });
     // client.geometryChanged.connect((client) =>
         // { debug_("geometry changed", caption(client)); gaps(client); });
     // client.clientGeometryChanged.connect((client) =>
     // // 	{ debug_("client geometry changed", caption(client)); applyGaps(client); });
     client.frameGeometryChanged.connect((client) =>
         { debug_("frame geometry changed", caption(client)); applyGaps(client); });
-    // client.clientFinishUserMovedResized.connect((client) =>
-    // 	{ debug_("finish user moved resized", caption(client)); applyGaps(client); });
-    // client.moveResizedChanged.connect((client) =>
-    // 	{ debug_("move resized changed", caption(client)); applyGaps(client); });
+    client.clientFinishUserMovedResized.connect((client) =>
+    	{ debug_("finish user moved resized", caption(client)); applyGaps(client); });
     client.fullScreenChanged.connect((client) =>
         { debug_("fullscreen changed", caption(client)); applyGaps(client); });
     client.clientMaximizedStateChanged.connect((client) =>
@@ -132,6 +132,7 @@ function applyGaps(client) {
     // abort if there is a current iteration of gapping still running
     if (block) return;
     // abort if client is irrelevant
+    if (client == null || client == undefined) return;
     if (ignoreClient(client)) return;
     block = true;
     debug("gaps for", client.caption, client.geometry);
@@ -273,29 +274,29 @@ function getGrid(client) {
                 closed: Math.round(area.left),
                 gapped: Math.round(area.left + config.gapLeft)
             },
-            centerLeft: {
+            quarterLeft: {
                 closed: Math.round(area.left + 1 * (area.width/4)),
                 gapped: Math.round(area.left + 1 * (area.width + config.gapLeft - config.gapRight + config.gapMid)/4)
             },
-            halfHor: {
+            halfHorizontal: {
                 closed: Math.round(area.left + area.width/2),
                 gapped: Math.round(area.left + (area.width + config.gapLeft - config.gapRight + config.gapMid)/2)
             },
-            centerRight: {
+            quarterRight: {
                 closed: Math.round(area.left + 3 * (area.width/4)),
                 gapped: Math.round(area.left + 3 * (area.width + config.gapLeft - config.gapRight + config.gapMid)/4)
             }
         },
         right: {
-                centerLeft: {
+                quarterLeft: {
                     closed: Math.round(area.right - 3 * (area.width/4)),
                     gapped: Math.round(area.right - 3 * (area.width + config.gapLeft - config.gapRight + config.gapMid)/4)
                 },
-                halfHor: {
+                halfHorizontal: {
                     closed: Math.round(area.right - area.width/2),
                     gapped: Math.round(area.right - (area.width + config.gapLeft - config.gapRight + config.gapMid)/2)
                 },
-                centerRight: {
+                quarterRight: {
                     closed: Math.round(area.right - 1 * (area.width/4)),
                     gapped: Math.round(area.right - 1 * (area.width + config.gapLeft - config.gapRight + config.gapMid)/4)
                 },
@@ -309,29 +310,29 @@ function getGrid(client) {
                 closed: Math.round(area.top),
                 gapped: Math.round(area.top + config.gapTop)
             },
-            centerTop: {
+            quarterTop: {
                 closed: Math.round(area.top + 1 * (area.height/4)),
                 gapped: Math.round(area.top + 1 * (area.height + config.gapTop - config.gapBottom + config.gapMid)/4)
             },
-            halfVer: {
+            halfVertical: {
                 closed: Math.round(area.top + area.height/2),
                 gapped: Math.round(area.top + (area.height + config.gapTop - config.gapBottom + config.gapMid)/2)
             },
-            centerBottom: {
+            quarterBottom: {
                 closed: Math.round(area.top + 3 * (area.height/4)),
                 gapped: Math.round(area.top + 3 * (area.height + config.gapTop - config.gapBottom + config.gapMid)/4)
             }
         },
         bottom: {
-            centerTop: {
+            quarterTop: {
                 closed: Math.round(area.bottom - 3 * (area.height/4)),
                 gapped: Math.round(area.bottom - 3 * (area.height + config.gapTop - config.gapBottom + config.gapMid)/4)
             },
-            halfVer: {
+            halfVertical: {
                 closed: Math.round(area.bottom - area.height/2),
                 gapped: Math.round(area.bottom - (area.height + config.gapTop - config.gapBottom + config.gapMid)/2)
             },
-            centerBottom: {
+            quarterBottom: {
                 closed: Math.round(area.bottom - 1 * (area.height/4)),
                 gapped: Math.round(area.bottom - 1 * (area.height + config.gapTop - config.gapBottom + config.gapMid)/4)
             },
@@ -363,14 +364,14 @@ function nearWindow(diff, match) {
 function overlapHor(win1, win2) {
     return (win1.left <= win2.left + config.tolerance
             && win1.right > win2.left + config.tolerance)
-        || (win2.left <= win1.left
+        || (win2.left <= win1.left + config.tolerance
             && win2.right + config.tolerance > win1.left)
 }
 
 function overlapVer(win1, win2) {
     return (win1.top <= win2.top + config.tolerance
             && win1.bottom > win2.top + config.tolerance)
-        || (win2.top <= win1.top
+        || (win2.top <= win1.top + config.tolerance
             && win2.bottom + config.tolerance > win1.top)
 }
 
