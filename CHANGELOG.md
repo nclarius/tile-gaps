@@ -1,3 +1,11 @@
+## v6.5
+
+- fix disabling gaps on maximized window not working
+
+## v6.4
+
+- fix window gap on manual move/resize not working
+
 ## v6.3
 
 - fix windows sometimes freezing

@@ -404,7 +404,7 @@ function ignoreClient(client) {
         || ["krunner", "kruler"].includes(String(client.resourceClass)) // non-normal application
         || client.move || client.resize // still undergoing geometry change
         || client.fullScreen // fullscreen
-        || (config.excludeMaximized
+        || (!config.includeMaximized
             && client.width == workspace.clientArea(KWin.MaximizeArea, client).width
             && client.height == workspace.clientArea(KWin.MaximizeArea, client).height) // maximized
         || (config.excludeMode
