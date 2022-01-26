@@ -47,12 +47,7 @@ ln -sf ~/.local/share/kwin/scripts/tilegaps/metadata.desktop ~/.local/share/kser
 
 ### Compatibility
 
-- For compatibility with [sticky window snapping](https://store.kde.org/p/1112552/) you can use [my fork](https://github.com/nclarius/sticky-window-snapping), which adds an option in the configuration to set the tile gap size between windows, and will properly retain the gap when resizing adjacent windows.  
-- I have not tried out combinations of the gaps script with tiling scripts (such as [Bismuth](https://store.kde.org/p/1603469/) or [KWin Tiling](https://store.kde.org/p/1112554/)); if you have experiences, please let me know.
-
-### Issues
-
-- If gaps are not applied in all cases, try increasing the tolerance in order to implement a more liberal edge touching detection. Conversely, if gaps are inserted when they shouldn’t, try decreasing the tolerance so as to enforce a stricter adjacency measurement. It is recommended to have tolerance set to twice the largest gap size.
+For compatibility with [sticky window snapping](https://store.kde.org/p/1112552/) you can use [my fork](https://github.com/nclarius/sticky-window-snapping), which adds an option in the configuration to set the tile gap size between windows, and will properly retain the gap when resizing adjacent windows.  
 
 ## Small Print
 
