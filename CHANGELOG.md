@@ -1,6 +1,10 @@
+## v6.6
+
+- compute tolerance margin automatically from the gap size instead of using a configuration variable
+
 ## v6.5
 
-- fix disabling gaps on maximized window not working
+- fix disabling gaps on maximized windows not working
 
 ## v6.4
 

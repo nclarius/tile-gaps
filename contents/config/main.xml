@@ -29,10 +29,6 @@
             <label>Whether to gap maximized windows</label>
             <default>false</default>
         </entry>
-        <entry name="tolerance" type="int">
-            <label>Divergence margin within which to consider windows tiled</label>
-            <default>24</default>
-        </entry>
         <entry name="excludeMode" type="bool">
             <label>Whether to gap all except the specified applications</label>
             <default>true</default>

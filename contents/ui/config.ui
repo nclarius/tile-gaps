@@ -6,14 +6,14 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>412</width>
-    <height>602</height>
+    <width>407</width>
+    <height>521</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>412</width>
-    <height>602</height>
+    <width>407</width>
+    <height>521</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -24,11 +24,11 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>411</width>
-     <height>606</height>
+     <width>407</width>
+     <height>522</height>
     </rect>
    </property>
-   <layout class="QVBoxLayout" name="verticalLayout_config">
+   <layout class="QVBoxLayout" name="verticalLayout">
     <property name="spacing">
      <number>6</number>
     </property>
@@ -186,6 +186,9 @@
        <bool>false</bool>
       </property>
       <layout class="QHBoxLayout" name="horizontalLayout_4">
+       <property name="bottomMargin">
+        <number>6</number>
+       </property>
        <item>
         <layout class="QVBoxLayout" name="verticalLayout_layouts">
          <property name="spacing">
@@ -266,90 +269,6 @@
              </property>
              <property name="margin">
               <number>0</number>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-        </layout>
-       </item>
-      </layout>
-     </widget>
-    </item>
-    <item>
-     <widget class="QGroupBox" name="groupBox_tolerance">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="title">
-       <string>Tolerance</string>
-      </property>
-      <property name="flat">
-       <bool>false</bool>
-      </property>
-      <layout class="QHBoxLayout" name="horizontalLayout">
-       <property name="bottomMargin">
-        <number>6</number>
-       </property>
-       <item>
-        <layout class="QVBoxLayout" name="verticalLayout">
-         <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_tolerance">
-           <property name="sizeConstraint">
-            <enum>QLayout::SetDefaultConstraint</enum>
-           </property>
-           <item alignment="Qt::AlignVCenter">
-            <widget class="QSpinBox" name="kcfg_tolerance">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-             </property>
-             <property name="suffix">
-              <string> px</string>
-             </property>
-             <property name="maximum">
-              <number>999</number>
-             </property>
-             <property name="value">
-              <number>24</number>
-             </property>
-            </widget>
-           </item>
-           <item alignment="Qt::AlignVCenter">
-            <widget class="QLabel" name="label_tolerance">
-             <property name="minimumSize">
-              <size>
-               <width>310</width>
-               <height>0</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>310</width>
-               <height>16777215</height>
-              </size>
-             </property>
-             <property name="font">
-              <font>
-               <pointsize>8</pointsize>
-              </font>
-             </property>
-             <property name="text">
-              <string>Window edges up to this far apart will still be considered adjacent</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-             </property>
-             <property name="wordWrap">
-              <bool>true</bool>
              </property>
             </widget>
            </item>

@@ -24,8 +24,6 @@ const config = {
     offsetBottom: readConfig("offsetBottom", 0),
     // whether to apply gaps on maximized windows
     includeMaximized: readConfig("includeMaximized", false),
-    // divergence margin within which windows are still considered tiled
-    tolerance: readConfig("tolerance", 24),
     // list of excluded/included applications
     excludeMode:  readConfig("excludeMode",  true),
     includeMode:  readConfig("includeMode",  false),
@@ -43,7 +41,7 @@ function debug(...args) {if (debugMode) console.debug("Window Gaps:", ...args);}
 debug("intializing");
 function debug_(...args) {if (debugMode) console.debug("\nWindow Gaps:", ...args);}
 debug("sizes (t/l/r/b/m):", config.gapTop, config.gapLeft, config.gapRight, config.gapBottom, config.gapMid);
-debug("layout:", "maximized:", config.includeMaximized, "tolerance", config.tolerance);
+debug("layout:", "maximized:", config.includeMaximized);
 debug("applications:", "exclude:", config.excludeMode, String(config.excludedApps), "include:", config.includeMode, String(config.includedApps));
 debug("");
 
@@ -78,7 +76,7 @@ function onRegeometrized(client) {
     // client.clientGeometryChanged.connect((client) =>
     // // 	{ debug_("client geometry changed", caption(client)); applyGaps(client); });
     client.frameGeometryChanged.connect((client) =>
-        { debug_("frame geometry changed", caption(client)); applyGaps(client); });
+        { debug_("frame geometry changed", caption(client), client.resourceClass || client)});
     client.clientFinishUserMovedResized.connect((client) =>
     	{ debug_("finish user moved resized", caption(client)); applyGaps(client); });
     client.fullScreenChanged.connect((client) =>
@@ -155,9 +153,11 @@ function applyGapsArea(client) {
     for (var i = 0; i < Object.keys(grid.left).length; i++) {
         var pos = Object.keys(grid.left)[i];
         var coords = grid.left[pos];
-        if (nearArea(win.left, coords)) {
+        if (nearArea(win.left, coords, config.gapLeft)) {
             debug("gap to left tile edge", pos);
-            win.x = coords.gapped;
+            var diff = coords.gapped - win.left;
+            win.width -= diff;
+            win.x += diff;
             break;
         }
     }
@@ -166,9 +166,10 @@ function applyGapsArea(client) {
     for (var i = 0; i < Object.keys(grid.right).length; i++) {
         var pos = Object.keys(grid.right)[i];
         var coords = grid.right[pos];
-        if (nearArea(win.right, coords)) {
+        if (nearArea(win.right, coords, config.gapRight)) {
             debug("gap to right tile edge", pos);
-            win.width = coords.gapped - win.x + 1;
+            var diff = coords.gapped - win.right;
+            win.width += diff;
             break;
         }
     }
@@ -177,9 +178,11 @@ function applyGapsArea(client) {
     for (var i = 0; i < Object.keys(grid.top).length; i++) {
         var pos = Object.keys(grid.top)[i];
         var coords = grid.top[pos];
-        if (nearArea(win.top, coords)) {
+        if (nearArea(win.top, coords, config.gapTop)) {
             debug("gap to top tile edge", pos);
-            win.y = coords.gapped;
+            var diff = coords.gapped - win.top;
+            win.height -= diff;
+            win.y += diff;
             break;
         }
     }
@@ -188,9 +191,11 @@ function applyGapsArea(client) {
     for (var i = 0; i < Object.keys(grid.bottom).length; i++) {
         var pos = Object.keys(grid.bottom)[i];
         var coords = grid.bottom[pos];
-        if (nearArea(win.bottom, coords)) {
+        debug(pos, coords.closed, coords.gapped, win.bottom, config.gapBottom);
+        if (nearArea(win.bottom, coords, config.gapBottom)) {
             debug("gap to bottom tile edge", pos);
-            win.height = coords.gapped - win.y + 1;
+            var diff = coords.gapped - win.bottom;
+            win.height += diff;
             break;
         }
     }
@@ -270,7 +275,7 @@ function getGrid(client) {
     var area = getArea(client);
     return {
         left: {
-            left: {
+            fullLeft: {
                 closed: Math.round(area.left),
                 gapped: Math.round(area.left + config.gapLeft)
             },
@@ -300,13 +305,13 @@ function getGrid(client) {
                     closed: Math.round(area.right - 1 * (area.width/4)),
                     gapped: Math.round(area.right - 1 * (area.width + config.gapLeft - config.gapRight + config.gapMid)/4)
                 },
-                right: {
+                fullRight: {
                     closed: Math.round(area.right),
                     gapped: Math.round(area.right - config.gapRight)
                 }
         },
         top: {
-            top: {
+            fullTop: {
                 closed: Math.round(area.top),
                 gapped: Math.round(area.top + config.gapTop)
             },
@@ -336,7 +341,7 @@ function getGrid(client) {
                 closed: Math.round(area.bottom - 1 * (area.height/4)),
                 gapped: Math.round(area.bottom - 1 * (area.height + config.gapTop - config.gapBottom + config.gapMid)/4)
             },
-            bottom: {
+            fullBottom: {
                 closed: Math.round(area.bottom),
                 gapped: Math.round(area.bottom - config.gapBottom)
             }
@@ -350,29 +355,33 @@ function getGrid(client) {
 ///////////////////////
 
 // a coordinate is close to another iff the difference is within the tolerance margin but not exactly the desired geometry
-function nearArea(actual, expected) {
-    return Math.abs(actual - expected.closed) <= config.tolerance
-        && actual != expected.gapped
+function nearArea(actual, expected, gap) {
+    return (Math.abs(actual - expected.closed) <= gap
+         || Math.abs(actual - expected.gapped) <= gap)
+        && actual != expected.gapped;
 }
 
-function nearWindow(diff, match) {
-    return Math.abs(diff) <= config.tolerance
-        && diff != match;
+function nearWindow(diff, gap) {
+    return Math.abs(diff) <= 2 * gap
+        && diff != gap;
 }
 
 // horizontal/vertical overlap
+
 function overlapHor(win1, win2) {
-    return (win1.left <= win2.left + config.tolerance
-            && win1.right > win2.left + config.tolerance)
-        || (win2.left <= win1.left + config.tolerance
-            && win2.right + config.tolerance > win1.left)
+    const toleranceMid = 2 * config.gapMid;
+    return (win1.left <= win2.left + toleranceMid
+            && win1.right > win2.left + toleranceMid)
+        || (win2.left <= win1.left + toleranceMid
+            && win2.right + toleranceMid > win1.left);
 }
 
 function overlapVer(win1, win2) {
-    return (win1.top <= win2.top + config.tolerance
-            && win1.bottom > win2.top + config.tolerance)
-        || (win2.top <= win1.top + config.tolerance
-            && win2.bottom + config.tolerance > win1.top)
+    const toleranceMid = 2 * config.gapMid;
+    return (win1.top <= win2.top + toleranceMid
+            && win1.bottom > win2.top + toleranceMid)
+        || (win2.top <= win1.top + toleranceMid
+            && win2.bottom + toleranceMid > win1.top);
 }
 
 // floored/ceiled half difference between edges
@@ -400,8 +409,8 @@ function halfGapU() {
 // filter out irrelevant clients
 function ignoreClient(client) {
     return client == null || client == undefined // undefined
-        || !client.normalWindow || client.caption == "Plasma" // non-normal window
-        || ["krunner", "kruler"].includes(String(client.resourceClass)) // non-normal application
+        || !client.normalWindow // non-normal window
+        || ["plasmashell", "krunner", "kruler"].includes(String(client.resourceClass)) // non-normal application
         || client.move || client.resize // still undergoing geometry change
         || client.fullScreen // fullscreen
         || (!config.includeMaximized
@@ -410,7 +419,7 @@ function ignoreClient(client) {
         || (config.excludeMode
             && config.excludedApps.includes(String(client.resourceClass))) // excluded appliation
         || (config.includeMode
-            && !(config.includedApps.includes(String(client.resourceClass)))) // not included application
+            && !(config.includedApps.includes(String(client.resourceClass)))); // not included application
 }
 
 function ignoreOther(client1, client2) {
