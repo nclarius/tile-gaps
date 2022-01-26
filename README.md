@@ -8,7 +8,7 @@ Please note that this script does not do any automatic tiling. Its purpose is to
 
 ![screenshot](.img/screenshot.png)
 
-<img src=".img/config.png" alt="config" height="600"/>
+<img src=".img/config.png" alt="config" height="554"/>
 
 ## Installation
 
