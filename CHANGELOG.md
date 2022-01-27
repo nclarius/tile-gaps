@@ -1,3 +1,8 @@
+## v6.7
+
+- fix gaps on quick tiling not working
+- simplify code
+
 ## v6.6
 
 - compute tolerance margin automatically from the gap size instead of using a configuration variable
