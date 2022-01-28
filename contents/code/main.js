@@ -60,7 +60,7 @@ function caption(client) {
 workspace.clientList().forEach(client => onAdded(client));
 workspace.clientAdded.connect(onAdded);
 function onAdded(client) {
-    debug_("added", caption(client));
+    debug("added", caption(client));
     applyGaps(client);
 
     onRegeometrized(client);
