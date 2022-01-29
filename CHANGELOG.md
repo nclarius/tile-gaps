@@ -1,3 +1,7 @@
+## v6.8
+
+- fix non-existent function
+
 ## v6.7
 
 - fix gaps on quick tiling not working
