@@ -37,7 +37,7 @@ const config = {
 ///////////////////////
 
 debugMode = true;
-function debug(...args) {if (debugMode) console.debug("Window Gaps:", ...args);}
+function debug(...args) {if (debugMode) console.debug("tilegaps:", ...args);}
 debug("intializing");
 debug("sizes (t/l/r/b/m):", config.gapTop, config.gapLeft, config.gapRight, config.gapBottom, config.gapMid);
 debug("layout:", "maximized:", config.includeMaximized);
@@ -60,7 +60,7 @@ function caption(client) {
 workspace.clientList().forEach(client => onAdded(client));
 workspace.clientAdded.connect(onAdded);
 function onAdded(client) {
-    debug_("added", caption(client));
+    debug("added", caption(client));
     applyGaps(client);
 
     onRegeometrized(client);
@@ -69,11 +69,11 @@ function onAdded(client) {
 // trigger applying tile gaps when client is moved or resized
 function onRegeometrized(client) {
     // client.moveResizedChanged.connect((client) =>
-    // 	{ debug_("move resized changed", caption(client)); applyGaps(client);   });
+    // 	{ debug("move resized changed", caption(client)); applyGaps(client);   });
     // client.geometryChanged.connect((client) =>
-        // { debug_("geometry changed", caption(client)); gaps(client); });
+        // { debug("geometry changed", caption(client)); gaps(client); });
     // client.clientGeometryChanged.connect((client) =>
-    // // 	{ debug_("client geometry changed", caption(client)); applyGaps(client); });
+    // // 	{ debug("client geometry changed", caption(client)); applyGaps(client); });
     client.frameGeometryChanged.connect((client) =>
         { debug("frame geometry changed", caption(client)); applyGaps(client)});
     client.clientFinishUserMovedResized.connect((client) =>
@@ -402,7 +402,7 @@ function halfGapU() {
 // filter out irrelevant clients
 function ignoreClient(client) {
     return !client // null
-        || !client.normalWindow // non-normal window
+        || !(client.normalWindow || ["plasma-interactiveconsole"].includes(String(client.resourceClass))) // non-normal window
         || ["plasmashell", "krunner"].includes(String(client.resourceClass)) // non-normal application
         || client.move || client.resize // still undergoing geometry change
         || client.fullScreen // fullscreen
