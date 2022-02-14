@@ -1,3 +1,3 @@
 #!/bin/bash
-kpackagetool5 --type=KWin/Script --install . || kpackagetool5 --type=KWin/Script --upgrade .
+kpackagetool5 --type=KWin/Script --install package || kpackagetool5 --type=KWin/Script --upgrade package
 qdbus org.kde.KWin /KWin reconfigure

@@ -1,6 +1,7 @@
 ## v6.9
 - fix configuration menu not available
 - fix error in logging function
+- update directory structure
 - add install/uninstall scripts
 - make script automatically enabled on install
 - add changelog in BBCode format
