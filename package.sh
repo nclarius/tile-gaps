@@ -37,7 +37,7 @@ zip -rq "${name}_v${version}.kwinscript"  \
 echo "generated KDE Store release"
 
 # commit changes to GitHub
-git add -q *
+git add *
 git commit -q -m "release $name v$version"
 git push -q
 echo "commited changes to git"
