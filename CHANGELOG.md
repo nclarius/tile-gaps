@@ -3,7 +3,7 @@
 - fix error in logging function
 - add install/uninstall scripts
 - make script automatically enabled on install
-- add changelog in BB Code format
+- add changelog in BBCode format
 
 ## v6.8
 
