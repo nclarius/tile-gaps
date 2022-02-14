@@ -24,7 +24,8 @@ Please note that this script does not do any automatic tiling. Its purpose is to
 
 ```bash
 git clone https://github.com/nclarius/tile-gaps.git
-tile-gaps/install.sh
+cd tile-gaps
+./install.sh
 ```
 
 ## Configuration
