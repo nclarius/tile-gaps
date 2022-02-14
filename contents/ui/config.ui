@@ -7,13 +7,13 @@
     <x>0</x>
     <y>0</y>
     <width>407</width>
-    <height>521</height>
+    <height>524</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
     <width>407</width>
-    <height>521</height>
+    <height>524</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -185,31 +185,15 @@
       <property name="flat">
        <bool>false</bool>
       </property>
-      <layout class="QHBoxLayout" name="horizontalLayout_4">
+      <layout class="QVBoxLayout" name="verticalLayout_3">
        <property name="bottomMargin">
         <number>6</number>
        </property>
        <item>
-        <layout class="QVBoxLayout" name="verticalLayout_layouts">
+        <layout class="QVBoxLayout" name="verticalLayout_2">
          <property name="spacing">
           <number>0</number>
          </property>
-         <item>
-          <spacer name="verticalSpacer_layouts">
-           <property name="orientation">
-            <enum>Qt::Vertical</enum>
-           </property>
-           <property name="sizeType">
-            <enum>QSizePolicy::Fixed</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>20</width>
-             <height>3</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
          <item>
           <widget class="QCheckBox" name="kcfg_includeMaximized">
            <property name="maximumSize">
@@ -227,9 +211,9 @@
           </widget>
          </item>
          <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_layout_maximizedinfo">
+          <layout class="QHBoxLayout" name="horizontalLayout_inludeMaximizedInfo">
            <item>
-            <spacer name="horizontalSpacer_layouts_maximizedinfo">
+            <spacer name="horizontalSpacer_includeMaximizedInfo">
              <property name="orientation">
               <enum>Qt::Horizontal</enum>
              </property>
@@ -239,13 +223,13 @@
              <property name="sizeHint" stdset="0">
               <size>
                <width>25</width>
-               <height>20</height>
+               <height>0</height>
               </size>
              </property>
             </spacer>
            </item>
            <item alignment="Qt::AlignTop">
-            <widget class="QLabel" name="label_maximizedinfo">
+            <widget class="QLabel" name="label_includeMaximizedInfo">
              <property name="maximumSize">
               <size>
                <width>16777215</width>
@@ -256,7 +240,7 @@
               <string notr="true">font: 8pt &quot;Noto Sans&quot;;</string>
              </property>
              <property name="text">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This will make all windows never fully maximized&lt;br/&gt;Fullscreened windows excluded&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;This will make all windows never fully maximized&lt;br/&gt;Fullscreened windows excluded&lt;/body&gt;&lt;/html&gt;</string>
              </property>
              <property name="textFormat">
               <enum>Qt::RichText</enum>
@@ -313,7 +297,7 @@
              <property name="sizeHint" stdset="0">
               <size>
                <width>24</width>
-               <height>20</height>
+               <height>0</height>
               </size>
              </property>
             </spacer>
@@ -343,7 +327,7 @@
              <property name="sizeHint" stdset="0">
               <size>
                <width>24</width>
-               <height>20</height>
+               <height>0</height>
               </size>
              </property>
             </spacer>

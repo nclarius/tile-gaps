@@ -16,18 +16,15 @@ Please note that this script does not do any automatic tiling. Its purpose is to
 
 `kwin` version ≥ 5.21.
 
-### Method 1: via graphical interface
+### Installation via graphical interface
 
-1. Install the script via *System Settings* > *Window Management* > *KWin Scripts* > *Get New Scripts …* > search for *Window Gaps* > *Install*.
-2. Activate the script by selecting the checkbox in the *Window Gaps* entry.
+*System Settings* > *Window Management* > *KWin Scripts* > *Get New Scripts …* > search for *Window Gaps* > *Install*.
 
-### Method 2: via command line
+### Installation via command line
 
 ```bash
 git clone https://github.com/nclarius/tile-gaps.git
-plasmapkg2 --type kwinscript -i tile-gaps
-kwriteconfig5 --file kwinrc --group Plugins --key tilegapsEnabled true
-qdbus org.kde.KWin /KWin reconfigure
+tile-gaps/install.sh
 ```
 
 ## Configuration
@@ -35,13 +32,6 @@ qdbus org.kde.KWin /KWin reconfigure
 *System Settings* > *Window Management* > *KWin Scripts* > configuration button in the *Window Gaps* entry.
 
 You may have to disable the script, apply, reenable, and reapply in order for the changes to take effect.
-
-If the configuration button is missing (this is due to a central limitation with the KWin script installation component), try the following:
-
-````bash
-mkdir -p ~/.local/share/kservices5
-ln -sf ~/.local/share/kwin/scripts/tilegaps/metadata.desktop ~/.local/share/kservices5/tilegaps.desktop
-````
 
 ## Usage
 

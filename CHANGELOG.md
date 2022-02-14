@@ -1,3 +1,10 @@
+## v6.9
+- fix configuration menu not available
+- fix error in logging function
+- add install/uninstall scripts
+- make script automatically enabled on install
+- add changelog in BB Code format
+
 ## v6.8
 
 - fix non-existent function

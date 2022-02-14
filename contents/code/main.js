@@ -22,7 +22,7 @@ const config = {
     offsetLeft:   readConfig("offsetLeft", 0),
     offsetRight:  readConfig("offsetRight", 0),
     offsetBottom: readConfig("offsetBottom", 0),
-    // whether to apply gaps on maximized windows
+    // layouts to apply gaps to
     includeMaximized: readConfig("includeMaximized", false),
     // list of excluded/included applications
     excludeMode:  readConfig("excludeMode",  true),
@@ -39,9 +39,14 @@ const config = {
 debugMode = true;
 function debug(...args) {if (debugMode) console.debug("tilegaps:", ...args);}
 debug("intializing");
-debug("sizes (t/l/r/b/m):", config.gapTop, config.gapLeft, config.gapRight, config.gapBottom, config.gapMid);
-debug("layout:", "maximized:", config.includeMaximized);
-debug("applications:", "exclude:", config.excludeMode, String(config.excludedApps), "include:", config.includeMode, String(config.includedApps));
+debug("sizes (t/l/r/b/m):",
+    config.gapTop, config.gapLeft, config.gapRight, config.gapBottom,
+    config.gapMid);
+debug("layout:",
+    "maximized:", config.includeMaximized);
+debug("applications:",
+    "exclude:", config.excludeMode, String(config.excludedApps),
+    "include:", config.includeMode, String(config.includedApps));
 debug("");
 
 
@@ -53,7 +58,7 @@ debug("");
 var block = false;
 
 function caption(client) {
-    return client.caption || client;
+    return client ? client.caption : client;
 }
 
 // trigger applying tile gaps when client is initially present or added
@@ -126,8 +131,10 @@ function onRelayouted() {
 
 // make tile gaps for given client
 function applyGaps(client) {
-    // abort if there is a current iteration of gapping still running, the client is null or irrelevant
+    // abort if there is a current iteration of gapping still running,
+    // the client is null or irrelevant
     if (block || !client || ignoreClient(client)) return;
+    // block applying other gaps as long as current iteration is running
     block = true;
     debug("gaps for", client.caption, client.geometry);
     // make tile gaps to area grid
@@ -142,7 +149,8 @@ function applyGapsArea(client) {
     var grid = getGrid(client);
     var win = client.geometry;
 
-    // for each window edge, if the edge is near a grid anchor, set it to the gapped coordinate
+    // for each window edge,
+    // if the edge is near a grid anchor, set it to the gapped coordinate
 
     // left window edge
     for (var i = 0; i < Object.keys(grid.left).length; i++) {
@@ -196,7 +204,9 @@ function applyGapsArea(client) {
 }
 
 function applyGapsWindows(client1) {
-    // get relevant other windows
+
+    // for each other window, if they share an edge, clip or extend both evenly to make the distance the size of the gap
+
     for (var i = 0; i < workspace.clientList().length; i++) {
         var client2 = workspace.clientList()[i];
         if (!client2) continue;
@@ -206,36 +216,40 @@ function applyGapsWindows(client1) {
         var win2 = client2.geometry;
 
         // left window
-        if (nearWindow(diff = (win1.left - win2.right), config.gapMid) &&
+        if (nearWindow(win1.left, win2.right, config.gapMid) &&
             overlapVer(win1, win2)) {
             debug("gap to left window", client2.caption);
+            var diff = win1.left - win2.right;
             win1.x = win1.x - halfDiffL(diff) + halfGapU();
             win1.width = win1.width + halfDiffL(diff) - halfGapU();
             win2.width = win2.width + halfDiffU(diff) - halfGapL();
         }
 
         // right window
-        if (nearWindow(diff = (win2.left - win1.right), config.gapMid) &&
+        if (nearWindow(win2.left, win1.right, config.gapMid) &&
             overlapVer(win1, win2)) {
             debug("gap to right window", client2.caption);
+            var diff = win2.left - win1.right;
             win1.width = win1.width + halfDiffU(diff) - halfGapL();
             win2.x = win2.x - halfDiffL(diff) + halfGapU();
             win2.width = win2.width + halfDiffL(diff) - halfGapU();
         }
 
         // top window
-        if (nearWindow(diff = (win1.top - win2.bottom), config.gapMid) &&
+        if (nearWindow(win1.top, win2.bottom, config.gapMid) &&
             overlapHor(win1, win2)) {
             debug("gap to top window", client2.caption);
+            var diff = win1.top - win2.bottom;
             win1.y = win1.y - halfDiffL(diff) + halfGapU();
             win1.height = win1.height + halfDiffL(diff) - halfGapU();
             win2.height = win2.height + halfDiffU(diff) - halfGapL();
         }
 
         // bottom window
-        if (nearWindow(diff = (win2.top - win1.bottom), config.gapMid) &&
+        if (nearWindow(win2.top, win1.bottom, config.gapMid) &&
             overlapHor(win1, win2)) {
             debug("gap to bottom window", client2.caption);
+            var diff = win2.top - win1.bottom;
             win1.height = win1.height + halfDiffU(diff) - halfGapL();
             win2.y = win2.y - halfDiffL(diff) + halfGapU();
             win2.height = win2.height + halfDiffL(diff) - halfGapU();
@@ -347,16 +361,18 @@ function getGrid(client) {
 // geometry helpers
 ///////////////////////
 
-// a coordinate is close to another iff the difference is within the tolerance margin but not exactly the desired geometry
+// a coordinate is close to another iff
+// the difference is within the tolerance margin
+// but not exactly the desired geometry
 function nearArea(actual, expected, gap) {
     return (Math.abs(actual - expected.closed) <= 2 * gap
          || Math.abs(actual - expected.gapped) <= 2 * gap)
         && actual != expected.gapped;
 }
 
-function nearWindow(diff, gap) {
-    return Math.abs(diff) <= 2 * gap
-        && diff != gap;
+function nearWindow(win1, win2, gap) {
+    return Math.abs(win1 - win2) <= 2 * gap
+        && win1 - win2 != gap;
 }
 
 // horizontal/vertical overlap
@@ -402,24 +418,26 @@ function halfGapU() {
 // filter out irrelevant clients
 function ignoreClient(client) {
     return !client // null
-        || !(client.normalWindow || ["plasma-interactiveconsole"].includes(String(client.resourceClass))) // non-normal window
-        || ["plasmashell", "krunner"].includes(String(client.resourceClass)) // non-normal application
+        || !(client.normalWindow // non-normal window
+            || ["plasma-interactiveconsole"].includes(String(client.resourceClass)))
+        || ["plasmashell", "krunner"].includes(String(client.resourceClass))
+        // non-normal application
         || client.move || client.resize // still undergoing geometry change
         || client.fullScreen // fullscreen
-        || (!config.includeMaximized
-            && client.width == workspace.clientArea(KWin.MaximizeArea, client).width
-            && client.height == workspace.clientArea(KWin.MaximizeArea, client).height) // maximized
-        || (config.excludeMode
-            && config.excludedApps.includes(String(client.resourceClass))) // excluded appliation
-        || (config.includeMode
-            && !(config.includedApps.includes(String(client.resourceClass)))); // not included application
+        || (!config.includeMaximized // maximized
+            && client.geometry ==
+               workspace.clientArea(KWin.MaximizeArea, client))
+        || (config.excludeMode // excluded application
+            && config.excludedApps.includes(String(client.resourceClass)))
+        || (config.includeMode // non-included application
+            && !(config.includedApps.includes(String(client.resourceClass))));
 }
 
 function ignoreOther(client1, client2) {
     return ignoreClient(client2) // excluded
         || client2 == client1 // identical
-        || !(client2.desktop == client1.desktop
-            || client2.onAllDesktops || client1.onAllDesktops) // same desktop
+        || !(client2.desktop == client1.desktop // same desktop
+            || client2.onAllDesktops || client1.onAllDesktops)
         || !(client2.screen == client1.screen) // different screen
         || client2.minimized; // minimized
 }
