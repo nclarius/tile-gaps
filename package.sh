@@ -24,7 +24,6 @@ gh release create "${name}_v${version}" -F CHANGELOG.txt
 echo "generated GitHub release"
 
 # generate KDE store release
-echo "generating GitHub release"
 find . -name "*.kwinscript" -type f -delete
 zip -rq "${name}_v${version}.kwinscript"  \
 	contents \
