@@ -2,7 +2,7 @@
 
 # get plugin info
 name=$(basename "$PWD")
-version=$(grep -oP '(?<=X-KDE-PluginInfo-Version=).*' package/metadata.desktop)
+version=$(grep -oP '(?<=X-KDE-PluginInfo-Version=).*' ./metadata.desktop)
 echo "$name v$version"
 
 # generate changelog in markdown format
