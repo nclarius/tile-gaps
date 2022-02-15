@@ -1,3 +1,6 @@
+## v6.10
+- fix metadata not found
+
 ## v6.9
 - fix metadata not found
 
