@@ -26,7 +26,8 @@ echo "generated GitHub release"
 # generate KDE store release
 find . -name "*.kwinscript" -type f -delete
 zip -rq "${name}_v${version}.kwinscript"  \
-	package \
+	contents \
+	metadata.desktop \
     install.sh \
     uninstall.sh \
     README.md \
