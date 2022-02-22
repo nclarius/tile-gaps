@@ -76,7 +76,7 @@ function onRegeometrized(client) {
     client.moveResizedChanged.connect((client) =>
     	{ debug("move resized changed", caption(client)); applyGaps(client);   });
     client.geometryChanged.connect((client) =>
-        { debug("geometry changed", caption(client)); gaps(client); });
+        { debug("geometry changed", caption(client)); applyGaps(client); });
     client.clientGeometryChanged.connect((client) =>
     	{ debug("client geometry changed", caption(client)); applyGaps(client); });
     client.frameGeometryChanged.connect((client) =>

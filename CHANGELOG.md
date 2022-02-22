@@ -4,6 +4,12 @@
 - refactor install script
 - edit readme for comaptibility with older Plasma versions
 
+## v6.12
+- fix gaps sometimes applied only on next window event
+- enable debug mode
+- refactor install script
+- edit readme for comaptibility with older Plasma versions
+
 ## v6.11
 - fix metadata not found
 
