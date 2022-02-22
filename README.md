@@ -39,7 +39,7 @@ In Plasma versions < 5.24, a bug in the KWin scripting system [[1]](https://bugs
 ```bash
 sed -i 's/ConfigModule/Library/g' ~/.local/share/kwin/scripts/tilegaps/metadata.desktop
 mkdir -p ~/.local/share/kservices5/
-ln -s ~/.local/share/kwin/scripts/tilegaps/metadata.desktop ~/.local/share/kservices5/tilegaps.desktop
+ln -sf ~/.local/share/kwin/scripts/tilegaps/metadata.desktop ~/.local/share/kservices5/tilegaps.desktop
 qdbus org.kde.KWin /KWin reconfigure
 ```
 
