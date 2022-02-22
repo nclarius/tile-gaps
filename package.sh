@@ -15,7 +15,7 @@ echo 'generated changelog markdown'
 # generate changelog in bbcode format
 heading_bb=$([[ $version == *.0 ]] && echo "h1" || echo "h2")
 caption_bb='['"$heading_bb"']v'"$version"'[/'"$heading_bb"']'
-changes_bb='[list]\n'"$(sed -f CHANGELOG.txt 's/- /[*] /g')"$'\n[/list]'
+changes_bb='[list]\n'"$(cat CHANGELOG.txt | sed 's/- /[*] /g')"$'\n[/list]'
 echo "$caption_bb"$'\n'"$changes_bb"$'\n\n'"$(cat CHANGELOG.bbcode)" > "CHANGELOG.bbcode"
 echo 'generated changelog bbcode'
 
