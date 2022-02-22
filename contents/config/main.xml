@@ -45,5 +45,9 @@
             <label>List of applications to be included</label>
             <default></default>
         </entry>
+        <entry name="debugMode" type="bool">
+            <label>Whether to log debug information</label>
+            <default>true</default>
+        </entry>
     </group>
 </kcfg>

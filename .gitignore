@@ -1,0 +1,6 @@
+*.odg
+*.mp4
+*.desktop
+!metadata.desktop
+*.kwinscript
+CHANGELOG.txt

@@ -36,7 +36,7 @@ const config = {
 // initialization
 ///////////////////////
 
-debugMode = true;
+const debugMode = readConfig("debugMode", true);
 function debug(...args) {if (debugMode) console.debug("tilegaps:", ...args);}
 debug("intializing");
 debug("sizes (t/l/r/b/m):",
@@ -73,12 +73,12 @@ function onAdded(client) {
 
 // trigger applying tile gaps when client is moved or resized
 function onRegeometrized(client) {
-    // client.moveResizedChanged.connect((client) =>
-    // 	{ debug("move resized changed", caption(client)); applyGaps(client);   });
-    // client.geometryChanged.connect((client) =>
-        // { debug("geometry changed", caption(client)); gaps(client); });
-    // client.clientGeometryChanged.connect((client) =>
-    // // 	{ debug("client geometry changed", caption(client)); applyGaps(client); });
+    client.moveResizedChanged.connect((client) =>
+    	{ debug("move resized changed", caption(client)); applyGaps(client);   });
+    client.geometryChanged.connect((client) =>
+        { debug("geometry changed", caption(client)); gaps(client); });
+    client.clientGeometryChanged.connect((client) =>
+    	{ debug("client geometry changed", caption(client)); applyGaps(client); });
     client.frameGeometryChanged.connect((client) =>
         { debug("frame geometry changed", caption(client)); applyGaps(client)});
     client.clientFinishUserMovedResized.connect((client) =>
@@ -287,30 +287,30 @@ function getGrid(client) {
                 gapped: Math.round(area.left + config.gapLeft)
             },
             quarterLeft: {
-                closed: Math.round(area.left + 1 * (area.width/4)),
-                gapped: Math.round(area.left + 1 * (area.width + config.gapLeft - config.gapRight + config.gapMid)/4)
+                closed: Math.round(area.left + 1 * (area.width / 4)),
+                gapped: Math.round(area.left + 1 * (area.width + config.gapLeft - config.gapRight + config.gapMid) / 4)
             },
             halfHorizontal: {
-                closed: Math.round(area.left + area.width/2),
-                gapped: Math.round(area.left + (area.width + config.gapLeft - config.gapRight + config.gapMid)/2)
+                closed: Math.round(area.left + area.width / 2),
+                gapped: Math.round(area.left + (area.width + config.gapLeft - config.gapRight + config.gapMid) / 2)
             },
             quarterRight: {
-                closed: Math.round(area.left + 3 * (area.width/4)),
-                gapped: Math.round(area.left + 3 * (area.width + config.gapLeft - config.gapRight + config.gapMid)/4)
+                closed: Math.round(area.left + 3 * (area.width / 4)),
+                gapped: Math.round(area.left + 3 * (area.width + config.gapLeft - config.gapRight + config.gapMid) / 4)
             }
         },
         right: {
                 quarterLeft: {
-                    closed: Math.round(area.right - 3 * (area.width/4)),
-                    gapped: Math.round(area.right - 3 * (area.width + config.gapLeft - config.gapRight + config.gapMid)/4)
+                    closed: Math.round(area.right - 3 * (area.width / 4)),
+                    gapped: Math.round(area.right - 3 * (area.width + config.gapLeft - config.gapRight + config.gapMid) / 4)
                 },
                 halfHorizontal: {
-                    closed: Math.round(area.right - area.width/2),
-                    gapped: Math.round(area.right - (area.width + config.gapLeft - config.gapRight + config.gapMid)/2)
+                    closed: Math.round(area.right - area.width / 2),
+                    gapped: Math.round(area.right - (area.width + config.gapLeft - config.gapRight + config.gapMid) / 2)
                 },
                 quarterRight: {
-                    closed: Math.round(area.right - 1 * (area.width/4)),
-                    gapped: Math.round(area.right - 1 * (area.width + config.gapLeft - config.gapRight + config.gapMid)/4)
+                    closed: Math.round(area.right - 1 * (area.width / 4)),
+                    gapped: Math.round(area.right - 1 * (area.width + config.gapLeft - config.gapRight + config.gapMid) / 4)
                 },
                 fullRight: {
                     closed: Math.round(area.right),
@@ -323,30 +323,30 @@ function getGrid(client) {
                 gapped: Math.round(area.top + config.gapTop)
             },
             quarterTop: {
-                closed: Math.round(area.top + 1 * (area.height/4)),
-                gapped: Math.round(area.top + 1 * (area.height + config.gapTop - config.gapBottom + config.gapMid)/4)
+                closed: Math.round(area.top + 1 * (area.height / 4)),
+                gapped: Math.round(area.top + 1 * (area.height + config.gapTop - config.gapBottom + config.gapMid) / 4)
             },
             halfVertical: {
-                closed: Math.round(area.top + area.height/2),
-                gapped: Math.round(area.top + (area.height + config.gapTop - config.gapBottom + config.gapMid)/2)
+                closed: Math.round(area.top + area.height / 2),
+                gapped: Math.round(area.top + (area.height + config.gapTop - config.gapBottom + config.gapMid) / 2)
             },
             quarterBottom: {
-                closed: Math.round(area.top + 3 * (area.height/4)),
-                gapped: Math.round(area.top + 3 * (area.height + config.gapTop - config.gapBottom + config.gapMid)/4)
+                closed: Math.round(area.top + 3 * (area.height / 4)),
+                gapped: Math.round(area.top + 3 * (area.height + config.gapTop - config.gapBottom + config.gapMid) / 4)
             }
         },
         bottom: {
             quarterTop: {
-                closed: Math.round(area.bottom - 3 * (area.height/4)),
-                gapped: Math.round(area.bottom - 3 * (area.height + config.gapTop - config.gapBottom + config.gapMid)/4)
+                closed: Math.round(area.bottom - 3 * (area.height / 4)),
+                gapped: Math.round(area.bottom - 3 * (area.height + config.gapTop - config.gapBottom + config.gapMid) / 4)
             },
             halfVertical: {
-                closed: Math.round(area.bottom - area.height/2),
-                gapped: Math.round(area.bottom - (area.height + config.gapTop - config.gapBottom + config.gapMid)/2)
+                closed: Math.round(area.bottom - area.height / 2),
+                gapped: Math.round(area.bottom - (area.height + config.gapTop - config.gapBottom + config.gapMid) / 2)
             },
             quarterBottom: {
-                closed: Math.round(area.bottom - 1 * (area.height/4)),
-                gapped: Math.round(area.bottom - 1 * (area.height + config.gapTop - config.gapBottom + config.gapMid)/4)
+                closed: Math.round(area.bottom - 1 * (area.height / 4)),
+                gapped: Math.round(area.bottom - 1 * (area.height + config.gapTop - config.gapBottom + config.gapMid) / 4)
             },
             fullBottom: {
                 closed: Math.round(area.bottom),
@@ -365,50 +365,52 @@ function getGrid(client) {
 // the difference is within the tolerance margin
 // but not exactly the desired geometry
 function nearArea(actual, expected, gap) {
-    return (Math.abs(actual - expected.closed) <= 2 * gap
-         || Math.abs(actual - expected.gapped) <= 2 * gap)
+    var tolerance = 2 * gap;
+    return (Math.abs(actual - expected.closed) <= tolerance
+         || Math.abs(actual - expected.gapped) <= tolerance)
         && actual != expected.gapped;
 }
 
 function nearWindow(win1, win2, gap) {
-    return Math.abs(win1 - win2) <= 2 * gap
+    var tolerance = 2 * gap;
+    return Math.abs(win1 - win2) <= tolerance
         && win1 - win2 != gap;
 }
 
 // horizontal/vertical overlap
 
 function overlapHor(win1, win2) {
-    const toleranceMid = 2 * config.gapMid;
-    return (win1.left <= win2.left + toleranceMid
-            && win1.right > win2.left + toleranceMid)
-        || (win2.left <= win1.left + toleranceMid
-            && win2.right + toleranceMid > win1.left);
+    var tolerance = 2 * config.gapMid;
+    return (win1.left <= win2.left + tolerance
+            && win1.right > win2.left + tolerance)
+        || (win2.left <= win1.left + tolerance
+            && win2.right + tolerance > win1.left);
 }
 
 function overlapVer(win1, win2) {
-    const toleranceMid = 2 * config.gapMid;
-    return (win1.top <= win2.top + toleranceMid
-            && win1.bottom > win2.top + toleranceMid)
-        || (win2.top <= win1.top + toleranceMid
-            && win2.bottom + toleranceMid > win1.top);
+    var tolerance = 2 * config.gapMid;
+    return (win1.top <= win2.top + tolerance
+            && win1.bottom > win2.top + tolerance)
+        || (win2.top <= win1.top + tolerance
+            && win2.bottom + tolerance > win1.top);
 }
 
 // floored/ceiled half difference between edges
 function halfDiffL(diff) {
-    return Math.floor(diff/2);
+    return Math.floor(diff / 2);
 }
 
 function halfDiffU(diff) {
-    return Math.ceil(diff/2);
+    return Math.ceil(diff / 2);
 }
 
 // floored/ceiled half gap mid size
 function halfGapL() {
-    return Math.floor(config.gapMid/2);
+    return Math.floor(config.gapMid / 2);
 }
 
 function halfGapU() {
-    return Math.ceil(config.gapMid/2);
+    return Math.ceil(config.gapMid / 2);
 }
 
 ///////////////////////

@@ -34,6 +34,15 @@ cd tile-gaps
 
 You may have to disable the script, apply, reenable, and reapply in order for the changes to take effect.
 
+In Plasma versions < 5.24, a bug in the KWin scripting system [[1]](https://bugs.kde.org/show_bug.cgi?id=411430) [[2]](https://bugs.kde.org/show_bug.cgi?id=444378) causes the configuration not to be found. To fix this, please execute the following commands in a terminal:
+
+```bash
+sed -i 's/ConfigModule/Library/g' ~/.local/share/kwin/scripts/tilegaps/metadata.desktop
+mkdir -p ~/.local/share/kservices5/
+ln -s ~/.local/share/kwin/scripts/tilegaps/metadata.desktop ~/.local/share/kservices5/tilegaps.desktop
+qdbus org.kde.KWin /KWin reconfigure
+```
+
 ## Usage
 
 ### Compatibility
