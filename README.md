@@ -32,7 +32,7 @@ cd tile-gaps
 
 *System Settings* > *Window Management* > *KWin Scripts* > configuration button in the *Window Gaps* entry.
 
-You may have to disable the script, apply, reenable, and reapply in order for the changes to take effect.
+You may need to disable the script, apply, reenable, and reapply in order for the changes to take effect.
 
 In Plasma versions < 5.24, a bug in the KWin scripting system [[1]](https://bugs.kde.org/show_bug.cgi?id=411430) [[2]](https://bugs.kde.org/show_bug.cgi?id=444378) causes the configuration not to be found. To fix this, please execute the following commands in a terminal:
 
