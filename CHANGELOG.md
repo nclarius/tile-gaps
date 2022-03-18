@@ -13,6 +13,9 @@
 ## v6.13
 - fix bugs with logout and splash screens
 
+## v6.13
+- fix bugs with logout and splash screens
+
 ## v6.12
 - fix gaps sometimes applied only on next window event
 - enable debug mode
