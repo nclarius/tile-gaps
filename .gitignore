@@ -7,3 +7,5 @@ CHANGELOG.txt
 debug*.sh
 *able.sh
 .vscode
+.directory
+.gitignore
