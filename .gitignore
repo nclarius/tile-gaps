@@ -4,3 +4,6 @@
 !metadata.desktop
 *.kwinscript
 CHANGELOG.txt
+debug*.sh
+*able.sh
+.vscode
