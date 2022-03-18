@@ -9,19 +9,25 @@ GNU General Public License v3.0
 // configuration
 ///////////////////////
 
-const config = {
+const gap = {
     // size of gap to screen edges
-    gapTop:    readConfig("gapTop",    12),
-    gapLeft:   readConfig("gapLeft",   12),
-    gapRight:  readConfig("gapRight",  12),
-    gapBottom: readConfig("gapBottom", 12),
+    left:   readConfig("gapLeft",   12),
+    right:  readConfig("gapRight",  12),
+    top:    readConfig("gapTop",    12),
+    bottom: readConfig("gapBottom", 12),
     // size of gap between windows
-    gapMid:    readConfig("gapMid",    12),
-    // offsets from floating panels
-    offsetTop:    readConfig("offsetTop", 0),
-    offsetLeft:   readConfig("offsetLeft", 0),
-    offsetRight:  readConfig("offsetRight", 0),
-    offsetBottom: readConfig("offsetBottom", 0),
+    mid:    readConfig("gapMid",    12)
+};
+
+const offset = {
+    // offset from floating panels
+    left:   readConfig("offsetLeft",   0),
+    right:  readConfig("offsetRight",  0),
+    top:    readConfig("offsetTop",    0),
+    bottom: readConfig("offsetBottom", 0)
+};
+
+const config = {
     // layouts to apply gaps to
     includeMaximized: readConfig("includeMaximized", false),
     // list of excluded/included applications
@@ -37,16 +43,19 @@ const config = {
 ///////////////////////
 
 const debugMode = readConfig("debugMode", true);
+const fullDebugMode = readConfig("fullDebugMode", false);
 function debug(...args) {if (debugMode) console.debug("tilegaps:", ...args);}
+function fulldebug(...args) {if (fullDebugMode) {console.debug("tilegaps:", ...args);}}
 debug("intializing");
-debug("sizes (t/l/r/b/m):",
-    config.gapTop, config.gapLeft, config.gapRight, config.gapBottom,
-    config.gapMid);
+debug("sizes (l/r/t/b/m):",
+      gap.left, gap.right, gap.top, gap.bottom, gap.mid);
+debug("offset (l/r/t/b):",
+      offset.left, offset.right, offset.top, offset.bottom, offset.mid);
 debug("layout:",
-    "maximized:", config.includeMaximized);
+      "maximized:", config.includeMaximized);
 debug("applications:",
-    "exclude:", config.excludeMode, String(config.excludedApps),
-    "include:", config.includeMode, String(config.includedApps));
+      "exclude:", config.excludeMode, String(config.excludedApps),
+      "include:", config.includeMode, String(config.includedApps));
 debug("");
 
 
@@ -56,10 +65,6 @@ debug("");
 
 // block reapplying until current iteration is finished
 var block = false;
-
-function caption(client) {
-    return client ? client.caption : client;
-}
 
 // trigger applying tile gaps when client is initially present or added
 workspace.clientList().forEach(client => onAdded(client));
@@ -111,7 +116,7 @@ function onRelayouted() {
     workspace.numberScreensChanged.connect(() =>
     		{ debug("number screens changed"); applyGapsAll(); });
     workspace.screenResized.connect(() =>
-    		{ debug("screen reszed"); applyGapsAll(); });
+    		{ debug("screen resized"); applyGapsAll(); });
     workspace.currentActivityChanged.connect(() =>
     		{ debug("current activity changed"); applyGapsAll(); });
     workspace.activitiesChanged.connect(() =>
@@ -136,7 +141,7 @@ function applyGaps(client) {
     if (block || !client || ignoreClient(client)) return;
     // block applying other gaps as long as current iteration is running
     block = true;
-    debug("gaps for", client.caption, client.geometry);
+    debug("gaps for", caption(client), geometry(client));
     // make tile gaps to area grid
     applyGapsArea(client);
     // make tile gaps to other windows
@@ -146,66 +151,49 @@ function applyGaps(client) {
 }
 
 function applyGapsArea(client) {
+    var area = getArea(client);
+    debug("area", geometry(area));
     var grid = getGrid(client);
     var win = client.geometry;
 
-    // for each window edge,
-    // if the edge is near a grid anchor, set it to the gapped coordinate
-
-    // left window edge
-    for (var i = 0; i < Object.keys(grid.left).length; i++) {
-        var pos = Object.keys(grid.left)[i];
-        var coords = grid.left[pos];
-        if (nearArea(win.left, coords, config.gapLeft)) {
-            debug("gap to left tile edge", pos);
-            var diff = coords.gapped - win.left;
-            win.width -= diff;
-            win.x += diff;
-            break;
-        }
-    }
-
-    // right window edge
-    for (var i = 0; i < Object.keys(grid.right).length; i++) {
-        var pos = Object.keys(grid.right)[i];
-        var coords = grid.right[pos];
-        if (nearArea(win.right, coords, config.gapRight)) {
-            debug("gap to right tile edge", pos);
-            var diff = win.right - coords.gapped;
-            win.width -= diff;
-            break;
-        }
-    }
-
-    // top window edge
-    for (var i = 0; i < Object.keys(grid.top).length; i++) {
-        var pos = Object.keys(grid.top)[i];
-        var coords = grid.top[pos];
-        if (nearArea(win.top, coords, config.gapTop)) {
-            debug("gap to top tile edge", pos);
-            var diff = coords.gapped - win.top;
-            win.height -= diff;
-            win.y += diff;
-            break;
-        }
-    }
-
-    // bottom window edge
-    for (var i = 0; i < Object.keys(grid.bottom).length; i++) {
-        var pos = Object.keys(grid.bottom)[i];
-        var coords = grid.bottom[pos];
-        if (nearArea(win.bottom, coords, config.gapBottom)) {
-            debug("gap to bottom tile edge", pos);
-            var diff = win.bottom - coords.gapped;
-            win.height -= diff;
-            break;
+    // for each window edge, if the edge is near some grid anchor of that edge,
+    // set it to the gapped coordinate
+    const edges = ["left", "right", "top", "bottom"];
+    for (var i = 0; i < edges.length; i++) {
+        var edge = edges[i];
+        for (var j = 0; j < Object.keys(grid[edge]).length; j++) {
+            var pos = Object.keys(grid[edge])[j];
+            var coords = grid[edge][pos];
+            if (nearArea(win[edge], coords, gap[edge])) {
+                debug("gap to tile edge", edge, pos, coords.gapped);
+                var diff = coords.gapped - win[edge];
+                switch (edge) {
+                    case "left":
+                        win.width -= diff;
+                        win.x += diff;
+                        break;
+                    case "right":
+                        win.width += diff;
+                        break;
+                    case "top":
+                        win.height -= diff;
+                        win.y += diff;
+                        break;
+                    case "bottom":
+                        win.height += diff;
+                        break;
+                }
+                debug("new geo", geometry(win));
+                break;
+            }
         }
     }
 }
 
 function applyGapsWindows(client1) {
 
-    // for each other window, if they share an edge, clip or extend both evenly to make the distance the size of the gap
+    // for each other window, if they share an edge,
+    // clip or extend both evenly to make the distance the size of the gap
 
     for (var i = 0; i < workspace.clientList().length; i++) {
         var client2 = workspace.clientList()[i];
@@ -216,43 +204,51 @@ function applyGapsWindows(client1) {
         var win2 = client2.geometry;
 
         // left window
-        if (nearWindow(win1.left, win2.right, config.gapMid) &&
+        if (nearWindow(win1.left, win2.right, gap.mid) &&
             overlapVer(win1, win2)) {
-            debug("gap to left window", client2.caption);
+            debug("gap to left window", caption(client2), geometry(client2));
             var diff = win1.left - win2.right;
             win1.x = win1.x - halfDiffL(diff) + halfGapU();
             win1.width = win1.width + halfDiffL(diff) - halfGapU();
             win2.width = win2.width + halfDiffU(diff) - halfGapL();
+            debug("new geo win1", geometry(win1));
+            debug("new geo win2", geometry(win2));
         }
 
         // right window
-        if (nearWindow(win2.left, win1.right, config.gapMid) &&
+        if (nearWindow(win2.left, win1.right, gap.mid) &&
             overlapVer(win1, win2)) {
-            debug("gap to right window", client2.caption);
+            debug("gap to right window", client2.caption, geometry(client2));
             var diff = win2.left - win1.right;
             win1.width = win1.width + halfDiffU(diff) - halfGapL();
             win2.x = win2.x - halfDiffL(diff) + halfGapU();
             win2.width = win2.width + halfDiffL(diff) - halfGapU();
+            debug("new geo win1", geometry(win1));
+            debug("new geo win2", geometry(win2));
         }
 
         // top window
-        if (nearWindow(win1.top, win2.bottom, config.gapMid) &&
+        if (nearWindow(win1.top, win2.bottom, gap.mid) &&
             overlapHor(win1, win2)) {
-            debug("gap to top window", client2.caption);
+            debug("gap to top window", client2.caption, geometry(client2));
             var diff = win1.top - win2.bottom;
             win1.y = win1.y - halfDiffL(diff) + halfGapU();
             win1.height = win1.height + halfDiffL(diff) - halfGapU();
             win2.height = win2.height + halfDiffU(diff) - halfGapL();
+            debug("new geo win1", geometry(win1));
+            debug("new geo win2", geometry(win2));
         }
 
         // bottom window
-        if (nearWindow(win2.top, win1.bottom, config.gapMid) &&
+        if (nearWindow(win2.top, win1.bottom, gap.mid) &&
             overlapHor(win1, win2)) {
-            debug("gap to bottom window", client2.caption);
+            debug("gap to bottom window", client2.caption, geometry(client2));
             var diff = win2.top - win1.bottom;
             win1.height = win1.height + halfDiffU(diff) - halfGapL();
             win2.y = win2.y - halfDiffL(diff) + halfGapU();
             win2.height = win2.height + halfDiffL(diff) - halfGapU();
+            debug("new geo win1", geometry(win1));
+            debug("new geo win2", geometry(win2));
         }
     }
 }
@@ -266,14 +262,14 @@ function applyGapsWindows(client1) {
 function getArea(client) {
     var clientArea = workspace.clientArea(KWin.MaximizeArea, client);
     return {
-        x: clientArea.x + config.offsetLeft,
-        y: clientArea.y + config.offsetTop,
-        width: clientArea.width - config.offsetLeft - config.offsetRight,
-        height: clientArea.height - config.offsetTop - config.offsetBottom,
-        left: clientArea.x + config.offsetLeft,
-        right: clientArea.x + clientArea.width - config.offsetRight - 1,
-        top: clientArea.y + config.offsetTop,
-        bottom: clientArea.y + clientArea.height - config.offsetBottom - 1,
+        x: clientArea.x + offset.left,
+        y: clientArea.y + offset.top,
+        width: clientArea.width - offset.left - offset.right,
+        height: clientArea.height - offset.top - offset.bottom,
+        left: clientArea.x + offset.left,
+        right: clientArea.x + clientArea.width - offset.right - 1,
+        top: clientArea.y + offset.top,
+        bottom: clientArea.y + clientArea.height - offset.bottom - 1,
     };
 }
 
@@ -284,86 +280,84 @@ function getGrid(client) {
         left: {
             fullLeft: {
                 closed: Math.round(area.left),
-                gapped: Math.round(area.left + config.gapLeft)
+                gapped: Math.round(area.left + gap.left)
             },
             quarterLeft: {
                 closed: Math.round(area.left + 1 * (area.width / 4)),
-                gapped: Math.round(area.left + 1 * (area.width + config.gapLeft - config.gapRight + config.gapMid) / 4)
+                gapped: Math.round(area.left + 1 * (area.width + gap.left - gap.right + gap.mid) / 4)
             },
             halfHorizontal: {
                 closed: Math.round(area.left + area.width / 2),
-                gapped: Math.round(area.left + (area.width + config.gapLeft - config.gapRight + config.gapMid) / 2)
+                gapped: Math.round(area.left + (area.width + gap.left - gap.right + gap.mid) / 2)
             },
-            quarterRight: {
+            quarterright: {
                 closed: Math.round(area.left + 3 * (area.width / 4)),
-                gapped: Math.round(area.left + 3 * (area.width + config.gapLeft - config.gapRight + config.gapMid) / 4)
+                gapped: Math.round(area.left + 3 * (area.width + gap.left - gap.right + gap.mid) / 4)
             }
         },
         right: {
                 quarterLeft: {
                     closed: Math.round(area.right - 3 * (area.width / 4)),
-                    gapped: Math.round(area.right - 3 * (area.width + config.gapLeft - config.gapRight + config.gapMid) / 4)
+                    gapped: Math.round(area.right - 3 * (area.width + gap.left - gap.right + gap.mid) / 4)
                 },
                 halfHorizontal: {
                     closed: Math.round(area.right - area.width / 2),
-                    gapped: Math.round(area.right - (area.width + config.gapLeft - config.gapRight + config.gapMid) / 2)
+                    gapped: Math.round(area.right - (area.width + gap.left - gap.right + gap.mid) / 2)
                 },
-                quarterRight: {
+                quarterright: {
                     closed: Math.round(area.right - 1 * (area.width / 4)),
-                    gapped: Math.round(area.right - 1 * (area.width + config.gapLeft - config.gapRight + config.gapMid) / 4)
+                    gapped: Math.round(area.right - 1 * (area.width + gap.left - gap.right + gap.mid) / 4)
                 },
-                fullRight: {
+                fullright: {
                     closed: Math.round(area.right),
-                    gapped: Math.round(area.right - config.gapRight)
+                    gapped: Math.round(area.right - gap.right)
                 }
         },
         top: {
-            fullTop: {
+            fulltop: {
                 closed: Math.round(area.top),
-                gapped: Math.round(area.top + config.gapTop)
+                gapped: Math.round(area.top + gap.top)
             },
-            quarterTop: {
+            quartertop: {
                 closed: Math.round(area.top + 1 * (area.height / 4)),
-                gapped: Math.round(area.top + 1 * (area.height + config.gapTop - config.gapBottom + config.gapMid) / 4)
+                gapped: Math.round(area.top + 1 * (area.height + gap.top - gap.bottom + gap.mid) / 4)
             },
             halfVertical: {
                 closed: Math.round(area.top + area.height / 2),
-                gapped: Math.round(area.top + (area.height + config.gapTop - config.gapBottom + config.gapMid) / 2)
+                gapped: Math.round(area.top + (area.height + gap.top - gap.bottom + gap.mid) / 2)
             },
-            quarterBottom: {
+            quarterbottom: {
                 closed: Math.round(area.top + 3 * (area.height / 4)),
-                gapped: Math.round(area.top + 3 * (area.height + config.gapTop - config.gapBottom + config.gapMid) / 4)
+                gapped: Math.round(area.top + 3 * (area.height + gap.top - gap.bottom + gap.mid) / 4)
             }
         },
         bottom: {
-            quarterTop: {
+            quartertop: {
                 closed: Math.round(area.bottom - 3 * (area.height / 4)),
-                gapped: Math.round(area.bottom - 3 * (area.height + config.gapTop - config.gapBottom + config.gapMid) / 4)
+                gapped: Math.round(area.bottom - 3 * (area.height + gap.top - gap.bottom + gap.mid) / 4)
             },
             halfVertical: {
                 closed: Math.round(area.bottom - area.height / 2),
-                gapped: Math.round(area.bottom - (area.height + config.gapTop - config.gapBottom + config.gapMid) / 2)
+                gapped: Math.round(area.bottom - (area.height + gap.top - gap.bottom + gap.mid) / 2)
             },
-            quarterBottom: {
+            quarterbottom: {
                 closed: Math.round(area.bottom - 1 * (area.height / 4)),
-                gapped: Math.round(area.bottom - 1 * (area.height + config.gapTop - config.gapBottom + config.gapMid) / 4)
+                gapped: Math.round(area.bottom - 1 * (area.height + gap.top - gap.bottom + gap.mid) / 4)
             },
-            fullBottom: {
+            fullbottom: {
                 closed: Math.round(area.bottom),
-                gapped: Math.round(area.bottom - config.gapBottom)
+                gapped: Math.round(area.bottom - gap.bottom)
             }
         }
     };
 }
 
-
 ///////////////////////
-// geometry helpers
+// geometry computation
 ///////////////////////
 
 // a coordinate is close to another iff
-// the difference is within the tolerance margin
-// but not exactly the desired geometry
+// the difference is within the tolerance margin but non-zero
 function nearArea(actual, expected, gap) {
     var tolerance = 2 * gap;
     return (Math.abs(actual - expected.closed) <= tolerance
@@ -380,7 +374,7 @@ function nearWindow(win1, win2, gap) {
 // horizontal/vertical overlap
 
 function overlapHor(win1, win2) {
-    var tolerance = 2 * config.gapMid;
+    var tolerance = 2 * gap.mid;
     return (win1.left <= win2.left + tolerance
             && win1.right > win2.left + tolerance)
         || (win2.left <= win1.left + tolerance
@@ -388,7 +382,7 @@ function overlapHor(win1, win2) {
 }
 
 function overlapVer(win1, win2) {
-    var tolerance = 2 * config.gapMid;
+    var tolerance = 2 * gap.mid;
     return (win1.top <= win2.top + tolerance
             && win1.bottom > win2.top + tolerance)
         || (win2.top <= win1.top + tolerance
@@ -396,6 +390,7 @@ function overlapVer(win1, win2) {
 }
 
 // floored/ceiled half difference between edges
+
 function halfDiffL(diff) {
     return Math.floor(diff / 2);
 }
@@ -405,13 +400,15 @@ function halfDiffU(diff) {
 }
 
 // floored/ceiled half gap mid size
+
 function halfGapL() {
-    return Math.floor(config.gapMid / 2);
+    return Math.floor(gap.mid / 2);
 }
 
 function halfGapU() {
-    return Math.ceil(config.gapMid / 2);
+    return Math.ceil(gap.mid / 2);
 }
+
 
 ///////////////////////
 // ignored clients
@@ -420,10 +417,9 @@ function halfGapU() {
 // filter out irrelevant clients
 function ignoreClient(client) {
     return !client // null
-        || !(client.normalWindow // non-normal window
-            || ["plasma-interactiveconsole"].includes(String(client.resourceClass)))
-        || ["plasmashell", "krunner"].includes(String(client.resourceClass))
-        // non-normal application
+        || !client.normalWindow // non-normal window
+        || ["plasmashell", "krunner", "ksmserver-logout-greeter", "ksplash"]
+           .includes(String(client.resourceClass)) // non-normal application
         || client.move || client.resize // still undergoing geometry change
         || client.fullScreen // fullscreen
         || (!config.includeMaximized // maximized
@@ -442,4 +438,26 @@ function ignoreOther(client1, client2) {
             || client2.onAllDesktops || client1.onAllDesktops)
         || !(client2.screen == client1.screen) // different screen
         || client2.minimized; // minimized
+}
+
+
+///////////////////////
+// helpers
+///////////////////////
+
+// stringify client object
+function properties(client) {
+    return JSON.stringify(client, undefined, 2);
+}
+
+// stringify client caption
+function caption(client) {
+    return client ? client.caption : client;
+}
+
+// stringify client geometry
+function geometry(client) {
+    return ["x", client.x, client.width, client.x + client.width,
+            "y", client.y, client.height, client.y + client.height].
+           join(" ");
 }

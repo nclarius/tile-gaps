@@ -18,7 +18,8 @@ Please note that this script does not do any automatic tiling. Its purpose is to
 
 ### Installation via graphical interface
 
-*System Settings* > *Window Management* > *KWin Scripts* > *Get New Scripts …* > search for *Window Gaps* > *Install*.
+1. Install the script via *System Settings* > *Window Management* > *KWin Scripts* > *Get New Scripts …* > search for *Window Gaps* > *Install*.
+2. Enable the script by activating its checkbox, and apply the settings.
 
 ### Installation via command line
 
@@ -32,9 +33,9 @@ cd tile-gaps
 
 *System Settings* > *Window Management* > *KWin Scripts* > configuration button in the *Window Gaps* entry.
 
-You may need to disable the script, apply, reenable, and reapply in order for the changes to take effect.
+You may need to uncheck the checkbox for the script, apply the settings, recheck, and reapply in order for the changes to take effect.
 
-In Plasma versions < 5.24, a bug in the KWin scripting system [[1]](https://bugs.kde.org/show_bug.cgi?id=411430) [[2]](https://bugs.kde.org/show_bug.cgi?id=444378) causes the configuration not to be found. To fix this, please execute the following commands in a terminal:
+In Plasma versions < 5.24, a bug in the KWin scripting system [[1]](https://bugs.kde.org/show_bug.cgi?id=411430) [[2]](https://bugs.kde.org/show_bug.cgi?id=444378) may cause the configuration not to be found. To fix this, please execute the following commands in a terminal:
 
 ```bash
 sed -i 's/ConfigModule/Library/g' ~/.local/share/kwin/scripts/tilegaps/metadata.desktop
