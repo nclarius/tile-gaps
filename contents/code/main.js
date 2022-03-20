@@ -169,17 +169,21 @@ function applyGapsArea(client) {
                 var diff = coords.gapped - win[edge];
                 switch (edge) {
                     case "left":
+                        // crop window left edge
                         win.width -= diff;
                         win.x += diff;
                         break;
                     case "right":
+                        // crop window right edge
                         win.width += diff;
                         break;
                     case "top":
+                        // crop window top edge
                         win.height -= diff;
                         win.y += diff;
                         break;
                     case "bottom":
+                        // crop window bottom edge
                         win.height += diff;
                         break;
                 }
@@ -208,8 +212,10 @@ function applyGapsWindows(client1) {
             overlapVer(win1, win2)) {
             debug("gap to left window", caption(client2), geometry(client2));
             var diff = win1.left - win2.right;
+            // crop right window left edge half gap
             win1.x = win1.x - halfDiffL(diff) + halfGapU();
             win1.width = win1.width + halfDiffL(diff) - halfGapU();
+            // crop left window right edge half gap
             win2.width = win2.width + halfDiffU(diff) - halfGapL();
             debug("new geo win1", geometry(win1));
             debug("new geo win2", geometry(win2));
@@ -220,7 +226,9 @@ function applyGapsWindows(client1) {
             overlapVer(win1, win2)) {
             debug("gap to right window", client2.caption, geometry(client2));
             var diff = win2.left - win1.right;
+            // crop left window right edge half gap
             win1.width = win1.width + halfDiffU(diff) - halfGapL();
+            // crop right window left edge half gap
             win2.x = win2.x - halfDiffL(diff) + halfGapU();
             win2.width = win2.width + halfDiffL(diff) - halfGapU();
             debug("new geo win1", geometry(win1));
@@ -232,8 +240,10 @@ function applyGapsWindows(client1) {
             overlapHor(win1, win2)) {
             debug("gap to top window", client2.caption, geometry(client2));
             var diff = win1.top - win2.bottom;
+            // crop bottom window top edge half gap
             win1.y = win1.y - halfDiffL(diff) + halfGapU();
             win1.height = win1.height + halfDiffL(diff) - halfGapU();
+            // crop top window bottom edge half gap
             win2.height = win2.height + halfDiffU(diff) - halfGapL();
             debug("new geo win1", geometry(win1));
             debug("new geo win2", geometry(win2));
@@ -244,7 +254,9 @@ function applyGapsWindows(client1) {
             overlapHor(win1, win2)) {
             debug("gap to bottom window", client2.caption, geometry(client2));
             var diff = win2.top - win1.bottom;
+            // crop top window bottom edge half gap
             win1.height = win1.height + halfDiffU(diff) - halfGapL();
+            // crop bottom window top edge half gap
             win2.y = win2.y - halfDiffL(diff) + halfGapU();
             win2.height = win2.height + halfDiffL(diff) - halfGapU();
             debug("new geo win1", geometry(win1));
@@ -290,7 +302,7 @@ function getGrid(client) {
                 closed: Math.round(area.left + area.width / 2),
                 gapped: Math.round(area.left + (area.width + gap.left - gap.right + gap.mid) / 2)
             },
-            quarterright: {
+            quarterRight: {
                 closed: Math.round(area.left + 3 * (area.width / 4)),
                 gapped: Math.round(area.left + 3 * (area.width + gap.left - gap.right + gap.mid) / 4)
             }
@@ -304,21 +316,21 @@ function getGrid(client) {
                     closed: Math.round(area.right - area.width / 2),
                     gapped: Math.round(area.right - (area.width + gap.left - gap.right + gap.mid) / 2)
                 },
-                quarterright: {
+                quarterRight: {
                     closed: Math.round(area.right - 1 * (area.width / 4)),
                     gapped: Math.round(area.right - 1 * (area.width + gap.left - gap.right + gap.mid) / 4)
                 },
-                fullright: {
+                fullRight: {
                     closed: Math.round(area.right),
                     gapped: Math.round(area.right - gap.right)
                 }
         },
         top: {
-            fulltop: {
+            fullTop: {
                 closed: Math.round(area.top),
                 gapped: Math.round(area.top + gap.top)
             },
-            quartertop: {
+            quarterTop: {
                 closed: Math.round(area.top + 1 * (area.height / 4)),
                 gapped: Math.round(area.top + 1 * (area.height + gap.top - gap.bottom + gap.mid) / 4)
             },
@@ -326,13 +338,13 @@ function getGrid(client) {
                 closed: Math.round(area.top + area.height / 2),
                 gapped: Math.round(area.top + (area.height + gap.top - gap.bottom + gap.mid) / 2)
             },
-            quarterbottom: {
+            quarterBottom: {
                 closed: Math.round(area.top + 3 * (area.height / 4)),
                 gapped: Math.round(area.top + 3 * (area.height + gap.top - gap.bottom + gap.mid) / 4)
             }
         },
         bottom: {
-            quartertop: {
+            quarterTop: {
                 closed: Math.round(area.bottom - 3 * (area.height / 4)),
                 gapped: Math.round(area.bottom - 3 * (area.height + gap.top - gap.bottom + gap.mid) / 4)
             },
@@ -340,11 +352,11 @@ function getGrid(client) {
                 closed: Math.round(area.bottom - area.height / 2),
                 gapped: Math.round(area.bottom - (area.height + gap.top - gap.bottom + gap.mid) / 2)
             },
-            quarterbottom: {
+            quarterBottom: {
                 closed: Math.round(area.bottom - 1 * (area.height / 4)),
                 gapped: Math.round(area.bottom - 1 * (area.height + gap.top - gap.bottom + gap.mid) / 4)
             },
-            fullbottom: {
+            fullBottom: {
                 closed: Math.round(area.bottom),
                 gapped: Math.round(area.bottom - gap.bottom)
             }
@@ -418,8 +430,7 @@ function halfGapU() {
 function ignoreClient(client) {
     return !client // null
         || !client.normalWindow // non-normal window
-        || ["plasmashell", "krunner", "ksmserver-logout-greeter", "ksplash"]
-           .includes(String(client.resourceClass)) // non-normal application
+        || !client.resizeable // not resizeable
         || client.move || client.resize // still undergoing geometry change
         || client.fullScreen // fullscreen
         || (!config.includeMaximized // maximized
