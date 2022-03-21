@@ -158,38 +158,62 @@ function applyGapsArea(client) {
 
     // for each window edge, if the edge is near some grid anchor of that edge,
     // set it to the gapped coordinate
-    const edges = ["left", "right", "top", "bottom"];
-    for (var i = 0; i < edges.length; i++) {
-        var edge = edges[i];
-        for (var j = 0; j < Object.keys(grid[edge]).length; j++) {
-            var pos = Object.keys(grid[edge])[j];
-            var coords = grid[edge][pos];
-            if (nearArea(win[edge], coords, gap[edge])) {
-                debug("gap to tile edge", edge, pos, coords.gapped);
-                var diff = coords.gapped - win[edge];
-                switch (edge) {
-                    case "left":
-                        // crop window left edge
-                        win.width -= diff;
-                        win.x += diff;
-                        break;
-                    case "right":
-                        // crop window right edge
-                        win.width += diff;
-                        break;
-                    case "top":
-                        // crop window top edge
-                        win.height -= diff;
-                        win.y += diff;
-                        break;
-                    case "bottom":
-                        // crop window bottom edge
-                        win.height += diff;
-                        break;
-                }
-                debug("new geo", geometry(win));
-                break;
-            }
+
+    // left edge
+    var edge = "left";
+    for (var i = 0; i < Object.keys(grid[edge]).length; i++) {
+        var pos = Object.keys(grid[edge])[i];
+        var coords = grid[edge][pos];
+        if (nearArea(win[edge], coords, gap[edge])) {
+            debug("gap to edge", edge, pos, coords.gapped);
+            var diff = coords.gapped - win[edge];
+            win.width -= diff;
+            win.x += diff;
+            debug("new geo", geometry(win));
+            break;
+        }
+    }
+
+   // right edge
+   var edge = "right";
+   for (var i = 0; i < Object.keys(grid[edge]).length; i++) {
+       var pos = Object.keys(grid[edge])[i];
+       var coords = grid[edge][pos];
+       if (nearArea(win[edge] + 1, coords, gap[edge])) {
+        debug("gap to edge", edge, pos, coords.gapped);
+        var diff = coords.gapped - (win[edge] + 1);
+        win.width += diff;
+        debug("new geo", geometry(win));
+        break;
+       }
+   }
+
+    // top edge
+    var edge = "top";
+    for (var i = 0; i < Object.keys(grid[edge]).length; i++) {
+        var pos = Object.keys(grid[edge])[i];
+        var coords = grid[edge][pos];
+        if (nearArea(win[edge], coords, gap[edge])) {
+            debug("gap to edge", edge, pos, coords.gapped);
+            var diff = coords.gapped - win[edge];
+            win.height -= diff;
+            win.y += diff;
+            debug("new geo", geometry(win));
+            break;
+        }
+    }
+
+    // bottom edge
+    var edge = "bottom";
+    for (var i = 0; i < Object.keys(grid[edge]).length; i++) {
+        var pos = Object.keys(grid[edge])[i];
+        var coords = grid[edge][pos];
+        if (nearArea(win[edge] + 1, coords, gap[edge])) {
+            debug("gap to edge", edge, pos, coords.gapped);
+            var diff = coords.gapped - (win[edge] + 1);
+            win.height += diff;
+            debug("new geo", geometry(win));
+            break;
         }
     }
 }
@@ -208,9 +232,10 @@ function applyGapsWindows(client1) {
         var win2 = client2.geometry;
 
         // left window
-        if (nearWindow(win1.left, win2.right, gap.mid) &&
+        var edge = "left";
+        if (nearWindow(win1.left, win2.right + 1, gap.mid) &&
             overlapVer(win1, win2)) {
-            debug("gap to left window", caption(client2), geometry(client2));
+            debug("gap to window", edge, caption(client2), geometry(client2));
             var diff = win1.left - win2.right;
             // crop right window left edge half gap
             win1.x = win1.x - halfDiffL(diff) + halfGapU();
@@ -222,10 +247,11 @@ function applyGapsWindows(client1) {
         }
 
         // right window
-        if (nearWindow(win2.left, win1.right, gap.mid) &&
+        var edge = "right";
+        if (nearWindow(win2.left, win1.right + 1, gap.mid) &&
             overlapVer(win1, win2)) {
-            debug("gap to right window", client2.caption, geometry(client2));
-            var diff = win2.left - win1.right;
+            debug("gap to window", edge, caption(client2), geometry(client2));
+            var diff = win2.left - (win1.right + 1);
             // crop left window right edge half gap
             win1.width = win1.width + halfDiffU(diff) - halfGapL();
             // crop right window left edge half gap
@@ -236,10 +262,11 @@ function applyGapsWindows(client1) {
         }
 
         // top window
-        if (nearWindow(win1.top, win2.bottom, gap.mid) &&
+        var edge = "top";
+        if (nearWindow(win1.top, win2.bottom + 1, gap.mid) &&
             overlapHor(win1, win2)) {
-            debug("gap to top window", client2.caption, geometry(client2));
-            var diff = win1.top - win2.bottom;
+            debug("gap to window", edge, caption(client2), geometry(client2));
+             var diff = win1.top - win2.bottom;
             // crop bottom window top edge half gap
             win1.y = win1.y - halfDiffL(diff) + halfGapU();
             win1.height = win1.height + halfDiffL(diff) - halfGapU();
@@ -250,10 +277,11 @@ function applyGapsWindows(client1) {
         }
 
         // bottom window
-        if (nearWindow(win2.top, win1.bottom, gap.mid) &&
+        var edge = "bottom";
+        if (nearWindow(win2.top, win1.bottom + 1, gap.mid) &&
             overlapHor(win1, win2)) {
-            debug("gap to bottom window", client2.caption, geometry(client2));
-            var diff = win2.top - win1.bottom;
+            debug("gap to window", edge, caption(client2), geometry(client2));
+            var diff = win2.top - (win1.bottom + 1);
             // crop top window bottom edge half gap
             win1.height = win1.height + halfDiffU(diff) - halfGapL();
             // crop bottom window top edge half gap
@@ -309,20 +337,20 @@ function getGrid(client) {
         },
         right: {
                 quarterLeft: {
-                    closed: Math.round(area.right - 3 * (area.width / 4)),
-                    gapped: Math.round(area.right - 3 * (area.width + gap.left - gap.right + gap.mid) / 4)
+                    closed: Math.round(area.right + 1 - 3 * (area.width / 4)),
+                    gapped: Math.round(area.right + 1 - 3 * (area.width + gap.left - gap.right + gap.mid) / 4)
                 },
                 halfHorizontal: {
-                    closed: Math.round(area.right - area.width / 2),
-                    gapped: Math.round(area.right - (area.width + gap.left - gap.right + gap.mid) / 2)
+                    closed: Math.round(area.right + 1 - area.width / 2),
+                    gapped: Math.round(area.right + 1 - (area.width + gap.left - gap.right + gap.mid) / 2)
                 },
                 quarterRight: {
-                    closed: Math.round(area.right - 1 * (area.width / 4)),
-                    gapped: Math.round(area.right - 1 * (area.width + gap.left - gap.right + gap.mid) / 4)
+                    closed: Math.round(area.right + 1 - 1 * (area.width / 4)),
+                    gapped: Math.round(area.right + 1 - 1 * (area.width + gap.left - gap.right + gap.mid) / 4)
                 },
                 fullRight: {
-                    closed: Math.round(area.right),
-                    gapped: Math.round(area.right - gap.right)
+                    closed: Math.round(area.right + 1),
+                    gapped: Math.round(area.right + 1 - gap.right)
                 }
         },
         top: {
@@ -345,20 +373,20 @@ function getGrid(client) {
         },
         bottom: {
             quarterTop: {
-                closed: Math.round(area.bottom - 3 * (area.height / 4)),
-                gapped: Math.round(area.bottom - 3 * (area.height + gap.top - gap.bottom + gap.mid) / 4)
+                closed: Math.round(area.bottom + 1 - 3 * (area.height / 4)),
+                gapped: Math.round(area.bottom + 1 - 3 * (area.height + gap.top - gap.bottom + gap.mid) / 4)
             },
             halfVertical: {
-                closed: Math.round(area.bottom - area.height / 2),
-                gapped: Math.round(area.bottom - (area.height + gap.top - gap.bottom + gap.mid) / 2)
+                closed: Math.round(area.bottom + 1 - area.height / 2),
+                gapped: Math.round(area.bottom + 1 - (area.height + gap.top - gap.bottom + gap.mid) / 2)
             },
             quarterBottom: {
-                closed: Math.round(area.bottom - 1 * (area.height / 4)),
-                gapped: Math.round(area.bottom - 1 * (area.height + gap.top - gap.bottom + gap.mid) / 4)
+                closed: Math.round(area.bottom + 1 - 1 * (area.height / 4)),
+                gapped: Math.round(area.bottom + 1 - 1 * (area.height + gap.top - gap.bottom + gap.mid) / 4)
             },
             fullBottom: {
-                closed: Math.round(area.bottom),
-                gapped: Math.round(area.bottom - gap.bottom)
+                closed: Math.round(area.bottom + 1),
+                gapped: Math.round(area.bottom + 1 - gap.bottom)
             }
         }
     };

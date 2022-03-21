@@ -1,3 +1,6 @@
+## v6.15
+- fix windows flickering
+
 ## v6.14
 - fix bugs with logout and splash screens
 
