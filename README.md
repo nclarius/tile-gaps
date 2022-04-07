@@ -48,7 +48,7 @@ qdbus org.kde.KWin /KWin reconfigure
 
 ### Compatibility
 
-For compatibility with [sticky window snapping](https://store.kde.org/p/1112552/) you can use [my fork](https://github.com/nclarius/sticky-window-snapping), which adds an option in the configuration to set the tile gap size between windows, and will properly retain the gap when resizing adjacent windows.  
+For [sticky window snapping](https://store.kde.org/p/1112552/) to work with gaps, make sure you have the threshold in the SWS configuration set to at least the largest gap size.  
 
 ## Small Print
 
