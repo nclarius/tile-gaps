@@ -1,3 +1,6 @@
+# v7.0
+- improved integration with floating panels
+
 ## v6.15
 - fix windows flickering
 

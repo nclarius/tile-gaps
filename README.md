@@ -18,6 +18,10 @@ Please note that this script does not do any automatic tiling. Its purpose is to
 
 ### Installation via graphical interface
 
+**Please make sure to select the most recent version (v7.0)** in the installation process.
+
+A [bug](https://bugs.kde.org/show_bug.cgi?id=453521) in Discover causes a wrong version to be installed, so using the installation module in System Settings instead is recommended.
+
 1. Install the script via *System Settings* > *Window Management* > *KWin Scripts* > *Get New Scripts …* > search for *Window Gaps* > *Install*.
 2. Enable the script by activating its checkbox, and apply the settings.
 
@@ -44,15 +48,17 @@ ln -sf ~/.local/share/kwin/scripts/tilegaps/metadata.desktop ~/.local/share/kser
 qdbus org.kde.KWin /KWin reconfigure
 ```
 
+To find the window class name of an application: Right-click on the titlebar of a window of the application > *More Actions* > *Configure Special Application Settings...* > the pre-filled entry in *Window class (application)* (if it consists of two words, only the second part) is the window class to put in the script configuration.
+
 ## Usage
 
 ### Compatibility
 
-For compatibility with [sticky window snapping](https://store.kde.org/p/1112552/) you can use [my fork](https://github.com/nclarius/sticky-window-snapping), which adds an option in the configuration to set the tile gap size between windows, and will properly retain the gap when resizing adjacent windows.  
+For [Sticky Window Snapping](https://store.kde.org/p/1112552/), make sure you have the threshold in the SWS configuration set to at least the largest gap size.
 
 ## Small Print
 
-© 2021 Natalie Clarius \<natalie_clarius@yahoo.de\>
+© 2021-2022 Natalie Clarius \<natalie_clarius@yahoo.de\>
 
 This work is licensed under the GNU General Public License v3.0.  
 This program comes with absolutely no warranty.  

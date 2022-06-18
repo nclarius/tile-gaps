@@ -7,23 +7,43 @@
     <group name="">
         <entry name="gapTop" type="int">
             <label>Size of the gap between a window and the top screen edge</label>
-            <default>12</default>
+            <default>8</default>
         </entry>
         <entry name="gapLeft" type="int">
             <label>Size of the gap between a window and the left screen edge</label>
-            <default>12</default>
+            <default>8</default>
         </entry>
         <entry name="gapMid" type="int">
             <label>Size of the gap between adjacent windows</label>
-            <default>12</default>
+            <default>8</default>
         </entry>
         <entry name="gapRight" type="int">
             <label>Size of the gap between a window and the right screen edge</label>
-            <default>12</default>
+            <default>8</default>
         </entry>
         <entry name="gapBottom" type="int">
             <label>Size of the gap between a window and the bottom screen edge</label>
-            <default>12</default>
+            <default>8</default>
+        </entry>
+        <entry name="panelTop" type="bool">
+            <label>Floating panel at the top screen edge</label>
+            <default>false</default>
+        </entry>
+        <entry name="panelLeft" type="bool">
+            <label>Floating panel at the left screen edge</label>
+            <default>false</default>
+        </entry>
+        <entry name="panelMid" type="bool">
+            <label>Size of the panel between adjacent windows</label>
+            <default>false</default>
+        </entry>
+        <entry name="panelRight" type="bool">
+            <label>Floating panel at the right screen edge</label>
+            <default>false</default>
+        </entry>
+        <entry name="panelBottom" type="bool">
+            <label>Floating panel at the bottom screen edge</label>
+            <default>false</default>
         </entry>
         <entry name="includeMaximized" type="bool">
             <label>Whether to gap maximized windows</label>
@@ -37,12 +57,8 @@
             <label>Whether to gap no except the specified applications</label>
             <default>false</default>
         </entry>
-        <entry name="excludedApps" type="string">
-            <label>List of applications to be excluded</label>
-            <default></default>
-        </entry>
-        <entry name="includedApps" type="string">
-            <label>List of applications to be included</label>
+        <entry name="applications" type="string">
+            <label>List of applications to be excluded or included</label>
             <default></default>
         </entry>
         <entry name="debugMode" type="bool">
