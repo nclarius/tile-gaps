@@ -29,7 +29,6 @@ const panel = {
 const config = {
     // layouts to apply gaps to
     includeMaximized: readConfig("includeMaximized", false),
-    includeApplets: readConfig("includeApplets", true),
     // list of excluded/included applications
     excludeMode: readConfig("excludeMode", true),
     includeMode: readConfig("includeMode", false),
@@ -59,8 +58,7 @@ debug("sizes (l/r/t/b/m):",
 debug("panels (l/r/t/b):",
     panel.left, panel.right, panel.top, panel.bottom);
 debug("layout:",
-    "maximized:", config.includeMaximized,
-    "applets:", config.includeApplets);
+    "maximized:", config.includeMaximized);
 debug("applications:",
     config.excludeMode ? "exclude" : "include", String(config.applications));
 debug("");
@@ -518,9 +516,8 @@ function halfGapU() {
 function ignoreClient(client) {
     return !client // null
         || ((!client.normalWindow || !client.resizeable) // not normal/resizable
-          && !(config.includeApplets // panel popout
-               && client.dialog && ["plasmashell", "org.kde.plasmashell"]
-               .includes(String(client.resourceClass)))) 
+          && !(client.dialog && ["plasmashell", "org.kde.plasmashell"]
+               .includes(String(client.resourceClass)))) // except panel popout
         || client.fullScreen // fullscreen
         || (!config.includeMaximized && maximized(client)) // maximized
         || (config.excludeMode // excluded application

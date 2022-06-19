@@ -7,13 +7,13 @@
     <x>0</x>
     <y>0</y>
     <width>420</width>
-    <height>651</height>
+    <height>630</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
     <width>420</width>
-    <height>650</height>
+    <height>630</height>
    </size>
   </property>
   <property name="sizeIncrement">
@@ -296,16 +296,6 @@
           </item>
          </layout>
         </item>
-        <item>
-         <widget class="QCheckBox" name="kcfg_includeApplets">
-          <property name="text">
-           <string>Gaps on panel widgets</string>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
-          </property>
-         </widget>
-        </item>
        </layout>
       </widget>
      </item>
@@ -314,7 +304,7 @@
        <property name="title">
         <string>Applications</string>
        </property>
-       <layout class="QVBoxLayout" name="verticalLayout_5">
+       <layout class="QHBoxLayout" name="horizontalLayout_7">
         <item>
          <layout class="QVBoxLayout" name="verticalLayout_applications">
           <property name="spacing">

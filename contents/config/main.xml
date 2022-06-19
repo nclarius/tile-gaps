@@ -49,10 +49,6 @@
             <label>Whether to gap maximized windows</label>
             <default>false</default>
         </entry>
-        <entry name="includeApplets" type="bool">
-            <label>Whether to gap panel widget popouts</label>
-            <default>true</default>
-        </entry>
         <entry name="excludeMode" type="bool">
             <label>Whether to gap all except the specified applications</label>
             <default>true</default>
