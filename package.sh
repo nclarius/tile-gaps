@@ -1,9 +1,10 @@
 #!/bin/bash
 
 # get plugin info
-name=$(basename "$PWD")
+package=$(basename "$PWD")
 version=$(grep -oP '(?<=X-KDE-PluginInfo-Version=).*' ./metadata.desktop)
-echo "$name"' v'"$version"
+name="${package}"'_v'"${version}"
+echo "$name"
 
 # update version info in markdown format
 sed -i "s/(v.*\..*)/(v$version)/g" README.md
@@ -35,7 +36,7 @@ fi
 
 # generate kwinscript package
 find . -name "*.kwinscript" -type f -delete
-zip -rq "${name}"'_v'"${version}"'.kwinscript'  \
+zip -rq "$name"'.kwinscript'  \
 	contents \
 	metadata.desktop \
     install.sh \
@@ -47,14 +48,17 @@ zip -rq "${name}"'_v'"${version}"'.kwinscript'  \
 	LICENSE
 echo 'generated kwinscript package'
 
-# commit changes to GitHub
+# commit changes to git
 git add .
 git commit -q -m "$(paste -sd '; ' CHANGELOG.txt | sed 's/- / /g')"
 git push -q
 echo 'commited changes to git'
 
 # generate GitHub release
-gh release create "${name}"'_v'"${version}" -F CHANGELOG.txt "${name}"'_v'"${version}"'.kwinscript'
+if [[ "$(gh release list -L 1)" == *"$name"* ]]; then
+	gh release delete "$name" -y
+fi
+gh release create "$name" -t "$name" -F CHANGELOG.txt "$name"'.kwinscript'
 echo 'generated GitHub release'
 
 echo 'done'
