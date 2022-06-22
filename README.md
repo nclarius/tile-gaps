@@ -20,7 +20,7 @@ Please note that this script does not do any automatic tiling. Its purpose is to
 
 **Please make sure to select the most recent version (v7.1)** in the installation process.
 
-A [bug](https://bugs.kde.org/show_bug.cgi?id=453521) in Discover causes a wrong version to be installed, so using the installation module in System Settings instead is recommended.
+**Please do not use Discover for installation* since a [bug](https://bugs.kde.org/show_bug.cgi?id=453521) causes a wrong version to be installed.
 
 1. Install the script via *System Settings* > *Window Management* > *KWin Scripts* > *Get New Scripts …* > search for *Window Gaps* > *Install*.
 2. Enable the script by activating its checkbox, and apply the settings.
@@ -54,7 +54,7 @@ To find the window class name of an application: Right-click on the titlebar of 
 
 ### Compatibility
 
-For [Sticky Window Snapping](https://store.kde.org/p/1112552/), make sure you have the threshold in the SWS configuration set to at least the largest gap size.
+For [Sticky Window Snapping](https://store.kde.org/p/1112552/) to work with gaps, make sure you have the threshold in the SWS configuration set to at least the largest gap size.
 
 ## Small Print
 
