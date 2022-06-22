@@ -4,7 +4,7 @@ Extension for KDE's window manager to add space around windows touching a screen
 
 The size of the gap and the layouts and applications to be gapped are configurable.
 
-Please note that this script does not do any automatic tiling. Its purpose is to reshape windows that have been manually positioned with the default KWin window management system.
+Please note that this script does not do any automatic tiling. Its purpose is to reshape windows that have been manually positioned with the stock KWin window management system.
 
 ![screenshot](.img/screenshot.png)
 
@@ -18,7 +18,7 @@ Please note that this script does not do any automatic tiling. Its purpose is to
 
 ### Installation via graphical interface
 
-**Please make sure to select the most recent version (v7.0)** in the installation process.
+**Please make sure to select the most recent version (v7.1)** in the installation process.
 
 A [bug](https://bugs.kde.org/show_bug.cgi?id=453521) in Discover causes a wrong version to be installed, so using the installation module in System Settings instead is recommended.
 

@@ -91,43 +91,43 @@ function onAdded(client) {
 // trigger applying tile gaps when client is moved or resized
 function onRegeometrized(client) {
     client.moveResizedChanged.connect((client) => {
-        // debug("move resized changed", caption(client));
+        debug("move resized changed", caption(client));
         applyGaps(client);
     });
     client.clientGeometryChanged.connect((client) => {
-        // debug("client geometry changed", caption(client));
+        debug("client geometry changed", caption(client));
         applyGaps(client);
     });
     client.frameGeometryChanged.connect((client) => {
-        // debug("frame geometry changed", caption(client));
+        debug("frame geometry changed", caption(client));
         applyGaps(client)
     });
     client.clientFinishUserMovedResized.connect((client) => {
-        // debug("finish user moved resized", caption(client));
+        debug("finish user moved resized", caption(client));
         applyGaps(client);
     });
     client.fullScreenChanged.connect((client) => {
-        // debug("fullscreen changed", caption(client));
+        debug("fullscreen changed", caption(client));
         applyGaps(client);
     });
     client.clientMaximizedStateChanged.connect((client) => {
-        // debug("maximized changed", caption(client));
+        debug("maximized changed", caption(client));
         applyGaps(client);
     });
     client.clientUnminimized.connect((client) => {
-        // debug("unminimized", caption(client));
+        debug("unminimized", caption(client));
         applyGaps(client);
     });
     client.screenChanged.connect((client) => {
-        // debug("screen changed", caption(client));
+        debug("screen changed", caption(client));
         applyGaps(client);
     });
     client.desktopChanged.connect((client) => {
-        // debug("desktop changed", caption(client));
+        debug("desktop changed", caption(client));
         applyGaps(client);
     });
     client.activitiesChanged.connect((client) => {
-        // debug("activities changed", caption(client));
+        debug("activities changed", caption(client));
         applyGaps(client);
     });
 }
@@ -141,44 +141,44 @@ onRelayouted();
 
 function onRelayouted() {
     workspace.currentDesktopChanged.connect(() => {
-        // debug("current desktop changed");
+        debug("current desktop changed");
         applyGapsAll();
     });
     workspace.desktopPresenceChanged.connect(() => {
-        // debug("desktop presence changed");
+        debug("desktop presence changed");
         applyGapsAll();
     });
     workspace.numberDesktopsChanged.connect(() => {
-        // debug("number desktops changed");
+        debug("number desktops changed");
         applyGapsAll();
     });
     workspace.numberScreensChanged.connect(() => {
-        // debug("number screens changed");
+        debug("number screens changed");
         applyGapsAll();
     });
     workspace.screenResized.connect(() => {
-        // debug("screen resized");
+        debug("screen resized");
         applyGapsAll();
     });
     workspace.currentActivityChanged.connect(() => {
-        // debug("current activity changed");
+        debug("current activity changed");
         applyGapsAll();
     });
     workspace.activitiesChanged.connect(() => {
-        // debug("activities changed");
+        debug("activities changed");
         applyGapsAll();
     });
     workspace.virtualScreenSizeChanged.connect(() => {
-        // debug("virtual screen size changed");
+        debug("virtual screen size changed");
         applyGapsAll();
     });
     workspace.virtualScreenGeometryChanged.connect(() => {
-        // debug("virtual screen geometry changed");
+        debug("virtual screen geometry changed");
         applyGapsAll();
     });
     workspace.clientAdded.connect((client) => {
         if (client.dock) {
-            // debug("dock added");
+            debug("dock added");
             applyGapsAll();
         }
     });
@@ -222,11 +222,11 @@ function applyGapsArea(client) {
         let pos = Object.keys(grid[edge])[i];
         let coords = grid[edge][pos];
         if (nearArea(win[edge], coords.closed, coords.gapped, gap[edge])) {
-            // debug("gap to edge", edge, pos, coords.gapped);
+            debug("gap to edge", edge, pos, coords.gapped);
             let diff = coords.gapped - win[edge];
             win.width -= diff;
             win.x += diff;
-            // debug("new geo", geometry(win));
+            debug("new geo", geometry(win));
             break;
         }
     }
@@ -237,10 +237,10 @@ function applyGapsArea(client) {
         let pos = Object.keys(grid[edge])[i];
         let coords = grid[edge][pos];
         if (nearArea(win[edge], coords.closed, coords.gapped, gap[edge])) {
-            // debug("gap to edge", edge, pos, coords.gapped);
+            debug("gap to edge", edge, pos, coords.gapped);
             let diff = coords.gapped - (win[edge] + 1);
             win.width += diff;
-            // debug("new geo", geometry(win));
+            debug("new geo", geometry(win));
             break;
         }
     }
@@ -252,11 +252,11 @@ function applyGapsArea(client) {
         let pos = Object.keys(grid[edge])[i];
         let coords = grid[edge][pos];
         if (nearArea(win[edge], coords.closed, coords.gapped, gap[edge])) {
-            // debug("gap to edge", edge, pos, coords.gapped);
+            debug("gap to edge", edge, pos, coords.gapped);
             let diff = coords.gapped - win[edge];
             win.height -= diff;
             win.y += diff;
-            // debug("new geo", geometry(win));
+            debug("new geo", geometry(win));
             break;
         }
     }
@@ -268,10 +268,10 @@ function applyGapsArea(client) {
         let pos = Object.keys(grid[edge])[i];
         let coords = grid[edge][pos];
         if (nearArea(win[edge], coords.closed, coords.gapped, gap[edge])) {
-            // debug("gap to edge", edge, pos, coords.gapped);
+            debug("gap to edge", edge, pos, coords.gapped);
             let diff = coords.gapped - (win[edge] + 1);
             win.height += diff;
-            // debug("new geo", geometry(win));
+            debug("new geo", geometry(win));
             break;
         }
     }
@@ -454,37 +454,37 @@ function maximized(client) {
 
 // a coordinate is close to another iff
 // the difference is within the tolerance margin but non-zero
+
 function nearArea(actual, expected_closed, expected_gapped, gap) {
-    // let tolerance = 2 * gap;
-    let tolerance = Math.min(2 * gap, 6);
-    return (Math.abs(actual - expected_closed) <= tolerance ||
-            Math.abs(actual - expected_gapped) <= tolerance) &&
-        actual != expected_gapped;
+    let tolerance = 2 * gap;
+    return (Math.abs(actual - expected_closed) <= tolerance
+         || Math.abs(actual - expected_gapped) <= tolerance)
+        && actual != expected_gapped;
 }
 
 function nearWindow(win1, win2, gap) {
-    // let tolerance = 2 * gap;
-    let tolerance = Math.min(2 * gap, 6);
-    return Math.abs(win1 - win2) <= tolerance &&
-        win1 - win2 != gap;
+    let tolerance = 2 * gap;
+    return win1 - win2 <= tolerance
+        && win1 - win2 > 0
+        && win1 - win2 != gap;
 }
 
 // horizontal/vertical overlap
 
 function overlapHor(win1, win2) {
     let tolerance = 2 * gap.mid;
-    return (win1.left <= win2.left + tolerance &&
-            win1.right > win2.left + tolerance) ||
-        (win2.left <= win1.left + tolerance &&
-            win2.right + tolerance > win1.left);
+    return (win1.left <= win2.left + tolerance
+         && win1.right > win2.left + tolerance)
+        || (win2.left <= win1.left + tolerance
+        &&  win2.right + tolerance > win1.left);
 }
 
 function overlapVer(win1, win2) {
     let tolerance = 2 * gap.mid;
-    return (win1.top <= win2.top + tolerance &&
-            win1.bottom > win2.top + tolerance) ||
-        (win2.top <= win1.top + tolerance &&
-            win2.bottom + tolerance > win1.top);
+    return (win1.top <= win2.top + tolerance
+         && win1.bottom > win2.top + tolerance)
+        || (win2.top <= win1.top + tolerance
+         && win2.bottom + tolerance > win1.top);
 }
 
 // floored/ceiled half difference between edges
@@ -515,9 +515,8 @@ function halfGapU() {
 // filter out irrelevant clients
 function ignoreClient(client) {
     return !client // null
-        || ((!client.normalWindow || !client.resizeable) // not normal/resizable
-          && !(client.dialog && ["plasmashell", "org.kde.plasmashell"]
-               .includes(String(client.resourceClass)))) // except panel popout
+        || !client.normalWindow // not normal
+        || !client.resizeable // not resizeable
         || client.fullScreen // fullscreen
         || (!config.includeMaximized && maximized(client)) // maximized
         || (config.excludeMode // excluded application

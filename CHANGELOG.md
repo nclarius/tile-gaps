@@ -1,3 +1,7 @@
+## v7.1
+- make gaps on panel widgets only for floating panels
+- fix a bug where windows would continuously shrink
+
 # v7.0
 - improved integration with floating panels
 
