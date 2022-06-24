@@ -18,7 +18,7 @@ Please note that this script does not do any automatic tiling. Its purpose is to
 
 ### Installation via graphical interface
 
-**Please make sure to select the most recent version (v7.1)** in the installation process.
+**Please make sure to select the most recent version** in the installation process.
 
 **Please do not use Discover for installation** since a [bug](https://bugs.kde.org/show_bug.cgi?id=453521) causes a wrong version to be installed.
 
@@ -35,7 +35,7 @@ cd tile-gaps
 
 ## Configuration
 
-*System Settings* > *Window Management* > *KWin Scripts* > configuration button in the *Window Gaps* entry.
+*System Settings* > *Window Management* > *KWin Scripts* > *Window Gaps* > configuration button.
 
 You may need to uncheck the checkbox for the script, apply the settings, recheck, and reapply in order for the changes to take effect.
 
@@ -47,10 +47,6 @@ mkdir -p ~/.local/share/kservices5/
 ln -sf ~/.local/share/kwin/scripts/tilegaps/metadata.desktop ~/.local/share/kservices5/tilegaps.desktop
 qdbus org.kde.KWin /KWin reconfigure
 ```
-
-To find the window class name of an application: Right-click on the titlebar of a window of the application > *More Actions* > *Configure Special Application Settings...* > the pre-filled entry in *Window class (application)* (if it consists of two words, only the second part) is the window class to put in the script configuration.
-
-## Usage
 
 ### Panel gaps
 
@@ -64,6 +60,10 @@ If you have any floating panels, specify this in the configuration so that gaps 
 ### Sticky Window Snapping
 
 For [Sticky Window Snapping](https://store.kde.org/p/1112552/) to work with gaps, make sure you have the threshold in the SWS configuration set to at least the largest gap size.
+
+### Applications
+
+To find the window class name of an application: Right-click on the titlebar of a window of the application > *More Actions* > *Configure Special Application Settings...* > the pre-filled entry in *Window class (application)* (if it consists of two words, only the second part) is the window class to put in the script configuration.
 
 ## Small Print
 
