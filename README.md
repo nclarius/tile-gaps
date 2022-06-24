@@ -52,7 +52,13 @@ To find the window class name of an application: Right-click on the titlebar of 
 
 ## Usage
 
-### Compatibility
+### Panel gaps
+
+Gaps on panels are not provided by this extension, but by stock Plasma: Right-click on panel > *Enter Edit Mode* > *More Settings...* > *Floating Panel*.  
+
+If you have any floating panels, specify this in the configuration so that gaps can be adjusted accordingly.
+
+### Sticky Window Snapping
 
 For [Sticky Window Snapping](https://store.kde.org/p/1112552/) to work with gaps, make sure you have the threshold in the SWS configuration set to at least the largest gap size.
 
