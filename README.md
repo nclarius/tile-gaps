@@ -48,7 +48,7 @@ ln -sf ~/.local/share/kwin/scripts/tilegaps/metadata.desktop ~/.local/share/kser
 qdbus org.kde.KWin /KWin reconfigure
 ```
 
-### Panel gaps
+### Panels
 
 Gaps on panels are not provided by this extension, but by the panel itself:
 
