@@ -54,7 +54,10 @@ To find the window class name of an application: Right-click on the titlebar of 
 
 ### Panel gaps
 
-Gaps on panels are not provided by this extension, but by stock Plasma: Right-click on panel > *Enter Edit Mode* > *More Settings...* > *Floating Panel*.  
+Gaps on panels are not provided by this extension, but by the panel itself:
+
+- For Plasma: Right-click on panel > *Enter Edit Mode* > *More Settings...* > *Floating Panel*.  
+- For Latte: Right-click on panel > *Edit Panel...* > *Appearance* > *Margins* > *Screen Edge*.
 
 If you have any floating panels, specify this in the configuration so that gaps can be adjusted accordingly.
 
