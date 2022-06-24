@@ -14,7 +14,7 @@ Please note that this script does not do any automatic tiling. Its purpose is to
 
 ### Dependencies
 
-`kwin` version ≥ 5.21.
+`kwin`.
 
 ### Installation via graphical interface
 
