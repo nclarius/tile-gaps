@@ -211,7 +211,11 @@ function applyGapsArea(client) {
     let grid = getGrid(client);
     let win = client.geometry;
     let edge = "";
-    let unmaximized = !maximized(client);
+    
+    // unmaximize if maximized window gap
+    if (config.includeMaximized && maximized(client)) {
+        client.setMaximize(false, false);
+    }
 
     // for each window edge, if the edge is near some grid anchor of that edge,
     // set it to the gapped coordinate
@@ -221,6 +225,7 @@ function applyGapsArea(client) {
     for (let i = 0; i < Object.keys(grid[edge]).length; i++) {
         let pos = Object.keys(grid[edge])[i];
         let coords = grid[edge][pos];
+        debug(pos, win[edge], coords.closed, coords.gapped, gap[edge], nearArea(win[edge], coords.closed, coords.gapped, gap[edge]));
         if (nearArea(win[edge], coords.closed, coords.gapped, gap[edge])) {
             debug("gap to edge", edge, pos, coords.gapped);
             let diff = coords.gapped - win[edge];
@@ -282,6 +287,8 @@ function applyGapsWindows(client1) {
     // for each other window, if they share an edge,
     // clip or extend both evenly to make the distance the size of the gap
 
+    debug("apply gaps windows");
+
     for (let i = 0; i < workspace.clientList().length; i++) {
         let client2 = workspace.clientList()[i];
         if (!client2) continue;
@@ -290,6 +297,9 @@ function applyGapsWindows(client1) {
         let win1 = client1.geometry;
         let win2 = client2.geometry;
         let edge = "";
+
+        debug("checking", client2.caption);
+        debug(geometry(client1), geometry(win2));
 
         // left window
         edge = "left";
@@ -465,7 +475,7 @@ function nearArea(actual, expected_closed, expected_gapped, gap) {
 function nearWindow(win1, win2, gap) {
     let tolerance = 2 * gap;
     return win1 - win2 <= tolerance
-        && win1 - win2 > 0
+        && win1 - win2 >= 0
         && win1 - win2 != gap;
 }
 
@@ -527,7 +537,7 @@ function ignoreClient(client) {
 
 function ignoreOther(client1, client2) {
     return ignoreClient(client2) // excluded
-        || client2 == client1 // identical
+        || client2 == client1 // identicalb
         || !(client2.desktop == client1.desktop // same desktop
              || client2.onAllDesktops || client1.onAllDesktops)
         || !(client2.screen == client1.screen) // different screen
