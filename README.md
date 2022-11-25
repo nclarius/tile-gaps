@@ -48,6 +48,10 @@ ln -sf ~/.local/share/kwin/scripts/tilegaps/metadata.desktop ~/.local/share/kser
 qdbus org.kde.KWin /KWin reconfigure
 ```
 
+### Screen edges
+
+Gap sizes are counted from the area that windows maximize to, i.e. from the edge of any panel you may have on that screen edge, rather than the outer screen edge itself.
+
 ### Panels
 
 Gaps on panels are not provided by this extension, but by the panel itself:
