@@ -52,7 +52,7 @@ qdbus org.kde.KWin /KWin reconfigure
 
 Gap sizes are counted from the area that windows maximize to, i.e. from the edge of any panel you may have on that screen edge, rather than the outer screen edge itself.
 
-### Panels
+### Panels/Docks
 
 Gaps on panels are not provided by this extension, but by the panel itself:
 
