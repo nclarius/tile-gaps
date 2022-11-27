@@ -10,7 +10,7 @@ Comment[de]=Fügt Zwischenraum um Fenster ein, die einen Bildschirmrand oder ein
 Icon=preferences-system-windows
 
 X-KDE-PluginInfo-Name=tilegaps
-X-KDE-PluginInfo-Version=7.1
+X-KDE-PluginInfo-Version=8.0
 X-KDE-PluginInfo-Author=Natalie Clarius
 X-KDE-PluginInfo-Email=natalie_clarius@yahoo.de
 X-KDE-PluginInfo-License=GPLv3.0
