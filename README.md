@@ -42,9 +42,9 @@ You may need to uncheck the checkbox for the script, apply the settings, recheck
 In Plasma versions < 5.24, a bug in the KWin scripting system [[1]](https://bugs.kde.org/show_bug.cgi?id=411430) [[2]](https://bugs.kde.org/show_bug.cgi?id=444378) may cause the configuration not to be found. To fix this, please execute the following commands in a terminal:
 
 ```bash
-sed -i 's/ConfigModule/Library/g' ~/.local/share/kwin/scripts/tilegaps/metadata.desktop
+sed -i 's/ConfigModule/Library/g' ~/.local/share/kwin/scripts/tilegaps/metadata.json
 mkdir -p ~/.local/share/kservices5/
-ln -sf ~/.local/share/kwin/scripts/tilegaps/metadata.desktop ~/.local/share/kservices5/tilegaps.desktop
+ln -sf ~/.local/share/kwin/scripts/tilegaps/metadata.json ~/.local/share/kservices5/tilegaps.json
 qdbus org.kde.KWin /KWin reconfigure
 ```
 

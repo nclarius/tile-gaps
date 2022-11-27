@@ -1,0 +1,31 @@
+{
+    "KPlugin": {
+        "Authors": [
+            {
+                "Email": "natalie_clarius@yahoo.de",
+                "Name": "Natalie Clarius"
+            }
+        ],
+        "Description": "Adds space around windows touching a screen edge or other window",
+        "Description[de]": "Fügt Zwischenraum um Fenster ein, die einen Bildschirmrand oder ein anderes Fenster berühren",
+        "EnabledByDefault": true,
+        "Icon": "preferences-system-windows",
+        "Id": "tilegaps",
+        "License": "GPLv3.0",
+        "Name": "Window Gaps",
+        "Name[de]": "Fenster-Fugen",
+        "ServiceTypes": [
+            "KWin/Script",
+            "KCModule"
+        ],
+        "Version": "8.0",
+        "Website": "https://store.kde.org/p/1619642"
+    },
+    "X-KDE-ConfigModule": "kwin/effects/configs/kcm_kwin4_genericscripted",
+    "X-KDE-ParentComponents": [
+        "tilegaps"
+    ],
+    "X-KDE-PluginKeyword": "tilegaps",
+    "X-Plasma-API": "javascript",
+    "X-Plasma-MainScript": "code/main.js"
+}

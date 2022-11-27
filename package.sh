@@ -2,7 +2,7 @@
 
 # get plugin info
 name=$(basename "$PWD")
-version=$(grep -oP '(?<=X-KDE-PluginInfo-Version=).*' ./metadata.desktop)
+version=$(grep -oP '"Version":\s*"[^"]*' ./metadata.json | grep -oP '[^"]*$')
 package="${name}"'_v'"${version}"
 echo "$package"
 
@@ -10,13 +10,11 @@ echo "$package"
 find . -name "*.kwinscript" -type f -delete
 zip -rq "$package"'.kwinscript'  \
 	contents \
-	metadata.desktop \
+	metadata.json \
     install.sh \
     uninstall.sh \
     README.md \
     README.bbcode \
-	CHANGELOG.md \
-	CHANGELOG.bbcode \
 	LICENSE
 echo 'generated kwinscript package'
 
