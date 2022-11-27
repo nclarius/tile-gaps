@@ -188,6 +188,7 @@ function onRelayouted() {
 function applyGaps(client) {
     // abort if there is a current iteration of gapping still running,
     // the client is null or irrelevant
+    debug("apply gaps", caption(client), config.includeMaximized, maximized(client));
     if (block || !client || ignoreClient(client)) return;
     // block applying other gaps as long as current iteration is running
     block = true;
@@ -213,6 +214,7 @@ function applyGapsArea(client) {
     
     // unmaximize if maximized window gap
     if (config.includeMaximized && maximized(client)) {
+        debug("unmaximize");
         client.setMaximize(false, false);
     }
 
