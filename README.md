@@ -14,7 +14,7 @@ Please note that this script does not do any automatic tiling. Its purpose is to
 
 ### Dependencies
 
-`kwin`.
+`kwin` on X11. 
 
 ### Installation via graphical interface
 
@@ -68,6 +68,10 @@ For [Sticky Window Snapping](https://store.kde.org/p/1112552/) to work with gaps
 ### Applications
 
 To find the window class name of an application: Right-click on the titlebar of a window of the application > *More Actions* > *Configure Special Application Settings...* > the pre-filled entry in *Window class (application)* (if it consists of two words, only the second part) is the window class to put in the script configuration.
+
+## Issues
+
+The extension currently does not appear to work on Wayland. I'm working on finding out what causes it and how to fix it.
 
 ## Small Print
 
