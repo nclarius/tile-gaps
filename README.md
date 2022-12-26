@@ -56,9 +56,9 @@ Gap sizes are counted from the area that windows maximize to, i.e. from the edge
 
 Gaps on panels are not provided by this extension, but by the Plasma panel: Right-click on panel > *Enter Edit Mode* > *More Settings...* > *Floating Panel*.  
 
-Latte dock is no longer maintained, and not officially supported by this extension.
-
 If you have any floating panels, specify this in the configuration so that gaps can be adjusted accordingly.
+
+Latte dock is no longer maintained, and not officially supported by this extension.
 
 ### Sticky Window Snapping
 
