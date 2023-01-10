@@ -74,12 +74,10 @@ The extension currently does not appear to work on Wayland. I'm working on findi
 
 ## Small Print
 
-© 2021-2022 Natalie Clarius \<natalie_clarius@yahoo.de\>
+© 2022-2023 Natalie Clarius \<natalie_clarius@yahoo.de\> [nclarius.github.io](https://nclarius.github.io)
 
 This work is licensed under the GNU General Public License v3.0.  
 This program comes with absolutely no warranty.  
 This is free software, and you are welcome to redistribute and/or modify it under certain conditions.  
 
-If you would like to thank me, you can always make me happy with a review or a cup of coffee:  
-<a href="https://store.kde.org/p/1619642/"><img src="https://raw.githubusercontent.com/nclarius/Plasma-window-decorations/main/.img/kdestore.png" height="25"/></a>
-<a href="https://www.paypal.com/donate/?hosted_button_id=7LUUJD83BWRM4"><img src="https://www.paypalobjects.com/en_US/DK/i/btn/btn_donateCC_LG.gif" height="25"/></a>&nbsp;&nbsp;<a href="https://www.buymeacoffee.com/nclarius"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" height="25"/></a>
+If you like this project, you can make me happy with a review in the [app store](https://store.kde.org/p/1619642).
