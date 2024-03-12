@@ -52,6 +52,7 @@ function fulldebug(...args) {
         console.debug("tilegaps:", ...args);
     }
 }
+
 debug("intializing");
 debug("sizes (l/r/t/b/m):",
     gap.left, gap.right, gap.top, gap.bottom, gap.mid);
@@ -71,14 +72,14 @@ debug("");
 var block = false;
 
 // trigger debug output when client is activated
-workspace.clientActivated.connect(client => {
+workspace.windowActivated.connect(client => {
     if (!client) return;
     // debug(caption(client), geometry(client));
 });
 
 // trigger applying tile gaps when client is initially present or added
-workspace.clientList().forEach(client => onAdded(client));
-workspace.clientAdded.connect(onAdded);
+workspace.windowList().forEach(client => onAdded(client));
+workspace.windowAdded.connect(onAdded);
 
 function onAdded(client) {
     debug("added", caption(client));
@@ -89,39 +90,43 @@ function onAdded(client) {
 
 // trigger applying tile gaps when client is moved or resized
 function onRegeometrized(client) {
-    client.moveResizedChanged.connect((client) => {
+    client.moveResizedChanged.connect(() => {
         debug("move resized changed", caption(client));
         applyGaps(client);
     });
-    client.frameGeometryChanged.connect((client) => {
+    client.frameGeometryChanged.connect(() => {
         debug("frame geometry changed", caption(client));
-        applyGaps(client)
+        applyGaps(client);
     });
-    client.clientFinishUserMovedResized.connect((client) => {
+    client.interactiveMoveResizeFinished.connect(() => {
         debug("finish user moved resized", caption(client));
         applyGaps(client);
     });
-    client.fullScreenChanged.connect((client) => {
+    client.fullScreenChanged.connect(() => {
         debug("fullscreen changed", caption(client));
         applyGaps(client);
     });
-    client.clientMaximizedStateChanged.connect((client) => {
+    client.maximizedChanged.connect(() => {
         debug("maximized changed", caption(client));
         applyGaps(client);
     });
-    client.clientUnminimized.connect((client) => {
+    client.minimizedChanged.connect(() => {
         debug("unminimized", caption(client));
         applyGaps(client);
     });
-    client.screenChanged.connect((client) => {
-        debug("screen changed", caption(client));
+    client.quickTileModeChanged.connect(() => {
+        debug("tile mode changed", caption(client));
         applyGaps(client);
     });
-    client.desktopChanged.connect((client) => {
-        debug("desktop changed", caption(client));
+    client.tileChanged.connect(() => {
+        debug("tile changed", caption(client));
         applyGaps(client);
     });
-    client.activitiesChanged.connect((client) => {
+    client.desktopsChanged.connect(() => {
+        debug("desktops changed", caption(client));
+        applyGaps(client);
+    });
+    client.activitiesChanged.connect(() => {
         debug("activities changed", caption(client));
         applyGaps(client);
     });
@@ -129,7 +134,7 @@ function onRegeometrized(client) {
 
 // trigger reapplying tile gaps for all windows when screen geometry changes
 function applyGapsAll() {
-    workspace.clientList().forEach(client => applyGaps(client));
+    workspace.windowList().forEach(client => applyGaps(client));
 }
 
 onRelayouted();
@@ -139,20 +144,16 @@ function onRelayouted() {
         debug("current desktop changed");
         applyGapsAll();
     });
-    workspace.desktopPresenceChanged.connect(() => {
-        debug("desktop presence changed");
+    workspace.desktopLayoutChanged.connect(() => {
+        debug("desktop layout changed");
         applyGapsAll();
     });
-    workspace.numberDesktopsChanged.connect(() => {
-        debug("number desktops changed");
+    workspace.desktopsChanged.connect(() => {
+        debug("desktops changed");
         applyGapsAll();
     });
-    workspace.numberScreensChanged.connect(() => {
-        debug("number screens changed");
-        applyGapsAll();
-    });
-    workspace.screenResized.connect(() => {
-        debug("screen resized");
+    workspace.screensChanged.connect(() => {
+        debug("screens changed");
         applyGapsAll();
     });
     workspace.currentActivityChanged.connect(() => {
@@ -171,7 +172,7 @@ function onRelayouted() {
         debug("virtual screen geometry changed");
         applyGapsAll();
     });
-    workspace.clientAdded.connect((client) => {
+    workspace.windowAdded.connect((client) => {
         if (client.dock) {
             debug("dock added");
             applyGapsAll();
@@ -211,7 +212,7 @@ function applyGapsArea(client) {
     let anchored = {"left": false, "right": false, "top": false, "bottom": false};
     let gridded = Object.assign({}, client.frameGeometry);
     let edged = Object.assign({}, client.frameGeometry);
-    
+
     // unmaximize if maximized window gap
     if (config.includeMaximized && maximized(client)) {
         debug("unmaximize");
@@ -292,8 +293,8 @@ function applyGapsWindows(client1) {
 
     // for each other window, if they share an edge,
     // clip or extend both evenly to make the distance the size of the gap
-    for (let j = 0; j < workspace.clientList().length; j++) {
-        let client2 = workspace.clientList()[j];
+    for (let j = 0; j < workspace.windowList().length; j++) {
+        let client2 = workspace.windowList()[j];
         if (!client2) continue;
         if (ignoreOther(client1, client2)) continue;
 
@@ -301,7 +302,7 @@ function applyGapsWindows(client1) {
         debug(geometry(client1), geometry(client2));
 
         let win2 = Object.assign({}, client2.frameGeometry);
-        
+
         for (let i = 0; i < Object.keys(grid).length; i++) {
             let edge = Object.keys(grid)[i];
             switch (edge) {
@@ -476,7 +477,7 @@ function getGrid(client) {
 
 // a client is maximized iff its geometry is equal to the maximize area
 function maximized(client) {
-    return client.geometry == workspace.clientArea(KWin.MaximizeArea, client);
+    return client.frameGeometry == workspace.clientArea(KWin.MaximizeArea, workspace.activeScreen, workspace.currentDesktop);
 }
 
 // a coordinate is close to another iff
@@ -485,7 +486,7 @@ function maximized(client) {
 function nearArea(actual, expected_closed, expected_gapped, gap) {
     let tolerance = gap;
     return (Math.abs(actual - expected_closed) <= tolerance
-         || Math.abs(actual - expected_gapped) <= tolerance);
+        || Math.abs(actual - expected_gapped) <= tolerance);
 }
 
 function nearWindow(win1, win2, gap) {
@@ -500,17 +501,17 @@ function nearWindow(win1, win2, gap) {
 function overlapHor(win1, win2) {
     let tolerance = 2 * gap.mid;
     return (win1.left <= win2.left + tolerance
-         && win1.right > win2.left + tolerance)
+            && win1.right > win2.left + tolerance)
         || (win2.left <= win1.left + tolerance
-        &&  win2.right + tolerance > win1.left);
+            && win2.right + tolerance > win1.left);
 }
 
 function overlapVer(win1, win2) {
     let tolerance = 2 * gap.mid;
     return (win1.top <= win2.top + tolerance
-         && win1.bottom > win2.top + tolerance)
+            && win1.bottom > win2.top + tolerance)
         || (win2.top <= win1.top + tolerance
-         && win2.bottom + tolerance > win1.top);
+            && win2.bottom + tolerance > win1.top);
 }
 
 // floored/ceiled half difference between edges
@@ -555,7 +556,7 @@ function ignoreOther(client1, client2) {
     return ignoreClient(client2) // excluded
         || client2 == client1 // identicalb
         || !(client2.desktop == client1.desktop // same desktop
-             || client2.onAllDesktops || client1.onAllDesktops)
+            || client2.onAllDesktops || client1.onAllDesktops)
         || !(client2.screen == client1.screen) // different screen
         || client2.minimized; // minimized
 }
@@ -578,6 +579,6 @@ function caption(client) {
 // stringify client geometry
 function geometry(client) {
     return ["x", client.x, client.width, client.x + client.width,
-            "y", client.y, client.height, client.y + client.height
+        "y", client.y, client.height, client.y + client.height
     ].join(" ");
 }
